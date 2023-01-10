@@ -38,7 +38,7 @@ class RoutePlanInterface{
         {
             std::ofstream out(filename);
             int32_t i=0;
-            out<<"Printing the routes for the cluster -- " << endl;
+            out<<"The Routes for the cluster -- " << endl;
             out<<"Warehouse -> ";
             for(auto &it : plannedPath){
                 it.printToFile(out); out<<" -> ";

@@ -36,7 +36,7 @@ class BinPackInterface{
         {
             std::ofstream out(filename);
             int32_t i=0;
-            out<<"The packing -- " << i++;
+            out<<"The packing -- ";
             for(auto &it : packed_items)
             {
                 it.printToFile(out); cout<<"\n";
