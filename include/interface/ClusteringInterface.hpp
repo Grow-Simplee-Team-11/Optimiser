@@ -33,9 +33,11 @@ class ClusteringInterface{
             {
                 cout<<"Printing Cluster -- " << i++;
                 for(auto &it : cluster){
-                    // TODO : Complete Me
+                    it.print(); cout<<" ";
                 }
+                cout<<"\n";
             }
+            return;
         }
 
         void PrintClustersToFile(string filename)
@@ -46,10 +48,21 @@ class ClusteringInterface{
             {
                 out<<"Printing Cluster -- " << i++;
                 for(auto &it : cluster){
-                    // TODO : Complete Me
+                    it.printToFile(out); out<<" ";
                 }
+                out<<"\n";
             }
+            return;
         }
+
+        vector<vector<item>> GetClusters(){
+            return clusters;
+        }
+
+        float GetClusteringCost(){
+            return cost;
+        }
+
     private:
         vector<vector<item>> clusters;
         float cost;

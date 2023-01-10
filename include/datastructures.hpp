@@ -47,6 +47,14 @@ struct item {
         coordinate.longitude = lng;
         weight = 0;
     }
+    void print(){
+        cout<<"( Latitude - "<<coordinate.latitude<<" Longitude - "<<coordinate.longitude<<" Size - ("<<size.width<<", "<<size.length<<", "<<size.height<<") )";
+        return;
+    }
+    void printToFile(std::ofstream& out){
+        out<<"( Latitude - "<<coordinate.latitude<<" Longitude - "<<coordinate.longitude<<" Size - ("<<size.width<<", "<<size.length<<", "<<size.height<<") )";
+        return;
+    }
 } ;
 
 struct Bin{

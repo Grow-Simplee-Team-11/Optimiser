@@ -23,12 +23,13 @@ class BinPackInterface{
 
         void PrintPackedData()
         {
-            int32_t i=0;
-            cout<<"Printing the packing -- " << i++;
+            cout<<"Printing the packing -- ";
             for(auto &it : packed_items)
             {
-                // TODO :  Complete Me 
+                it.print(); cout<<"\n";
             }
+            cout<<"\n";
+            return;
         }
 
         void PrintClustersToFile(string filename)
@@ -38,8 +39,17 @@ class BinPackInterface{
             out<<"The packing -- " << i++;
             for(auto &it : packed_items)
             {
-                // TODO :  Complete Me 
+                it.printToFile(out); cout<<"\n";
             }
+            cout<<"\n";
+        }
+
+        vector<item> GetPackaging(){
+            return packed_items;
+        }
+
+        float GetPackagingCost(){
+            return cost;
         }
 
     private:
