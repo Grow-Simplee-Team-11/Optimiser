@@ -22,9 +22,9 @@ class ClusteringInterface{
             cost = 0;
         }
         // store the computed cluster in clusters 
-        virtual void ComputeClusters(vector<item> packages, Coordinate warehouse, int numRiders, Bin b) = 0;
+        virtual void ComputeClusters(vector<item> packages, Coordinate warehouse, int numRiders, Bin b,double distThresh) = 0;
         // calculate the cost of the cluster computed 
-        virtual float CalculateCost() = 0;
+        virtual double CalculateCost() = 0;
 
         void PrintClusters()
         {
@@ -59,13 +59,13 @@ class ClusteringInterface{
             return clusters;
         }
 
-        float GetClusteringCost(){
+        double GetClusteringCost(){
             return cost;
         }
 
-    private:
+    // private:
         vector<vector<item>> clusters;
-        float cost;
+        double cost;
 
 };
 #endif 
