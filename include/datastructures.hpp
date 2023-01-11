@@ -27,34 +27,42 @@ struct Coordinate {
     }
 };
 
+inline bool operator<(const Coordinate& a1, const Coordinate& a2)
+{
+    if (a1.longitude != a2.longitude) return a1.longitude < a2.longitude;
+    if (a1.latitude != a2.latitude) return a1.latitude < a2.latitude;
+    return false;
+} 
+
 struct PolarCoordinate {
     float radius, angle;
 };
 
-struct item {
-    Dimension size;
-    Position position;
-    Coordinate coordinate;
-    PolarCoordinate polarCoordinate;
-    float weight;
-    item(){}
-    item(float w, float h, float d, float lat, float lng)
-    {
-        size.width = w;
-        size.height = h;
-        size.length = d;
-        coordinate.latitude = lat;
-        coordinate.longitude = lng;
-        weight = 0;
-    }
-    void print(){
-        cout<<"( Latitude - "<<coordinate.latitude<<" Longitude - "<<coordinate.longitude<<" Size - ("<<size.width<<", "<<size.length<<", "<<size.height<<") )";
-        return;
-    }
-    void printToFile(std::ofstream& out){
-        out<<"( Latitude - "<<coordinate.latitude<<" Longitude - "<<coordinate.longitude<<" Size - ("<<size.width<<", "<<size.length<<", "<<size.height<<") )";
-        return;
-    }
+class item {
+    public:
+        Dimension size;
+        Position position;
+        Coordinate coordinate;
+        PolarCoordinate polarCoordinate;
+        float weight;
+        item(){}
+        item(float w, float h, float d, float lat, float lng)
+        {
+            size.width = w;
+            size.height = h;
+            size.length = d;
+            coordinate.latitude = lat;
+            coordinate.longitude = lng;
+            weight = 0;
+        }
+        void print(){
+            cout<<"( Latitude - "<<coordinate.latitude<<" Longitude - "<<coordinate.longitude<<" Size - ("<<size.width<<", "<<size.length<<", "<<size.height<<") )";
+            return;
+        }
+        void printToFile(std::ofstream& out){
+            out<<"( Latitude - "<<coordinate.latitude<<" Longitude - "<<coordinate.longitude<<" Size - ("<<size.width<<", "<<size.length<<", "<<size.height<<") )";
+            return;
+        }
 } ;
 
 struct Bin{

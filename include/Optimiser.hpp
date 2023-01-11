@@ -6,9 +6,9 @@
 #define __OPTIMIZER__
 
 #include<string>
-#include "interface/RoutePlanInterface.hpp"
-#include "interface/BinPackInterface.hpp"
-#include "interface/ClusteringInterface.hpp"
+#include "RoutePlanInterface.hpp"
+#include "BinPackInterface.hpp"
+#include "ClusteringInterface.hpp"
 
 using namespace std;
 
