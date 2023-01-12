@@ -3,8 +3,8 @@
 	\Date:	2019/05/21
 **/
 
-#include "HST.h"
-#include "global.h"
+#include "../../../include/clustering/fesif/HST.h"
+#include "../../../include/clustering/fesif/global.h"
 #include<bits/stdc++.h>  
 
 const int MAX_NODE = 100007;

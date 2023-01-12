@@ -6,7 +6,7 @@
 #define GLOBAL_H
 
 #include <bits/stdc++.h>
-#include "datastructures.hpp"
+#include "../../datastructures.hpp"
 using namespace std;
 
 // struct Dimension {

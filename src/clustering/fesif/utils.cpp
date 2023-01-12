@@ -3,9 +3,9 @@
 	\date:		2019.05.26
 */
 #include <bits/stdc++.h>
-#include "utils.h"
-#include "global.h"
-#include "HST.h"
+#include "../../../include/clustering/fesif/utils.h"
+#include "../../../include/clustering/fesif/global.h"
+#include "../../../include/clustering/fesif/HST.h"
 using namespace std;
 
 int nT = 0;
