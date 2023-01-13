@@ -39,32 +39,33 @@ struct PolarCoordinate {
     float radius, angle;
 };
 
-class item {
-    public:
-        Dimension size;
-        Position position;
-        Coordinate coordinate;
-        PolarCoordinate polarCoordinate;
-        float weight;
-        item(){}
-        item(float w, float h, float d, float lat, float lng)
-        {
-            size.width = w;
-            size.height = h;
-            size.length = d;
-            coordinate.latitude = lat;
-            coordinate.longitude = lng;
-            weight = 0;
-        }
-        void print(){
-            cout<<"( Latitude - "<<coordinate.longitude<<" Longitude - "<<coordinate.latitude<<" Size - ("<<size.width<<", "<<size.length<<", "<<size.height<<") )";
-            return;
-        }
-        void printToFile(std::ofstream& out){
-            out<<coordinate.longitude<<" "<<coordinate.latitude<<"\n";
-            // out<<"( Latitude - "<<coordinate.latitude<<" Longitude - "<<coordinate.longitude<<" Size - ("<<size.width<<", "<<size.length<<", "<<size.height<<") )";
-            return;
-        }
+struct item {
+    Dimension size;
+    Position position;
+    Coordinate coordinate;
+    PolarCoordinate polarCoordinate;
+    float weight;
+    float volume;
+    item(){}
+    item(float w, float h, float d, float lat, float lng)
+    {
+        size.width = w;
+        size.height = h;
+        size.length = d;
+        coordinate.latitude = lat;
+        coordinate.longitude = lng;
+        weight = 0;
+        volume = w*h*d;
+    }
+    void print(){
+        cout<<"( Latitude - "<<coordinate.latitude<<" Longitude - "<<coordinate.longitude<<" Size - ("<<size.width<<", "<<size.length<<", "<<size.height<<") )";
+        return;
+    }
+    void printToFile(std::ofstream& out){
+        out<<coordinate.longitude<<" "<<coordinate.latitude<<"\n";
+        // out<<"( Latitude - "<<coordinate.latitude<<" Longitude - "<<coordinate.longitude<<" Size - ("<<size.width<<", "<<size.length<<", "<<size.height<<") )";
+        return;
+    }
 } ;
 
 struct Bin{
