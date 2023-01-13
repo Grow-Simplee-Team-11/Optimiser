@@ -33,9 +33,9 @@ class ClusteringInterface{
             {
                 cout<<"Printing Cluster -- " << i++;
                 for(auto &it : cluster){
-                    it.print(); cout<<" ";
+                    it.print();
                 }
-                cout<<"\n";
+                
             }
             return;
         }
@@ -48,9 +48,9 @@ class ClusteringInterface{
             {
                 out<<"Printing Cluster -- " << i++ <<" \n";
                 for(auto &it : cluster){
-                    it.printToFile(out); out<<" ";
+                    it.printToFile(out);
                 }
-                out<<"\n";
+                
             }
             return;
         }

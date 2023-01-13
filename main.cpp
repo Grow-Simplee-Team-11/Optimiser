@@ -23,6 +23,6 @@
  	f.ComputeClusters(items, warehouse, 100, bin); //wrapperLMD(items, warehouse, 100, bin);
  	// freeGlobalMemory();
  	// f.localFree();
-	f.PrintClustersToFile("output.txt");
+	f.PrintClustersToFile("clusters.txt");
  	return 0;
  }

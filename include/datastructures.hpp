@@ -57,11 +57,11 @@ class item {
             weight = 0;
         }
         void print(){
-            cout<<"( Latitude - "<<coordinate.latitude<<" Longitude - "<<coordinate.longitude<<" Size - ("<<size.width<<", "<<size.length<<", "<<size.height<<") )";
+            cout<<"( Latitude - "<<coordinate.longitude<<" Longitude - "<<coordinate.latitude<<" Size - ("<<size.width<<", "<<size.length<<", "<<size.height<<") )";
             return;
         }
         void printToFile(std::ofstream& out){
-            out<<coordinate.latitude<<" "<<coordinate.longitude<<"\n";
+            out<<coordinate.longitude<<" "<<coordinate.latitude<<"\n";
             // out<<"( Latitude - "<<coordinate.latitude<<" Longitude - "<<coordinate.longitude<<" Size - ("<<size.width<<", "<<size.length<<", "<<size.height<<") )";
             return;
         }

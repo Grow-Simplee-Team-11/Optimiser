@@ -20,7 +20,35 @@ def randomColor():
 if __name__=="__main__":
     random.seed(10)
 
-    pts = open("../clusters.txt", "r")
+    pts = open("clusters.txt", "r")
+
+    line = pts.readline()
+    color = randomColor()
+    cluster_idx = 0
+    map = folium.Map(location=[42.1649, -88.0815])
+    # folium.Marker(location=[42.1649, -88.0815], popup =  'Depot').add_to(map)
+    while line:
+        # print(line)
+        if line.split(" ")[0]=="Printing":
+            color = randomColor()
+            cluster_idx = cluster_idx+1
+        else:
+            pt_x_loc = float(line.split(" ")[0])
+            pt_y_loc = float(line.split(" ")[1])
+
+            folium.Circle(
+            radius = 50, 
+            location=[pt_x_loc, pt_y_loc],
+            fill = False,
+            popup = f"lat={pt_x_loc}, lng={pt_y_loc}, cluster={cluster_idx}",
+            color = color).add_to(map)
+        
+        line = pts.readline()
+
+    map.save('clusters.html')
+
+    exit()
+    
     # depot location
     loc = pts.readline()
     depot_x_loc = float(loc.split(" ")[0])
