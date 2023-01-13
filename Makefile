@@ -7,12 +7,14 @@ CXX = g++
 LIBS = 
 CFLAGS = --std=c++17 -W -Wall -Wno-sign-compare -O3 -s -pipe -mmmx -msse -msse2 -msse3 -g # -mcmodel=medium
 MEM = -D WATCH_MEM
+FESIF_DIR = ./include/
+
 
 all: fesif chst
-global.o: global.h global.cpp
+global.o: src/clustering/fesif/global.cpp
 	$(CXX) $(CFLAGS) -c global.cpp $(LIBS)
 	
-HST.o: HST.h HST.cpp global.h global.cpp global.o
+HST.o: src/clustering/fesif/HST.cpp src/clustering/fesif/global.cpp global.o
 	$(CXX) $(CFLAGS) -c global.o HST.cpp $(LIBS)
 	
 utils.o: utils.h utils.cpp HST.h HST.cpp HST.o global.h global.cpp global.o
