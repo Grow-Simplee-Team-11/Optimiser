@@ -12,15 +12,13 @@ void execiterations(vector<item>&);
 void listcanditlayers(vector<item>&);
 int complayerlist(const void *i, const void *j);
 int packlayer(vector<item>&);
-int findlayer(short int thickness);
-void findbox(short int hmx, short int hy, short int hmy, short int hz, short int hmz);
+int findlayer(vector<item>&, short int thickness);
+void findbox(vector<item>& cluster, short int hmx, short int hy, short int hmy, short int hz, short int hmz);
 void analyzebox (short int hmx, short int hy, short int hmy, short int hz, short int hmz, short int dim1, short int dim2, short int dim3);
-void findsmallestz(void);
+void findsmallestz(vector<item>&);
 void checkfound(void);
-void volumecheck(void);
-void graphunpackedout(void);
-void outputboxlist(void);
-void report(void);
+void volumecheck(vector<item>& cluster);
+void report(vector<item>& cluster);
 
 struct layerlist{
   long int layereval;
@@ -37,9 +35,6 @@ struct scrappad{
   }
 };
 
-char strpx[5], strpy[5], strpz[5];
-char strcox[5], strcoy[5], strcoz[5];
-char strpackx[5], strpacky[5], strpackz[5];
 
 string strtemp="";
 char packing;
@@ -53,13 +48,13 @@ string graphout="visudat";
 char unpacked;
 char quit;
 
-short int boxx, boxy, boxz, boxi;
-short int bboxx, bboxy, bboxz, bboxi;
-short int cboxx, cboxy, cboxz, cboxi;
-short int bfx, bfy, bfz;
-short int bbfx, bbfy, bbfz;
-short int xx, yy, zz;
-short int px, py, pz;
+double boxx, boxy, boxz, boxi;
+double bboxx, bboxy, bboxz, bboxi;
+double cboxx, cboxy, cboxz, cboxi;
+double bfx, bfy, bfz;
+double bbfx, bbfy, bbfz;
+double xx, yy, zz;
+double px, py, pz;
 
 double packedvolume;
 double bestvolume;
@@ -70,7 +65,7 @@ double percentageused;
 double percentagepackedbox;
 double elapsedtime;
 
-short int x;
+double x;
 short int n;
 short int layerlistlen;
 short int layerinlayer;
@@ -127,11 +122,16 @@ void EB_AFIT::BinPack(vector<item> cluster, Bin b){
     px = b.size.length;
     py = b.size.width;
     pz = b.size.height;
+    execiterations(cluster);
     time(&finish);
+    report(cluster);
+    this->packed_items = cluster;
+    return;
 }
 
 float EB_AFIT::CalculateCost(){
-
+    cost = percentagepackedbox;
+    return cost;
 }
 
 int complayerlist(const void *i, const void *j)
@@ -168,14 +168,6 @@ void listcanditlayers(vector<item>& cluster){
             if(!(x == z))
             {
                 dimdif = abs(exdim - cluster[z].size.height);
-                // if ( abs(exdim - boxlist[z].dim2) < dimdif )
-                // {
-                //     dimdif = abs(exdim - boxlist[z].dim2);
-                // }
-                // if ( abs(exdim - boxlist[z].dim3) < dimdif )
-                // {
-                //     dimdif = abs(exdim - boxlist[z].dim3);
-                // }
                 layereval = layereval + dimdif;
             }
         }
@@ -190,7 +182,7 @@ void execiterations(vector<item>& cluster) {
     layers[0].layereval = -1;
     qsort(layers, layerlistlen+1, sizeof(struct layerlist), complayerlist);
     
-    for (layersindex = 1; (layersindex <= layerlistlen) && !quit; layersindex++){
+    for (layersindex = 1; (layersindex <= layerlistlen); layersindex++){
       ++itenum;
       packedvolume = 0.0;
       packedy = 0;
@@ -200,8 +192,7 @@ void execiterations(vector<item>& cluster) {
       remainpy = py; 
       remainpz = pz;
       packednumbox = 0;
-      for (x = 0; x < n; x++)
-      {
+      for (x = 0; x < n; x++){
         boxStatus[x] =0;
       }
       
@@ -210,13 +201,13 @@ void execiterations(vector<item>& cluster) {
       {
         layerinlayer = 0;
         layerdone = 0;
-        if (packlayer())
+        if (packlayer(cluster))
         {
           exit(1); 
         } 
         packedy = packedy + layerthickness;
         remainpy = py - packedy;
-        if (layerinlayer && !quit)
+        if (layerinlayer)
         {
           prepackedy = packedy; 
           preremainpy = remainpy; 
@@ -225,7 +216,7 @@ void execiterations(vector<item>& cluster) {
           remainpz = lilz;
           layerthickness = layerinlayer;
           layerdone = 0;
-          if (packlayer())
+          if (packlayer(cluster))
           {
             exit( 1);
           } 
@@ -233,7 +224,7 @@ void execiterations(vector<item>& cluster) {
           remainpy = preremainpy;
           remainpz = pz;
         } 
-        findlayer(remainpy);
+        findlayer(cluster, remainpy);
       }
       while (packing);
       // END DO-WHILE
@@ -249,7 +240,6 @@ void execiterations(vector<item>& cluster) {
       if (hundredpercent) break;
       percentageused = bestvolume * 100 / totalvolume;
     }
-    if ((xx == yy) && (yy == zz)) variant = 6;
 }
 
 int packlayer(vector<item>& cluster)
@@ -267,7 +257,7 @@ int packlayer(vector<item>& cluster)
   
   for(;;)
   {
-    findsmallestz();
+    findsmallestz(cluster);
     
     if (!(*smallestz).pre && !(*smallestz).pos)
     {
@@ -275,7 +265,7 @@ int packlayer(vector<item>& cluster)
       
       lenx = (*smallestz).cumx;
       lpz = remainpz - (*smallestz).cumz;
-      findbox(lenx, layerthickness, remainpy, lpz, lpz); 
+      findbox(cluster, lenx, layerthickness, remainpy, lpz, lpz); 
       checkfound();
       
       if (layerdone) break;
@@ -290,7 +280,7 @@ int packlayer(vector<item>& cluster)
       }
       else 
       {
-        (*smallestz).pos = malloc(sizeof(struct scrappad)); 
+        (*smallestz).pos = new scrappad; 
         if ((*smallestz).pos == NULL) 
         {
           printf("Insufficient memory available\n"); 
@@ -303,7 +293,7 @@ int packlayer(vector<item>& cluster)
         (*smallestz).cumx = cboxx; 
         (*smallestz).cumz = (*smallestz).cumz + cboxz;
       } 
-      volumecheck();
+      volumecheck(cluster);
     }
     else if (!(*smallestz).pre) 
     {
@@ -312,17 +302,17 @@ int packlayer(vector<item>& cluster)
       lenx = (*smallestz).cumx;
       lenz = (*((*smallestz).pos)).cumz - (*smallestz).cumz; 
       lpz = remainpz - (*smallestz).cumz;
-      findbox(lenx, layerthickness, remainpy, lenz, lpz); 
+      findbox(cluster, lenx, layerthickness, remainpy, lenz, lpz); 
       checkfound();
       
       if (layerdone) break;
       if (evened) continue;
       
-      boxlist[cboxi].coy = packedy; 
-      boxlist[cboxi].coz = (*smallestz).cumz; 
+      cluster[cboxi].position.y = packedy; 
+      cluster[cboxi].position.z = (*smallestz).cumz; 
       if (cboxx == (*smallestz).cumx) 
       {
-        boxlist[cboxi].cox = 0;
+        cluster[cboxi].position.x = 0;
         if ( (*smallestz).cumz + cboxz == (*((*smallestz).pos)).cumz )
         { 
           (*smallestz).cumz = (*((*smallestz).pos)).cumz; 
@@ -333,7 +323,7 @@ int packlayer(vector<item>& cluster)
           {
             (*((*smallestz).pos)).pre = smallestz;
           }
-          free(trash);
+            delete trash;
         }
         else 
         {
@@ -342,14 +332,14 @@ int packlayer(vector<item>& cluster)
       }
       else 
       {
-        boxlist[cboxi].cox = (*smallestz).cumx - cboxx; 
+        cluster[cboxi].position.x = (*smallestz).cumx - cboxx; 
         if ( (*smallestz).cumz + cboxz == (*((*smallestz).pos)).cumz )
         {
           (*smallestz).cumx = (*smallestz).cumx - cboxx;
         }
         else 
         {
-          (*((*smallestz).pos)).pre = malloc(sizeof(struct scrappad));
+          (*((*smallestz).pos)).pre = new scrappad;
           if ((*((*smallestz).pos)).pre == NULL) 
           { 
             printf("Insufficient memory available\n"); 
@@ -363,7 +353,7 @@ int packlayer(vector<item>& cluster)
           (*((*smallestz).pos)).cumz = (*smallestz).cumz + cboxz;
         }
       } 
-      volumecheck();
+      volumecheck(cluster);
     }
     else if (!(*smallestz).pos)
     {
@@ -372,15 +362,15 @@ int packlayer(vector<item>& cluster)
       lenx = (*smallestz).cumx - (*((*smallestz).pre)).cumx; 
       lenz = (*((*smallestz).pre)).cumz - (*smallestz).cumz; 
       lpz = remainpz - (* smallestz).cumz;
-      findbox(lenx, layerthickness, remainpy, lenz, lpz); 
+      findbox(cluster, lenx, layerthickness, remainpy, lenz, lpz); 
       checkfound();
       
       if (layerdone) break;
       if (evened) continue;
       
-      boxlist[cboxi].coy = packedy; 
-      boxlist[cboxi].coz = (*smallestz).cumz;
-      boxlist[cboxi].cox = (*((*smallestz).pre)).cumx;
+      cluster[cboxi].position.y = packedy; 
+      cluster[cboxi].position.z = (*smallestz).cumz;
+      cluster[cboxi].position.x = (*((*smallestz).pre)).cumx;
       
       if (cboxx == (*smallestz).cumx - (*((*smallestz).pre)).cumx) 
       {
@@ -388,7 +378,7 @@ int packlayer(vector<item>& cluster)
         { 
           (*((*smallestz).pre)).cumx = (*smallestz).cumx; 
           (*((*smallestz).pre)).pos = NULL;
-          free(smallestz);
+        delete smallestz;
         } 
         else 
         {
@@ -403,7 +393,7 @@ int packlayer(vector<item>& cluster)
         }
         else 
         {
-          (*((*smallestz).pre)).pos = malloc(sizeof(struct scrappad));
+          (*((*smallestz).pre)).pos = new scrappad;
           if ( (*((*smallestz).pre)).pos == NULL ) 
           {
             printf("Insufficient memory available\n"); 
@@ -416,7 +406,7 @@ int packlayer(vector<item>& cluster)
           (*((*smallestz).pre)).cumz = (*smallestz).cumz + cboxz;
         }
       } 
-      volumecheck();
+      volumecheck(cluster);
     }
     else if ( (*((*smallestz).pre)).cumz == (*((*smallestz).pos)).cumz ) 
     {
@@ -428,17 +418,17 @@ int packlayer(vector<item>& cluster)
       lenz = (*((*smallestz).pre)).cumz - (*smallestz).cumz;
       lpz = remainpz - (*smallestz).cumz;
       
-      findbox(lenx, layerthickness, remainpy, lenz, lpz); 
+      findbox(cluster, lenx, layerthickness, remainpy, lenz, lpz); 
       checkfound();
       
       if (layerdone) break;
       if (evened) continue;
       
-      boxlist[cboxi].coy = packedy;
-      boxlist[cboxi].coz = (*smallestz).cumz; 
+      cluster[cboxi].position.y = packedy;
+      cluster[cboxi].position.z = (*smallestz).cumz; 
       if ( cboxx == (*smallestz).cumx - (*((*smallestz).pre)).cumx ) 
       {
-        boxlist[cboxi].cox = (*((*smallestz).pre)).cumx; 
+        cluster[cboxi].position.x = (*((*smallestz).pre)).cumx; 
         if ( (*smallestz).cumz + cboxz == (*((*smallestz).pos)).cumz )
         {
           (*((*smallestz).pre)).cumx = (*((*smallestz).pos)).cumx;
@@ -446,12 +436,12 @@ int packlayer(vector<item>& cluster)
           { 
             (*((*smallestz).pre)).pos = (*((*smallestz).pos)).pos; 
             (*((*((*smallestz).pos)).pos)).pre = (*smallestz).pre;
-            free(smallestz);
+            delete smallestz;
           }
           else 
           {
             (*((*smallestz).pre)).pos = NULL;
-            free(smallestz);
+            delete smallestz;
           }
         } 
         else
@@ -464,12 +454,12 @@ int packlayer(vector<item>& cluster)
         if ( (*smallestz).cumz + cboxz == (*((*smallestz).pre)).cumz)
         { 
           (*smallestz).cumx = (*smallestz).cumx - cboxx; 
-          boxlist[cboxi].cox = (*smallestz).cumx - cboxx;
+          cluster[cboxi].position.x = (*smallestz).cumx - cboxx;
         }
         else 
         {
-          boxlist[cboxi].cox = (*((*smallestz).pre)).cumx; 
-          (*((*smallestz).pre)).pos = malloc(sizeof(struct scrappad)); 
+          cluster[cboxi].position.x = (*((*smallestz).pre)).cumx; 
+          (*((*smallestz).pre)).pos = new scrappad;
           if ( (*((*smallestz).pre)).pos == NULL ) 
           {
             printf("Insufficient memory available\n"); 
@@ -487,12 +477,12 @@ int packlayer(vector<item>& cluster)
         if ( (*smallestz).cumz + cboxz == (*((*smallestz).pre)).cumz )
         { 
           (*((*smallestz).pre)).cumx = (*((*smallestz).pre)).cumx + cboxx; 
-          boxlist[cboxi].cox = (*((*smallestz).pre)).cumx;
+          cluster[cboxi].position.x = (*((*smallestz).pre)).cumx;
         }
         else 
         {
-          boxlist[cboxi].cox = (*smallestz).cumx - cboxx;
-          (*((*smallestz).pos)).pre = malloc(sizeof(struct scrappad));
+          cluster[cboxi].position.x = (*smallestz).cumx - cboxx;
+          (*((*smallestz).pos)).pre = new scrappad;
           if ((*((*smallestz).pos)).pre == NULL) 
           {
             printf("Insufficient memory available\n"); 
@@ -506,7 +496,7 @@ int packlayer(vector<item>& cluster)
           (*smallestz).cumx = (*smallestz).cumx - cboxx;
         }
       } 
-      volumecheck();
+      volumecheck(cluster);
     }
     else 
     {
@@ -515,15 +505,15 @@ int packlayer(vector<item>& cluster)
       lenx = (*smallestz).cumx - (*((*smallestz).pre)).cumx;
       lenz = (*((*smallestz).pre)).cumz - (*smallestz).cumz;
       lpz = remainpz - (*smallestz).cumz;
-      findbox(lenx, layerthickness, remainpy, lenz, lpz);
+      findbox(cluster, lenx, layerthickness, remainpy, lenz, lpz);
       checkfound();
       
       if (layerdone) break;
       if (evened) continue;
       
-      boxlist[cboxi].coy = packedy;
-      boxlist[cboxi].coz = (*smallestz).cumz;
-      boxlist[cboxi].cox = (*((*smallestz).pre)).cumx;
+      cluster[cboxi].position.y = packedy;
+      cluster[cboxi].position.z = (*smallestz).cumz;
+      cluster[cboxi].position.x = (*((*smallestz).pre)).cumx;
       if ( cboxx == (*smallestz).cumx - (*((*smallestz).pre)).cumx )
       {
         if ((*smallestz).cumz + cboxz == (*((*smallestz).pre)).cumz)
@@ -531,7 +521,7 @@ int packlayer(vector<item>& cluster)
           (*((*smallestz).pre)).cumx = (*smallestz).cumx; 
           (*((*smallestz).pre)).pos = (*smallestz).pos;
           (*((*smallestz).pos)).pre = (*smallestz).pre;
-          free(smallestz);
+        delete smallestz;
         } 
         else
         {
@@ -546,12 +536,12 @@ int packlayer(vector<item>& cluster)
         } 
         else if ( (*smallestz).cumz + cboxz == (*((*smallestz).pos)).cumz )
         { 
-          boxlist[cboxi].cox = (*smallestz).cumx - cboxx;
+          cluster[cboxi].position.x = (*smallestz).cumx - cboxx;
           (*smallestz).cumx = (*smallestz).cumx - cboxx;
         }
         else
         {
-          (*((*smallestz).pre)).pos = malloc(sizeof(struct scrappad));
+          (*((*smallestz).pre)).pos = new scrappad;
           if ( (*((*smallestz).pre)).pos == NULL ) 
           { 
             printf("Insufficient memory available\n");
@@ -564,62 +554,42 @@ int packlayer(vector<item>& cluster)
           (*((*smallestz).pre)).cumz = (*smallestz).cumz + cboxz;
         }
       }
-      volumecheck();
+      volumecheck(cluster);
     }
   } 
   return 0;
 }
 
-//**********************************************************************
-// FINDS THE MOST PROPER LAYER HIGHT BY LOOKING AT THE UNPACKED 
-// BOXES AND THE REMAINING EMPTY SPACE AVAILABLE
-//**********************************************************************
-
-int findlayer(short int thickness) 
+int findlayer(vector<item>& cluster, short int thickness) 
 {
   short int exdim, dimdif, dimen2, dimen3, y, z; 
   long int layereval, eval;
   layerthickness = 0; 
   eval = 1000000; 
-  for (x=1; x <= tbn; x++)
+  for (x=0; x < n; x++)
   {
-    if (boxlist[x].packst) continue; 
+    if (boxStatus[x]) continue; 
     for( y = 1; y <= 3; y++)
     {
-      switch(y) 
-      {
-        case 1:
-          exdim = boxlist[x].dim1;
-          dimen2 = boxlist[x].dim2;
-          dimen3 = boxlist[x].dim3;
-          break;
-        case 2:
-          exdim = boxlist[x].dim2;
-          dimen2 = boxlist[x].dim1;
-          dimen3 = boxlist[x].dim3; 
-          break;
-       case 3:
-          exdim = boxlist[x].dim3;
-          dimen2 = boxlist[x].dim1;
-          dimen3 = boxlist[x].dim2;
-          break;
-      }
+        exdim = cluster[x].size.height;
+        dimen2 = cluster[x].size.width;
+        dimen3 = cluster[x].size.length;
       layereval = 0;
       if ( (exdim <= thickness) && (((dimen2 <= px) && (dimen3 <= pz)) || ((dimen3 <= px) && (dimen2 <= pz))) )
       { 
-        for (z = 1; z <= tbn; z++)
+        for (z = 0; z < n; z++)
         {
-          if ( !(x == z) && !(boxlist[z].packst))
+          if ( !(x == z) && !(boxStatus[y]))
           { 
-            dimdif = abs(exdim - boxlist[z].dim1);
-            if ( abs(exdim - boxlist[z].dim2) < dimdif )
-            {
-              dimdif = abs(exdim - boxlist[z].dim2);
-            }
-            if ( abs(exdim - boxlist[z].dim3) < dimdif )
-            {
-              dimdif = abs(exdim - boxlist[z].dim3);
-            }
+            dimdif = abs(exdim - cluster[z].size.height);
+            // if ( abs(exdim - boxlist[z].dim2) < dimdif )
+            // {
+            //   dimdif = abs(exdim - boxlist[z].dim2);
+            // }
+            // if ( abs(exdim - boxlist[z].dim3) < dimdif )
+            // {
+            //   dimdif = abs(exdim - boxlist[z].dim3);
+            // }
             layereval = layereval + dimdif;
           }
         }
@@ -635,32 +605,18 @@ int findlayer(short int thickness)
   return 0;
 }
 
-//**********************************************************************
-// FINDS THE MOST PROPER BOXES BY LOOKING AT ALL SIX POSSIBLE 
-// ORIENTATIONS, EMPTY SPACE GIVEN, ADJACENT BOXES, AND PALLET LIMITS
-//**********************************************************************
-
-void findbox(short int hmx, short int hy, short int hmy, short int hz, short int hmz)
+void findbox(vector<item>& cluster, short int hmx, short int hy, short int hmy, short int hz, short int hmz)
 { 
   short int y;
   bfx = 32767; bfy = 32767; bfz = 32767; 
   bbfx = 32767; bbfy = 32767; bbfz = 32767; 
   boxi = 0; bboxi = 0;
-  for (y = 1; y <= tbn; y = y + boxlist[y].n)
+  for (y = 0; y < n; y++)
   {
-    for (x = y; x < x + boxlist[y].n - 1; x++) 
-    {
-      if (!boxlist[x].packst) break;
-    }
-    if (boxlist[x].packst) continue;
-    if (x > tbn) return;
-    analyzebox(hmx, hy, hmy, hz, hmz, boxlist[x].dim1, boxlist[x].dim2, boxlist[x].dim3);
-    if ( (boxlist[x].dim1 == boxlist[x].dim3) && (boxlist[x].dim3 == boxlist[x].dim2) ) continue;
-    analyzebox(hmx, hy, hmy, hz, hmz, boxlist[x].dim1, boxlist[x].dim3, boxlist[x].dim2);
-    analyzebox(hmx, hy, hmy, hz, hmz, boxlist[x].dim2, boxlist[x].dim1, boxlist[x].dim3);
-    analyzebox(hmx, hy, hmy, hz, hmz, boxlist[x].dim2, boxlist[x].dim3, boxlist[x].dim1);
-    analyzebox(hmx, hy, hmy, hz, hmz, boxlist[x].dim3, boxlist[x].dim1, boxlist[x].dim2);
-    analyzebox(hmx, hy, hmy, hz, hmz, boxlist[x].dim3, boxlist[x].dim2, boxlist[x].dim1);
+    if (boxStatus[x]) continue;
+    if (x > n) return;
+    analyzebox(hmx, hy, hmy, hz, hmz, cluster[x].size.height, cluster[x].size.width, cluster[x].size.length);
+    analyzebox(hmx, hy, hmy, hz, hmz, cluster[x].size.height, cluster[x].size.length, cluster[x].size.width);
   }
 }
 
@@ -745,7 +701,7 @@ void analyzebox(short int hmx, short int hy, short int hmy, short int hz, short 
 //********************************************************
 // FINDS THE FIRST TO BE PACKED GAP IN THE LAYER EDGE
 //********************************************************
-void findsmallestz(void) 
+void findsmallestz(vector<item>&) 
 { 
   scrapmemb = scrapfirst;
   smallestz = scrapmemb;
@@ -810,13 +766,13 @@ void checkfound(void)
           {
             (*((*smallestz).pos)).pre = smallestz;
           }
-          free(trash);
+            delete trash;
         }
         else if (!(*smallestz).pos)
         {
           (*((*smallestz).pre)).pos = NULL; 
           (*((*smallestz).pre)).cumx = (*smallestz).cumx;
-          free(smallestz);
+            delete smallestz;
         }
         else 
         {
@@ -828,8 +784,8 @@ void checkfound(void)
               (*((*((*smallestz).pos)).pos)).pre = (*smallestz).pre;
             } 
             (*((*smallestz).pre)).cumx = (*((*smallestz).pos)).cumx;
-            free((*smallestz).pos);
-            free(smallestz);
+            delete (*smallestz).pos;
+            delete smallestz;
           }
           else
           {
@@ -839,7 +795,7 @@ void checkfound(void)
             {
               (*((*smallestz).pre)).cumx = (*smallestz).cumx;
             }
-            free(smallestz);
+            delete smallestz;
           }
         } 
       }
@@ -852,148 +808,19 @@ void checkfound(void)
 // AFTER PACKING OF EACH BOX, 100% PACKING CONDITION IS CHECKED
 //********************************************************************
 
-void volumecheck (void) 
+void volumecheck (vector<item>& cluster) 
 { 
-  boxlist[cboxi].packst = 1;
-  boxlist[cboxi].packx = cboxx;
-  boxlist[cboxi].packy = cboxy;
-  boxlist[cboxi].packz = cboxz;
-  packedvolume = packedvolume + boxlist[cboxi].vol;
+  boxStatus[cboxi] = 1;
+  cluster[cboxi].size.length = cboxx;
+  cluster[cboxi].size.height = cboxy;
+  cluster[cboxi].size.width = cboxz;
+  packedvolume = packedvolume + cluster[cboxi].volume;
   packednumbox++;
-  if (packingbest)
-  { 
-    graphunpackedout();
-    outputboxlist();
-  }
-  else if (packedvolume == totalvolume || packedvolume == totalboxvol) 
+  if (packedvolume == totalvolume || packedvolume == totalboxvol) 
   {
     packing = 0; 
     hundredpercent = 1;
   } 
-  return;
-}
-
-//*********************************************************************
-// DATA FOR THE VISUALIZATION PROGRAM IS WRITTEN TO THE 
-// "VISUDAT" FILE AND THE LIST OF UNPACKED BOXES IS
-// MERGED TO THE END OF THE REPORT FILE
-//*********************************************************************
-
-void graphunpackedout(void) 
-{ 
-  char n[5];
-  if (!unpacked)
-  {
-    itoa(boxlist[cboxi].cox, strcox, 10); 
-    itoa(boxlist[cboxi].coy, strcoy, 10); 
-    itoa(boxlist[cboxi].coz, strcoz, 10);
-    itoa(boxlist[cboxi].packx, strpackx, 10);
-    itoa(boxlist[cboxi].packy, strpacky, 10);
-    itoa(boxlist[cboxi].packz, strpackz, 10);
-  }
-  else 
-  {
-    itoa(cboxi, n, 10); 
-    itoa(boxlist[cboxi].dim1, strpackx, 10); 
-    itoa(boxlist[cboxi].dim2, strpacky, 10);
-    itoa(boxlist[cboxi].dim3, strpackz, 10);
-  }
-  if (!unpacked) 
-  {
-    fprintf(gfp, "%5s%5s%5s%5s%5s%5s\n", strcox, strcoy, strcoz, strpackx, strpacky, strpackz);
-  }
-  else
-  {
-    fprintf(ofp,"%5s%5s%5s%5s\n", n, strpackx, strpacky, strpackz);
-  }
-}
-
-//*********************************************************************
-// TRANSFORMS THE FOUND COORDINATE SYSTEM TO THE ONE ENTERED 
-// BY THE USER AND WRITES THEM TO THE REPORT FILE
-//*********************************************************************
-
-void outputboxlist(void)
-{
-  char strx[5];
-  char strpackst[5];
-  char strdim1[5], strdim2[5], strdim3[5];
-  char strcox[5], strcoy[5], strcoz[5];
-  char strpackx[5], strpacky[5], strpackz[5];
-  
-  short int x, y, z, bx, by, bz;
-  
-  switch(bestvariant) 
-  { 
-    case 1:
-      x = boxlist[cboxi].cox; 
-      y = boxlist[cboxi].coy; 
-      z = boxlist[cboxi].coz; 
-      bx = boxlist[cboxi].packx; 
-      by = boxlist[cboxi].packy; 
-      bz = boxlist[cboxi].packz;
-      break;
-    case 2:
-      x = boxlist[cboxi].coz;
-      y = boxlist[cboxi].coy;
-      z = boxlist[cboxi].cox;
-      bx = boxlist[cboxi].packz;
-      by = boxlist[cboxi].packy;
-      bz = boxlist[cboxi].packx;
-      break;
-    case 3:
-      x = boxlist[cboxi].coy;
-      y = boxlist[cboxi].coz;
-      z = boxlist[cboxi].cox;
-      bx = boxlist[cboxi].packy;
-      by = boxlist[cboxi].packz;
-      bz = boxlist[cboxi].packx;
-      break;
-    case 4:
-      x = boxlist[cboxi].coy;
-      y = boxlist[cboxi].cox;
-      z = boxlist[cboxi].coz;
-      bx = boxlist[cboxi].packy;
-      by = boxlist[cboxi].packx;
-      bz = boxlist[cboxi].packz;
-      break;
-    case 5:
-      x = boxlist[cboxi].cox;
-      y = boxlist[cboxi].coz;
-      z = boxlist[cboxi].coy;
-      bx = boxlist[cboxi].packx;
-      by = boxlist[cboxi].packz;
-      bz = boxlist[cboxi].packy;
-      break;
-    case 6:
-      x = boxlist[cboxi].coz;
-      y = boxlist[cboxi].cox;
-      z = boxlist[cboxi].coy;
-      bx = boxlist[cboxi].packz;
-      by = boxlist[cboxi].packx;
-      bz = boxlist[cboxi].packy;
-      break;
-  }
-  
-  itoa(cboxi, strx,10);
-  itoa(boxlist[cboxi].packst, strpackst, 10);
-  itoa(boxlist[cboxi].dim1, strdim1, 10);
-  itoa(boxlist[cboxi].dim2, strdim2, 10);
-  itoa(boxlist[cboxi].dim3, strdim3,10);
-  itoa(x, strcox, 10);
-  itoa(y, strcoy, 10);
-  itoa(z, strcoz, 10);
-  itoa(bx, strpackx, 10);
-  itoa(by, strpacky, 10);
-  itoa(bz, strpackz, 10);
-  
-  boxlist[cboxi].cox = x;
-  boxlist[cboxi].coy = y;
-  boxlist[cboxi].coz = z;
-  boxlist[cboxi].packx = bx;
-  boxlist[cboxi].packy = by;
-  boxlist[cboxi].packz = bz;
-  fprintf(ofp, "%5s%5s%9s%9s%9s%9s%9s%9s%9s%9s%9s\n", strx, strpackst, strdim1, strdim2, strdim3, strcox, strcoy, strcoz, strpackx, strpacky, strpackz);
   return;
 }
   
@@ -1003,73 +830,15 @@ void outputboxlist(void)
 // AND REPORS TO THE CONSOLE AND TO A TEXT FILE
 //*******************************************************************
 
-void report(void)
+void report(vector<item>& cluster)
 { 
-  quit = 0;
-  switch(bestvariant) 
-  { 
-    case 1:
-      px = xx; py = yy; pz = zz;
-      break; 
-    case 2:
-      px = zz; py = yy; pz = xx;
-      break; 
-    case 3:
-      px = zz; py = xx; pz = yy;
-      break; 
-    case 4:
-      px=yy; py=xx; pz = zz;
-      break; 
-    case 5:
-      px = xx; py = zz; pz = yy;
-      break; 
-    case 6:
-      px = yy; py = zz; pz = xx; 
-      break;
-  }
   packingbest = 1;
-  if ( (gfp = fopen(graphout,"w")) == NULL ) 
-  {
-    printf("Cannot open file %s", filename);
-    exit(1);
-  }
-  
-  itoa(px, strpx, 10);
-  itoa(py, strpy, 10);
-  itoa(pz, strpz, 10);
-  
-  fprintf(gfp,"%5s%5s%5s\n", strpx, strpy, strpz); 
-  strcat(filename, ".out");
-  
-  if ( (ofp = fopen(filename,"w")) == NULL ) 
-  { 
-    printf("Cannot open file %s", filename);
-    exit(1);
-  }
   
   percentagepackedbox = bestvolume * 100 / totalboxvol;
   percentageused = bestvolume * 100 / totalvolume;
   elapsedtime = difftime( finish, start);
-  
-  fprintf(ofp,"---------------------------------------------------------------------------------------------\n");
-  fprintf(ofp,"                                       *** REPORT ***\n");
-  fprintf(ofp,"---------------------------------------------------------------------------------------------\n");
-  fprintf(ofp,"ELAPSED TIME                                          : Almost %.0f sec\n", elapsedtime);
-  fprintf(ofp,"TOTAL NUMBER OF ITERATIONS DONE                       : %d\n", itenum);
-  fprintf(ofp,"BEST SOLUTION FOUND AT ITERATION                      : %d OF VARIANT: %d\n", bestite, bestvariant);
-  fprintf(ofp,"TOTAL NUMBER OF BOXES                                 : %d\n", tbn);
-  fprintf(ofp,"PACKED NUMBER OF BOXES                                : %d\n", bestpackednum);
-  fprintf(ofp,"TOTAL VOLUME OF ALL BOXES                             : %.0f\n", totalboxvol);
-  fprintf(ofp,"PALLET VOLUME                                         : %.0f\n", totalvolume);
-  fprintf(ofp,"BEST SOLUTION'S VOLUME UTILIZATION                    : %.0f OUT OF %.0f\n", bestvolume, totalvolume);
-  fprintf(ofp,"PERCENTAGE OF PALLET VOLUME USED                      : %.6f %%\n", percentageused);
-  fprintf(ofp,"PERCENTAGE OF PACKED BOXES (VOLUME)                   : %.6f %%\n", percentagepackedbox);
-  fprintf(ofp,"WHILE PALLET ORIENTATION                              : X=%d; Y=%d; Z= %d\n", px, py, pz);
-  fprintf(ofp,"---------------------------------------------------------------------------------------------\n");
-  fprintf(ofp,"  NO: PACKSTA DIMEN-1  DMEN-2  DIMEN-3   COOR-X   COOR-Y   COOR-Z   PACKEDX  PACKEDY  PACKEDZ\n");
-  fprintf(ofp,"---------------------------------------------------------------------------------------------\n");
-                                                                                                                                               
-  listcanditlayers();
+                                                                                                                                             
+  listcanditlayers(cluster);
   layers[0].layereval= -1;
   qsort(layers, layerlistlen + 1, sizeof(struct layerlist), complayerlist);
   packedvolume = 0.0;
@@ -1079,16 +848,16 @@ void report(void)
   remainpy = py;
   remainpz = pz;
   
-  for (x = 1; x <= tbn; x++)
+  for (x = 0; x < n; x++)
   {
-    boxlist[x].packst = 0;
+    boxStatus[x] = 0;
   }
   
   do
   {
     layerinlayer = 0;
     layerdone = 0;
-    packlayer();
+    packlayer(cluster);
     packedy = packedy + layerthickness;
     remainpy = py - packedy;
     if (layerinlayer)
@@ -1100,48 +869,63 @@ void report(void)
       remainpz = lilz;
       layerthickness = layerinlayer;
       layerdone = 0;
-      packlayer();
+      packlayer(cluster);
       packedy = prepackedy;
       remainpy = preremainpy;
       remainpz = pz;
     }
     if (!quit)
     {
-      findlayer(remainpy);
+      findlayer(cluster, remainpy);
     }
   }
   while (packing && !quit);
   
-  fprintf(ofp,"\n\n *** LIST OF UNPACKED BOXES ***\n");
   unpacked = 1;
-  for (cboxi = 1; cboxi <= tbn; cboxi++)
-  {
-    if (!boxlist[cboxi].packst)
-    {
-      graphunpackedout();
-    }
-  }
   unpacked = 0;
-  fclose(ofp);
-  fclose(gfp);
-  printf("\n");
-  for (n = 1; n <= tbn; n++)
+  for (x = 1; x < n; x++)
   {
-    if (boxlist[n].packst)
+    if (boxStatus[x])
     {
-      printf("%d %d %d %d %d %d %d %d %d %d\n", n, boxlist[n].dim1, boxlist[n].dim2, boxlist[n].dim3, boxlist[n].cox, boxlist[n].coy, boxlist[n].coz, boxlist[n].packx, boxlist[n].packy, boxlist[n].packz);
+      printf("%d %f %f %f %f %f %f %f %f %f\n", n, cluster[n].size.length, cluster[n].size.width, cluster[n].size.height, cluster[n].position.x, cluster[n].position.y, cluster[n].position.z, cluster[n].size.length, cluster[n].size.width, cluster[n].size.height);
     }
   }
-  printf("ELAPSED TIME                       : Almost %.0f sec\n", elapsedtime);
-  printf("TOTAL NUMBER OF ITERATIONS DONE    : %d\n", itenum);
-  printf("BEST SOLUTION FOUND AT             : ITERATION: %d OF VARIANT: %d\n", bestite, bestvariant);
-  printf("TOTAL NUMBER OF BOXES              : %d\n", tbn); 
+  
+  printf("TOTAL NUMBER OF BOXES              : %d\n", n); 
   printf("PACKED NUMBER OF BOXES             : %d\n", bestpackednum);
   printf("TOTAL VOLUME OF ALL BOXES          : %.0f\n", totalboxvol);
-  printf("PALLET VOLUME                      :%.0f\n",totalvolume); 
-  printf("BEST SOLUTION'S VOLUME UTILIZATION :%.0f OUT OF %.0f\n", bestvolume, totalvolume);
+  printf("PALLET VOLUME                      : %.0f\n",totalvolume); 
+  printf("BEST SOLUTION'S VOLUME UTILIZATION : %.0f OUT OF %.0f\n", bestvolume, totalvolume);
   printf("PERCENTAGE OF PALLET VOLUME USED   : %.6f %%\n", percentageused);
-  printf("PERCENTAGE OF PACKEDBOXES (VOLUME) :%.6f%%\n", percentagepackedbox);
-  printf("WHILE PALLET ORIENTATION           : X=%d; Y=%d; Z= %d\n\n\n", px, py, pz); 
-  printf("TO VISUALIZE THIS SOLUTION, PLEASE RUN 'VISUAL.EXE'\n");
+  printf("PERCENTAGE OF PACKEDBOXES (VOLUME) : %.6f%%\n", percentagepackedbox);
+}
+
+int main(){
+    EB_AFIT eba;
+//     104, 96, 84
+// 1. 70, 104, 24, 4
+// 2. 14, 104, 48, 2
+// 3. 40, 52, 36, 3
+
+    vector<item> cluster(3);
+    cluster[0].size.width = 70;
+    cluster[0].size.length = 104;
+    cluster[0].size.height = 24;
+    cluster[1].size.width = 14;
+    cluster[1].size.length = 104;
+    cluster[1].size.height = 48;
+    cluster[2].size.width = 40;
+    cluster[2].size.length = 52;
+    cluster[2].size.height = 36;
+
+    Bin b(104, 96, 84);
+    eba.BinPack(cluster, b);
+    auto res = eba.GetPackaging();
+    cout<<eba.GetPackagingCost()<<endl;
+    for(auto x:res){
+        x.print();
+        cout<<"\n";
+        cout<<x.position.x<<" "<<x.position.y<<" "<<x.position.z<<endl;
+    }
+    return 0;
 }
