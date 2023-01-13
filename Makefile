@@ -13,7 +13,7 @@ CLUS_SRC_DIR = src/clustering
 FESIF_SRC_DIR = $(CLUS_SRC_DIR)/fesif
 
 
-all: main fesif chst
+all: main
 
 global.o: $(FESIF_SRC_DIR)/global.cpp
 	$(CXX) $(CFLAGS) -c $(FESIF_SRC_DIR)/global.cpp $(LIBS)
@@ -22,16 +22,16 @@ HST.o: $(FESIF_SRC_DIR)/HST.cpp $(FESIF_SRC_DIR)/global.cpp global.o
 	$(CXX) $(CFLAGS) -c $(FESIF_SRC_DIR)/HST.cpp $(LIBS)
 	
 utils.o: $(FESIF_INCLUDE_DIR)/utils.h $(FESIF_SRC_DIR)/utils.cpp $(FESIF_INCLUDE_DIR)/HST.h $(FESIF_SRC_DIR)/HST.cpp HST.o $(FESIF_INCLUDE_DIR)/global.h $(FESIF_SRC_DIR)/global.cpp global.o
-	$(CXX) $(CFLAGS) -c global.o HST.o $(FESIF_SRC_DIR)/utils.cpp $(LIBS)
+	$(CXX) $(CFLAGS) -c $(FESIF_SRC_DIR)/utils.cpp $(LIBS)
 	
 chst: $(FESIF_SRC_DIR)/constructHSTs.cpp $(FESIF_INCLUDE_DIR)/global.h $(FESIF_SRC_DIR)/global.cpp global.o $(FESIF_INCLUDE_DIR)/HST.h $(FESIF_SRC_DIR)/HST.cpp HST.o
 	$(CXX) $(CFLAGS) -o chst global.o HST.o $(FESIF_SRC_DIR)/constructHSTs.cpp $(LIBS) $(MEM)
 
 fesif.o:  $(FESIF_SRC_DIR)/FESIF.cpp  $(FESIF_INCLUDE_DIR)/utils.h $(FESIF_SRC_DIR)/utils.cpp utils.o $(FESIF_INCLUDE_DIR)/HST.h $(FESIF_SRC_DIR)/HST.cpp HST.o $(FESIF_INCLUDE_DIR)/global.h $(FESIF_SRC_DIR)/global.cpp global.o
-	$(CXX) $(CFLAGS) -c fesif.o utils.o global.o HST.o $(FESIF_SRC_DIR)/FESIF.cpp $(LIBS) $(MEM)
+	$(CXX) $(CFLAGS) -c $(FESIF_SRC_DIR)/FESIF.cpp $(LIBS) $(MEM)
 
 main: main.cpp fesif.o
-	$(CXX) $(CFLAGS) -o main main.cpp fesif.o
+	$(CXX) $(CFLAGS) -o main global.o HST.o utils.o FESIF.o main.cpp
 
 .PHONY: clean
 clean:

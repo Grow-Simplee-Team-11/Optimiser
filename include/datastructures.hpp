@@ -61,7 +61,8 @@ class item {
             return;
         }
         void printToFile(std::ofstream& out){
-            out<<"( Latitude - "<<coordinate.latitude<<" Longitude - "<<coordinate.longitude<<" Size - ("<<size.width<<", "<<size.length<<", "<<size.height<<") )";
+            out<<coordinate.latitude<<" "<<coordinate.longitude<<"\n";
+            // out<<"( Latitude - "<<coordinate.latitude<<" Longitude - "<<coordinate.longitude<<" Size - ("<<size.width<<", "<<size.length<<", "<<size.height<<") )";
             return;
         }
 } ;

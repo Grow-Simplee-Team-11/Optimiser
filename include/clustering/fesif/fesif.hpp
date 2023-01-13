@@ -31,7 +31,7 @@ class FESIF : public ClusteringInterface {
         FESIF(): nP(0), step(2.0), rho(1){
             delta = rho;
         }
-        void ComputeClusters(vector<item> packages, Coordinate warehouse, int numRiders, Bin b) {
+        void ComputeClusters(vector<item>& packages, Coordinate warehouse, int numRiders, Bin b) {
             setClusters(wrapperLMD(packages, warehouse, numRiders, b));
         }
         void CalculateCost(){

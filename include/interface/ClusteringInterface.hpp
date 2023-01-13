@@ -22,7 +22,7 @@ class ClusteringInterface{
             cost = 0;
         }
         // store the computed cluster in clusters 
-        virtual void ComputeClusters(vector<item>& packages, Coordinate warehouse, int numRiders, Bin b);
+        virtual void ComputeClusters(vector<item>& packages, Coordinate warehouse, int numRiders, Bin b) = 0;
         // calculate the cost of the cluster computed 
         virtual void CalculateCost() = 0;
 
@@ -46,7 +46,7 @@ class ClusteringInterface{
             int32_t i=0;
             for(auto &cluster : clusters)
             {
-                out<<"Printing Cluster -- " << i++;
+                out<<"Printing Cluster -- " << i++ <<" \n";
                 for(auto &it : cluster){
                     it.printToFile(out); out<<" ";
                 }
