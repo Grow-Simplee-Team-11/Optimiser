@@ -52,7 +52,7 @@ class BinPackInterface{
             return cost;
         }
 
-    private:
+    protected:
         vector<item> packed_items;
         float cost;
 

@@ -37,6 +37,7 @@ struct item {
     Coordinate coordinate;
     PolarCoordinate polarCoordinate;
     float weight;
+    float volume;
     item(){}
     item(float w, float h, float d, float lat, float lng)
     {
@@ -46,6 +47,7 @@ struct item {
         coordinate.latitude = lat;
         coordinate.longitude = lng;
         weight = 0;
+        volume = w*h*d;
     }
     void print(){
         cout<<"( Latitude - "<<coordinate.latitude<<" Longitude - "<<coordinate.longitude<<" Size - ("<<size.width<<", "<<size.length<<", "<<size.height<<") )";

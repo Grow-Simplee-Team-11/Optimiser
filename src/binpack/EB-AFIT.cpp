@@ -4,7 +4,7 @@
 
 #include <time.h>
 #include "../../include/datastructures.hpp"
-#include "../../include/interface/BinPackInterface.hpp"
+#include "../../include/binpack/EB_AFIT.hpp"
 
 using namespace std;
 
@@ -91,12 +91,6 @@ vector<int> boxStatus;
 scrappad *scrapfirst, *scrapmemb, *smallestz, *trash;
 time_t start, finish;
 
-class EB_AFIT: public BinPackInterface{
-    public:
-        EB_AFIT();
-        void BinPack(vector<item> cluster, Bin b);
-        float CalculateCost();
-};
 
 EB_AFIT::EB_AFIT(){
 
@@ -900,32 +894,32 @@ void report(vector<item>& cluster)
   printf("PERCENTAGE OF PACKEDBOXES (VOLUME) : %.6f%%\n", percentagepackedbox);
 }
 
-int main(){
-    EB_AFIT eba;
-//     104, 96, 84
-// 1. 70, 104, 24, 4
-// 2. 14, 104, 48, 2
-// 3. 40, 52, 36, 3
+// int main(){
+//     EB_AFIT eba;
+// //     104, 96, 84
+// // 1. 70, 104, 24, 4
+// // 2. 14, 104, 48, 2
+// // 3. 40, 52, 36, 3
 
-    vector<item> cluster(3);
-    cluster[0].size.width = 70;
-    cluster[0].size.length = 104;
-    cluster[0].size.height = 24;
-    cluster[1].size.width = 14;
-    cluster[1].size.length = 104;
-    cluster[1].size.height = 48;
-    cluster[2].size.width = 40;
-    cluster[2].size.length = 52;
-    cluster[2].size.height = 36;
+//     vector<item> cluster(3);
+//     cluster[0].size.width = 70;
+//     cluster[0].size.length = 104;
+//     cluster[0].size.height = 24;
+//     cluster[1].size.width = 14;
+//     cluster[1].size.length = 104;
+//     cluster[1].size.height = 48;
+//     cluster[2].size.width = 40;
+//     cluster[2].size.length = 52;
+//     cluster[2].size.height = 36;
 
-    Bin b(104, 96, 84);
-    eba.BinPack(cluster, b);
-    auto res = eba.GetPackaging();
-    cout<<eba.GetPackagingCost()<<endl;
-    for(auto x:res){
-        x.print();
-        cout<<"\n";
-        cout<<x.position.x<<" "<<x.position.y<<" "<<x.position.z<<endl;
-    }
-    return 0;
-}
+//     Bin b(104, 96, 84);
+//     eba.BinPack(cluster, b);
+//     auto res = eba.GetPackaging();
+//     cout<<eba.GetPackagingCost()<<endl;
+//     for(auto x:res){
+//         x.print();
+//         cout<<"\n";
+//         cout<<x.position.x<<" "<<x.position.y<<" "<<x.position.z<<endl;
+//     }
+//     return 0;
+// }
