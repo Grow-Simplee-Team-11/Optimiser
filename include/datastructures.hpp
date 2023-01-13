@@ -1,26 +1,29 @@
 #ifndef __DATASTRUCTURES__HEADER__
 #define __DATASTRUCTURES__HEADER__
-
+#include<cmath>
 struct Dimension {
-    float length, width, height;
+    double length, width, height;
 
     Dimension(){    }
-    Dimension(float l, float w, float h)
+    Dimension(double l, double w, double h)
     {
         length = l;
         width = w;
         height = h;
     }
+    double getVol(){
+        return length*width*height;
+    }
 };
 
 struct Position {
-    float x, y, z;
+    double x, y, z;
 };
 
 struct Coordinate {
-    float longitude, latitude;
+    double longitude, latitude;
     Coordinate(){}
-    Coordinate(float lat, float lng)
+    Coordinate(double lat, double lng)
     {
         longitude = lng;
         latitude = lat;
@@ -28,7 +31,7 @@ struct Coordinate {
 };
 
 struct PolarCoordinate {
-    float radius, angle;
+    double radius, angle;
 };
 
 struct item {
@@ -36,9 +39,9 @@ struct item {
     Position position;
     Coordinate coordinate;
     PolarCoordinate polarCoordinate;
-    float weight;
+    double weight;
     item(){}
-    item(float w, float h, float d, float lat, float lng)
+    item(double w, double h, double d, double lat, double lng)
     {
         size.width = w;
         size.height = h;
@@ -48,31 +51,34 @@ struct item {
         weight = 0;
     }
     void print(){
-        cout<<"( Latitude - "<<coordinate.latitude<<" Longitude - "<<coordinate.longitude<<" Size - ("<<size.width<<", "<<size.length<<", "<<size.height<<") )";
+        std::cout<<"( Latitude - "<<coordinate.latitude<<" Longitude - "<<coordinate.longitude<<" Size - ("<<size.width<<", "<<size.length<<", "<<size.height<<") )";
         return;
     }
     void printToFile(std::ofstream& out){
-        out<<"( Latitude - "<<coordinate.latitude<<" Longitude - "<<coordinate.longitude<<" Size - ("<<size.width<<", "<<size.length<<", "<<size.height<<") )";
+        std::cout<<"( Latitude - "<<coordinate.latitude<<" Longitude - "<<coordinate.longitude<<" Size - ("<<size.width<<", "<<size.length<<", "<<size.height<<") )";
         return;
     }
 } ;
 
 struct Bin{
     Dimension size;
-    float capacity;
+    double capacity;
     Bin(){}
-    Bin(float w,float l, float h){
+    Bin(double w,double l, double h){
         size.width = w;
         size.length = l;
         size.height = h;
         capacity = 1000;
     }
 
-    Bin(float w, float l, float h, float c){
+    Bin(double w, double l, double h, double c){
         size.width = w;
         size.length = l;
         size.height = h;
         capacity = c;
+    }
+    double getVol(){
+        return size.getVol();
     }
 };
 

@@ -29,7 +29,7 @@ class Optimizer{
 
         // Function to perform optimization for set of packages
         void Optimize(){
-            clusteringInterface->ComputeClusters(packages, warehouse, numberRiders, bin);
+            clusteringInterface->ComputeClusters(packages, warehouse, numberRiders, bin, 100);
             clusteringInterface->CalculateCost();
             clusteringCost = clusteringInterface->GetClusteringCost();
             clusters = clusteringInterface->GetClusters();
