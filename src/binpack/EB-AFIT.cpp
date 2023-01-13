@@ -35,8 +35,6 @@ struct scrappad{
   }
 };
 
-
-string strtemp="";
 char packing;
 char layerdone;
 char evened;
@@ -44,7 +42,6 @@ char variant;
 char bestvariant;
 char packingbest;
 char hundredpercent;
-string graphout="visudat";
 char unpacked;
 char quit;
 
@@ -65,7 +62,7 @@ double percentageused;
 double percentagepackedbox;
 double elapsedtime;
 
-double x;
+short int x;
 short int n;
 short int layerlistlen;
 short int layerinlayer;
@@ -87,26 +84,22 @@ short int packednumbox;
 short int bestpackednum;
 
 layerlist layers[1000];
-vector<int> boxStatus;
+int boxStatus[1000];
 scrappad *scrapfirst, *scrapmemb, *smallestz, *trash;
 time_t start, finish;
 
 class EB_AFIT: public BinPackInterface{
     public:
-        EB_AFIT();
-        void BinPack(vector<item> cluster, Bin b);
+        void BinPack(vector<item>& cluster, Bin b);
         float CalculateCost();
+        // ~EB_AFIT(){
+        //     delete boxStatus;
+        // }
 };
 
-EB_AFIT::EB_AFIT(){
-
-}
-
-void EB_AFIT::BinPack(vector<item> cluster, Bin b){
+void EB_AFIT::BinPack(vector<item>& cluster, Bin b){
     time(&start);
     n = cluster.size();
-    boxStatus.clear();
-    boxStatus.resize(n, 0);
     totalboxvol = 0;
     for(auto& it : cluster){
         it.volume = it.size.length * it.size.width * it.size.height;
@@ -115,6 +108,14 @@ void EB_AFIT::BinPack(vector<item> cluster, Bin b){
     temp = 1;
     totalvolume = temp * b.size.length * b.size.width * b.size.height;
     scrapfirst = new scrappad;
+    for(int i=0;i<n;i++){
+        boxStatus[i] = 0;
+    }
+    if (scrapfirst == NULL) 
+    {
+        printf("Insufficient memory available\n"); 
+        exit(1);
+    } 
     bestvolume = 0;
     packingbest = 0;
     hundredpercent = 0;
@@ -130,7 +131,7 @@ void EB_AFIT::BinPack(vector<item> cluster, Bin b){
 }
 
 float EB_AFIT::CalculateCost(){
-    cost = percentagepackedbox;
+    cost = 100-percentagepackedbox;
     return cost;
 }
 
@@ -140,7 +141,7 @@ int complayerlist(const void *i, const void *j)
 }
 
 void listcanditlayers(vector<item>& cluster){
-    char same;
+    bool same;
     short int exdim, dimdif, dimen2, dimen3, y, z, k; 
     long int layereval;
     
@@ -163,7 +164,7 @@ void listcanditlayers(vector<item>& cluster){
         }
         if (same) continue;
         layereval = 0;
-        for (z = 1; z <= n; z++)
+        for (z = 0; z < n; z++)
         {
             if(!(x == z))
             {
@@ -201,6 +202,7 @@ void execiterations(vector<item>& cluster) {
       {
         layerinlayer = 0;
         layerdone = 0;
+        // Bookmark 1 here
         if (packlayer(cluster))
         {
           exit(1); 
@@ -252,19 +254,20 @@ int packlayer(vector<item>& cluster)
     return 0;
   } 
   
-  (*scrapfirst).cumx = px;
-  (*scrapfirst).cumz = 0;
+  scrapfirst->cumx = px;
+  scrapfirst->cumz = 0;
   
   for(;;)
   {
+    // Bookmark 2
     findsmallestz(cluster);
     
-    if (!(*smallestz).pre && !(*smallestz).pos)
-    {
+    if (!(smallestz->pre) && !(smallestz->pos)){
       //*** SITUATION-1: NO BOXES ON THE RIGHT AND LEFT SIDES ***
       
-      lenx = (*smallestz).cumx;
-      lpz = remainpz - (*smallestz).cumz;
+      lenx = smallestz->cumx;
+      lpz = remainpz - (smallestz->cumz);
+    //   Bookmark 3
       findbox(cluster, lenx, layerthickness, remainpy, lpz, lpz); 
       checkfound();
       
@@ -323,7 +326,7 @@ int packlayer(vector<item>& cluster)
           {
             (*((*smallestz).pos)).pre = smallestz;
           }
-            delete trash;
+            // delete trash;
         }
         else 
         {
@@ -378,7 +381,7 @@ int packlayer(vector<item>& cluster)
         { 
           (*((*smallestz).pre)).cumx = (*smallestz).cumx; 
           (*((*smallestz).pre)).pos = NULL;
-        delete smallestz;
+        // delete smallestz;
         } 
         else 
         {
@@ -436,12 +439,12 @@ int packlayer(vector<item>& cluster)
           { 
             (*((*smallestz).pre)).pos = (*((*smallestz).pos)).pos; 
             (*((*((*smallestz).pos)).pos)).pre = (*smallestz).pre;
-            delete smallestz;
+            // delete smallestz;
           }
           else 
           {
             (*((*smallestz).pre)).pos = NULL;
-            delete smallestz;
+            // delete smallestz;
           }
         } 
         else
@@ -521,7 +524,7 @@ int packlayer(vector<item>& cluster)
           (*((*smallestz).pre)).cumx = (*smallestz).cumx; 
           (*((*smallestz).pre)).pos = (*smallestz).pos;
           (*((*smallestz).pos)).pre = (*smallestz).pre;
-        delete smallestz;
+        // delete smallestz;
         } 
         else
         {
@@ -569,8 +572,6 @@ int findlayer(vector<item>& cluster, short int thickness)
   for (x=0; x < n; x++)
   {
     if (boxStatus[x]) continue; 
-    for( y = 1; y <= 3; y++)
-    {
         exdim = cluster[x].size.height;
         dimen2 = cluster[x].size.width;
         dimen3 = cluster[x].size.length;
@@ -579,7 +580,7 @@ int findlayer(vector<item>& cluster, short int thickness)
       { 
         for (z = 0; z < n; z++)
         {
-          if ( !(x == z) && !(boxStatus[y]))
+          if ( !(x == z) && !(boxStatus[int(z)]))
           { 
             dimdif = abs(exdim - cluster[z].size.height);
             // if ( abs(exdim - boxlist[z].dim2) < dimdif )
@@ -599,7 +600,6 @@ int findlayer(vector<item>& cluster, short int thickness)
           layerthickness = exdim;
         }
       }
-    }
   }
   if (layerthickness == 0 || layerthickness > remainpy) packing = 0; 
   return 0;
@@ -610,13 +610,13 @@ void findbox(vector<item>& cluster, short int hmx, short int hy, short int hmy, 
   short int y;
   bfx = 32767; bfy = 32767; bfz = 32767; 
   bbfx = 32767; bbfy = 32767; bbfz = 32767; 
-  boxi = 0; bboxi = 0;
-  for (y = 0; y < n; y++)
+  boxi = -1; bboxi = -1;
+  for (x = 0; x < n; x++)
   {
     if (boxStatus[x]) continue;
     if (x > n) return;
-    analyzebox(hmx, hy, hmy, hz, hmz, cluster[x].size.height, cluster[x].size.width, cluster[x].size.length);
-    analyzebox(hmx, hy, hmy, hz, hmz, cluster[x].size.height, cluster[x].size.length, cluster[x].size.width);
+    analyzebox(hmx, hy, hmy, hz, hmz, cluster[x].size.width, cluster[x].size.height, cluster[x].size.length);
+    analyzebox(hmx, hy, hmy, hz, hmz, cluster[x].size.length, cluster[x].size.height, cluster[x].size.width);
   }
 }
 
@@ -701,17 +701,14 @@ void analyzebox(short int hmx, short int hy, short int hmy, short int hz, short 
 //********************************************************
 // FINDS THE FIRST TO BE PACKED GAP IN THE LAYER EDGE
 //********************************************************
-void findsmallestz(vector<item>&) 
-{ 
+void findsmallestz(vector<item>&){ 
   scrapmemb = scrapfirst;
   smallestz = scrapmemb;
-  while ( !((*scrapmemb).pos == NULL))
-  { 
-    if ( (*((*scrapmemb).pos)).cumz < (*smallestz).cumz )
-    {
-      smallestz = (*scrapmemb).pos;
+  while ( !(scrapmemb->pos == NULL)){ 
+    if ((scrapmemb->pos)->cumz < smallestz->cumz ){
+      smallestz = scrapmemb->pos;
     }
-    scrapmemb = (*scrapmemb).pos;
+    scrapmemb = scrapmemb->pos;
   } 
   return;
 } 
@@ -724,7 +721,7 @@ void findsmallestz(vector<item>&)
 void checkfound(void)
 { 
   evened = 0;
-  if (boxi) 
+  if (boxi!=-1) 
   { 
     cboxi = boxi;
     cboxx = boxx;
@@ -733,12 +730,12 @@ void checkfound(void)
   }
   else 
   {
-    if ( (bboxi > 0) && (layerinlayer || (!(*smallestz).pre && !(*smallestz).pos)) )
+    if ( (bboxi >= 0) && (layerinlayer || (!(smallestz->pre) && !(smallestz->pos))) )
     { 
       if (!layerinlayer) 
       {
         prelayer = layerthickness;
-        lilz = (*smallestz).cumz;
+        lilz = smallestz->cumz;
       }
       cboxi = bboxi;
       cboxx = bboxx;
@@ -766,13 +763,13 @@ void checkfound(void)
           {
             (*((*smallestz).pos)).pre = smallestz;
           }
-            delete trash;
+            // delete trash;
         }
         else if (!(*smallestz).pos)
         {
           (*((*smallestz).pre)).pos = NULL; 
           (*((*smallestz).pre)).cumx = (*smallestz).cumx;
-            delete smallestz;
+            // delete smallestz;
         }
         else 
         {
@@ -784,8 +781,8 @@ void checkfound(void)
               (*((*((*smallestz).pos)).pos)).pre = (*smallestz).pre;
             } 
             (*((*smallestz).pre)).cumx = (*((*smallestz).pos)).cumx;
-            delete (*smallestz).pos;
-            delete smallestz;
+            // delete (*smallestz).pos;
+            // delete smallestz;
           }
           else
           {
@@ -795,7 +792,7 @@ void checkfound(void)
             {
               (*((*smallestz).pre)).cumx = (*smallestz).cumx;
             }
-            delete smallestz;
+            // delete smallestz;
           }
         } 
       }
@@ -810,7 +807,7 @@ void checkfound(void)
 
 void volumecheck (vector<item>& cluster) 
 { 
-  boxStatus[cboxi] = 1;
+  boxStatus[int(cboxi)] = 1;
   cluster[cboxi].size.length = cboxx;
   cluster[cboxi].size.height = cboxy;
   cluster[cboxi].size.width = cboxz;
@@ -850,7 +847,7 @@ void report(vector<item>& cluster)
   
   for (x = 0; x < n; x++)
   {
-    boxStatus[x] = 0;
+    boxStatus[int(x)] = 0;
   }
   
   do
@@ -883,11 +880,11 @@ void report(vector<item>& cluster)
   
   unpacked = 1;
   unpacked = 0;
-  for (x = 1; x < n; x++)
+  for (x = 0; x < n; x++)
   {
     if (boxStatus[x])
     {
-      printf("%d %f %f %f %f %f %f %f %f %f\n", n, cluster[n].size.length, cluster[n].size.width, cluster[n].size.height, cluster[n].position.x, cluster[n].position.y, cluster[n].position.z, cluster[n].size.length, cluster[n].size.width, cluster[n].size.height);
+      printf("%d %f %f %f %f %f %f %f %f %f\n", n, cluster[x].size.length, cluster[x].size.width, cluster[x].size.height, cluster[x].position.x, cluster[x].position.y, cluster[x].position.z, cluster[x].size.length, cluster[x].size.width, cluster[x].size.height);
     }
   }
   
@@ -918,9 +915,10 @@ int main(){
     cluster[2].size.length = 52;
     cluster[2].size.height = 36;
 
-    Bin b(104, 96, 84);
+    Bin b(104, 96, 86);
     eba.BinPack(cluster, b);
     auto res = eba.GetPackaging();
+    eba.CalculateCost();
     cout<<eba.GetPackagingCost()<<endl;
     for(auto x:res){
         x.print();

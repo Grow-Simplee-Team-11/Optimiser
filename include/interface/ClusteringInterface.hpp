@@ -63,7 +63,7 @@ class ClusteringInterface{
             return cost;
         }
 
-    private:
+    protected:
         vector<vector<item>> clusters;
         float cost;
 

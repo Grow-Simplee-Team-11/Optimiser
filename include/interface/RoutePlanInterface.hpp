@@ -55,7 +55,7 @@ class RoutePlanInterface{
             return cost;
         }
 
-    private:
+    protected:
         vector<item> plannedPath;
         float cost;
 
