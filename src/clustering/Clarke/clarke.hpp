@@ -1,12 +1,16 @@
-#include "datastructures.hpp"
-#include "ClusteringInterface.hpp"
+// #include "datastructures.hpp"
+// #include "../../include/datastructures.hpp"
+#include "../../../include/interface/ClusteringInterface.hpp"
+
+
+
 #include<iostream>
 #include<cmath>
 #include<vector>
 #include<map>
 #include<queue>
 using namespace std;
-
+const double R = 6371;
 
 class Cluster{
     public:
@@ -30,6 +34,7 @@ class Clarke: public ClusteringInterface{
     void create_pq();
     void make_set(int);
     int find_set(int);
+    void test();
     Cluster initCluster(int);
     void union_sets(int a,int b);
     void solve();

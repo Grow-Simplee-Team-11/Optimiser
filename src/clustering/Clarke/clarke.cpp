@@ -1,5 +1,27 @@
 #include "clarke.hpp"
 
+double toRadians(const double degree){
+    double one_deg = (M_PI) / 180;
+    return (one_deg * degree);
+}
+double Dist(Coordinate &c1,Coordinate &c2){
+    double lat1 = toRadians(c1.latitude);
+    double long1 = toRadians(c1.longitude);
+    double lat2 = toRadians(c2.latitude);
+    double long2 = toRadians(c2.longitude);
+
+    double dlong = long2 - long1;
+    double dlat = lat2 - lat1;
+
+    double ans = pow(sin(dlat / 2), 2) +
+                          cos(lat1) * cos(lat2) *
+                          pow(sin(dlong / 2), 2);
+ 
+    ans = 2 * asin(sqrt(ans));
+    ans = ans * R;
+    return ans;
+}
+
 Cluster::Cluster(){
         p1 = 0;
         p2 = 0;
@@ -16,7 +38,12 @@ void Clarke::ComputeClusters(vector<item> packages, Coordinate warehouse, int nu
     this->numRiders = numRiders;
     this->b = b;
     this->distThresh = distThresh;
+    this->parent.resize(this->numPackages);
+    this->Clusters.resize(this->numPackages);
     solve();
+}
+void Clarke::test(){
+    cout<<"Hello I exist";
 }
 double Clarke::depotDist(Coordinate &c){
     return Dist(c,warehouse);
@@ -114,6 +141,13 @@ void Clarke::solve(){
     for(auto it = cluster_list.begin();it != cluster_list.end();it++){
         clusters.push_back(it->second);
     } 
+    for(int i = 0 ;i < clusters.size();i++){
+        cout<< "Cluster: "<<i+1<<endl;
+        for(int j = 0 ;j < clusters[i].size();j++){
+            cout<<clusters[i][j].coordinate.latitude<<" "<<clusters[i][j].coordinate.longitude<<endl;
+        }
+        cout<<endl;
+    }
 }
 double Clarke::CalculateCost(){
     return 0;
