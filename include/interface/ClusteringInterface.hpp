@@ -12,7 +12,7 @@
 #include<iostream>
 #include<fstream>
 
-#include "datastructures.hpp"
+#include "../datastructures.hpp"
 
 using namespace std;
 
@@ -24,7 +24,7 @@ class ClusteringInterface{
         // store the computed cluster in clusters 
         virtual void ComputeClusters(vector<item>& packages, Coordinate warehouse, int numRiders, Bin b);
         // calculate the cost of the cluster computed 
-        virtual float CalculateCost() = 0;
+        virtual void CalculateCost() = 0;
 
         void PrintClusters()
         {
@@ -67,7 +67,7 @@ class ClusteringInterface{
             clusters = createdClusters;
         }
 
-    private:
+    protected:
         vector<vector<item>> clusters;
         float cost;
 

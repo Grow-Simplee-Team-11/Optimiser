@@ -8,7 +8,7 @@
 #include<vector>
 #include<fstream>
 #include<iostream>
-#include"datastructures.hpp"
+#include"../datastructures.hpp"
 
 using namespace std;
 

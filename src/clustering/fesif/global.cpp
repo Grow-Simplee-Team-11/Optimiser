@@ -2,7 +2,7 @@
 	\author:	Trasier
 	\date:		2019/05/22
 */
-#include "global.h"
+#include "../../../include/clustering/fesif/global.h"
 
 int nR = 0;
 int nW = 0;

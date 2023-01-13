@@ -1,6 +1,7 @@
 #ifndef __DATASTRUCTURES__HEADER__
 #define __DATASTRUCTURES__HEADER__
 
+using namespace std;
 struct Dimension {
     float length, width, height;
 
@@ -81,6 +82,10 @@ struct Bin{
         size.length = l;
         size.height = h;
         capacity = c;
+    }
+
+    float getVolume(){
+        return size.width*size.height*size.length;
     }
 };
 

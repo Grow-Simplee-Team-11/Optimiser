@@ -1,4 +1,4 @@
-#include "../../include/clustering/fesif.hpp"
+#include "../../../include/clustering/fesif/fesif.hpp"
 using namespace std;
 
 void FESIF::localInit() {
@@ -239,7 +239,7 @@ vector<vector<int> > FESIF::createResult() {
 	return clusterId;
 }
 
-
+//
 // int main(int argc, char** argv) {
 // 	ifstream input;
 // 	input.open("input.txt");
@@ -256,10 +256,10 @@ vector<vector<int> > FESIF::createResult() {
 // 		input>>items[i].size.length>>items[i].size.width>>items[i].size.height;
 // 		items[i].weight = 1;
 // 	}
-
+//
 // 	wrapperLMD(items, warehouse, 100, bin);
 // 	freeGlobalMemory();
 // 	localFree();
-	
+//
 // 	return 0;
 // }

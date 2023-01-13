@@ -1,10 +1,10 @@
 #ifndef __CLUSTERING_FESIF__
 #define __CLUSTERING_FESIF__
 #include <bits/stdc++.h>
-#include "../interface/ClusteringInterface.hpp"
-#include "./fesif/global.h"
-#include "./fesif/HST.h"
-#include "./fesif/utils.h"
+#include "../../interface/ClusteringInterface.hpp"
+#include "global.h"
+#include "HST.h"
+#include "utils.h"
 
 
 using namespace std;
@@ -33,6 +33,9 @@ class FESIF : public ClusteringInterface {
         }
         void ComputeClusters(vector<item> packages, Coordinate warehouse, int numRiders, Bin b) {
             setClusters(wrapperLMD(packages, warehouse, numRiders, b));
+        }
+        void CalculateCost(){
+            cost = 0;
         }
 };
 
