@@ -1,6 +1,7 @@
 #include<iostream>
 #include<vector>
 #include "./include/clustering/fesif/fesif.hpp"
+#include "./include/routeplan/TSP_OR.hpp"
 
  int main(int argc, char** argv) {
     FESIF f;
@@ -24,5 +25,8 @@
  	// freeGlobalMemory();
  	// f.localFree();
 	f.PrintClustersToFile("clusters.txt");
- 	return 0;
+ 	
+	TSP_OR tsp;
+	tsp.PlanRoute(f.GetClusters()[0], f.getWarehouse());
+	return 0;
  }

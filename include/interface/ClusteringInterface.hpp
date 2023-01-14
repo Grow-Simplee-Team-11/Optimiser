@@ -67,9 +67,17 @@ class ClusteringInterface{
             clusters = createdClusters;
         }
 
+        Coordinate getWarehouse(){
+            return warehouse;
+        }
+
+        
     protected:
         vector<vector<item>> clusters;
         float cost;
+        Coordinate warehouse;
+        Bin b;
+        int numRiders;
 
 };
 #endif 
