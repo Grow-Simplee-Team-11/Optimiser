@@ -40,7 +40,7 @@ void Optimizer::optimize(){
         i++;
 
         // Planning routes
-        routePlannerInterface->PlanRoute(cluster, warehouse, bin);
+        routePlannerInterface->PlanRoute(cluster, warehouse);
         clusterPaths.push_back(routePlannerInterface->GetPaths());
         routePlannerInterface->CalculateCost();
         routePlanningCost.push_back(routePlannerInterface->GetPathPlanningCost());

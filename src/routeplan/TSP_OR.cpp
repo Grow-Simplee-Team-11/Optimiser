@@ -86,7 +86,7 @@ void TSP_OR::savePath(vector<item>&clusters ,const RoutingIndexManager& manager,
   double tot_dist = (double)distance / 1000.0;
   cost = tot_dist;
   std::cout << "Route distance: " << tot_dist<< "miles";
-  std::cout << "";
+  std::cout << "\n";
   std::cout << "Advanced usage:";
   std::cout << "Problem solved in " << routing.solver()->wall_time() << "ms";
 }

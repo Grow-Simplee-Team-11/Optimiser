@@ -24,7 +24,7 @@ RP_SRC_DIR = src/routeplan
 # FESIF_SRC_DIR = $(CLUS_SRC_DIR)/fesif
 
 
-all: main tsp
+all: main 
 #  Build FESIF Code 
 global.o: $(FESIF_SRC_DIR)/global.cpp
 	$(CXX) $(CFLAGS) -c $(FESIF_SRC_DIR)/global.cpp $(LIBS)
@@ -43,12 +43,14 @@ fesif.o:  $(FESIF_SRC_DIR)/FESIF.cpp  $(FESIF_INCLUDE_DIR)/utils.h $(FESIF_SRC_D
 
 
 # Build TSP Code
-tsp.o: 
-	$(CXX) -v -c $(RP_SRC_DIR)/TSP_OR.cpp $(CFLAGS) $(OR_CFLAGS) $(LDFLAGS) $(OR_LIBS) $(OR_TOOLS_LNK)  
+TSP_OR.o: 
+# $(CXX) -v -c $(RP_SRC_DIR)/TSP_OR.cpp $(CFLAGS) $(OR_CFLAGS) $(LDFLAGS) $(OR_LIBS) $(OR_TOOLS_LNK)  
+	/usr/bin/g++-11 -v -c -Iinclude/ortools -Iinclude -I. src/routeplan/TSP_OR.cpp --std=c++17 -W -Wall -Wno-sign-compare -O4 -pipe -mmmx -msse -msse2 -msse3 -g -DNDEBUG -DARCH_K8 -Wno-deprecated -DUSE_BOP -DUSE_GLOP -DUSE_CBC -DUSE_CLP -DUSE_SCIP -lz -lglog -L./lib -Llib -lortools
 
 # Build the executable
-main: main.cpp fesif.o tsp.o
-	$(CXX) $(CFLAGS) -o main global.o HST.o utils.o FESIF.o TSP_OR.o main.cpp
+main: main.cpp fesif.o TSP_OR.o
+	/usr/bin/g++-11 --std=c++17 -W -Wall -Wno-sign-compare -O4 -s -pipe -mmmx -msse -msse2 -msse3 -g -Iinclude/ortools -Iinclude -I.  -o main global.o HST.o utils.o FESIF.o TSP_OR.o main.cpp -L./lib -Llib -lortools 
+
 
 .PHONY: clean
 clean:
