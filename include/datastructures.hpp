@@ -1,11 +1,14 @@
 #ifndef __DATASTRUCTURES__HEADER__
 #define __DATASTRUCTURES__HEADER__
 
+#include<iostream>
+#include<fstream>
 using namespace std;
+
 struct Dimension {
     float length, width, height;
 
-    Dimension(){    }
+    Dimension(){}
     Dimension(float l, float w, float h)
     {
         length = l;
