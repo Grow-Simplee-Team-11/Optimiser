@@ -17,7 +17,7 @@ class BinPackInterface{
             cost = 0;
         }
         // store the computed cluster in clusters 
-        virtual void BinPack(vector<item> cluster, Bin b) = 0;
+        virtual void BinPack(vector<item>& cluster, Bin b) = 0;
         // calculate the cost of the cluster computed 
         virtual float CalculateCost() = 0; 
 
