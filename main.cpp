@@ -2,6 +2,7 @@
 #include <vector>
 #include "src/clustering/Clarke/clarke.hpp"
 #include "src/routeplan/tsp.h"
+#include "src/binpack/EB_AFIT.hpp"
 #include <climits>
 
 
@@ -30,13 +31,11 @@ int main(){
 	for(int i =0;i< sol.clusters.size();i++){
 		if(sol.clusters[i].size()>1){
 			TSP tsp;
-			// cout<<"Now Planning Route For =====>\n";
-			// for(int j =0;j < sol.clusters[i].size();j++)
-			// 	cout<<sol.clusters[i][j].coordinate.latitude<<" "<<sol.clusters[i][j].coordinate.longitude<<endl;
-			// cout<<"With WareHouse at ======>\n";
-			// cout<<sol.warehouse.latitude<<" "<<sol.warehouse.longitude<<endl;
+			EB_AFIT binpacker;
 			tsp.PlanRoute(sol.clusters[i], sol.warehouse, sol.b);
+			binpacker.BinPack(sol.clusters[i], sol.b);
 		}
 	}
+
     return 0;
 }

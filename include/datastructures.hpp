@@ -1,6 +1,7 @@
 #ifndef __DATASTRUCTURES__HEADER__
 #define __DATASTRUCTURES__HEADER__
 #include<cmath>
+#include<iostream>
 struct Dimension {
     double length, width, height;
 
@@ -40,6 +41,7 @@ struct item {
     Coordinate coordinate;
     PolarCoordinate polarCoordinate;
     double weight;
+    double volume;
     item(){}
     item(double w, double h, double d, double lat, double lng)
     {
