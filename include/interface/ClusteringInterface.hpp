@@ -31,7 +31,7 @@ class ClusteringInterface{
             int32_t i=0;
             for(auto &cluster : clusters)
             {
-                cout<<"Printing Cluster -- " << i++;
+                cout<<"Printing Cluster -- " << i++ <<endl;
                 for(auto &it : cluster){
                     it.print();
                 }
@@ -42,7 +42,7 @@ class ClusteringInterface{
 
         void PrintClustersToFile(string filename)
         {
-            std::ofstream out(filename);
+            std::ofstream out(filename, std::ios_base::app);
             int32_t i=0;
             for(auto &cluster : clusters)
             {

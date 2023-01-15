@@ -61,7 +61,8 @@ struct item {
         volume = w*h*d;
     }
     void print(){
-        cout<<"( Latitude - "<<coordinate.latitude<<" Longitude - "<<coordinate.longitude<<" Size - ("<<size.width<<", "<<size.length<<", "<<size.height<<") )";
+        cout<<coordinate.longitude<<" "<<coordinate.latitude<<"\n";
+        // cout<<"( Latitude - "<<coordinate.latitude<<" Longitude - "<<coordinate.longitude<<" Size - ("<<size.width<<", "<<size.length<<", "<<size.height<<") )";
         return;
     }
     void printToFile(std::ofstream& out){

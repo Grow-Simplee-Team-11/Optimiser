@@ -15,12 +15,13 @@ class TSP_OR : public RoutePlanInterface{
         TSP_OR(){}
         void PlanRoute(vector<item>& cluster, Coordinate warehouse);
         void CalculateCost();
-        public : 
         // convert longitude to X
         double getX(double lon);
 
         // convert latitude to Y
         double getY(double lat);
+
+        double haversine(double lat_1_deg,double lon_1_deg,double lat_2_deg,double lon_2_deg);
 
         // Compute distances between every pair of points
         void ComputeEuclideanDistanceMatrix(std::vector<item>& cluster);
@@ -36,6 +37,8 @@ class TSP_OR : public RoutePlanInterface{
         
         std::vector<std::vector<int64_t>> distances;
         const int num_vehicles=1;
+        const int SCALING_FACTOR=100; 
+        // for scaling the distances from float to integer type
         Coordinate warehouse;
         const RoutingIndexManager::NodeIndex depot{0};
 };

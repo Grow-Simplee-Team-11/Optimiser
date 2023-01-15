@@ -23,12 +23,24 @@ class BinPackInterface{
 
         void PrintPackedData()
         {
-            std::cout<<"Printing the packing -- ";
+            std::cout<<"Printing the packing -- \n";
             for(auto &it : packed_items)
             {
                 it.print(); std::cout<<"\n";
             }
             std::cout<<"\n";
+            return;
+        }
+
+        void PrintPackedDataToFile(string file_name)
+        {
+            std::ofstream out(file_name, std::ios_base::app);
+            out<<"Printing the packing -- \n";
+            for(auto &it : packed_items)
+            {
+                it.printToFile(out); out<<"\n";
+            }
+            out<<"\n";
             return;
         }
 

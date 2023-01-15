@@ -36,7 +36,7 @@ class RoutePlanInterface{
 
         void PrintRoutesToFile(string filename)
         {
-            std::ofstream out(filename);
+            std::ofstream out(filename, std::ios_base::app);
             int32_t i=0;
             out<<"The Routes for the cluster -- " << endl;
             out<<"Warehouse -> ";

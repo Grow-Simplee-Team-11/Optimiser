@@ -34,7 +34,7 @@ void Optimizer::optimize(){
             cout<<"Printing information for cluster - "<<i<<endl;
         }
         if(logToFile){
-            std::ofstream out(logFileName);
+            std::ofstream out(logFileName, std::ios_base::app);
             out<<"Printing information for cluster - "<<i<<endl;
         }
         i++;
@@ -53,17 +53,17 @@ void Optimizer::optimize(){
         }
 
         // Computing bin packaging
-        // binPackInterface->BinPack(cluster, bin);
-        // clusterPackagings.push_back(binPackInterface->GetPackaging());
-        // binPackInterface->CalculateCost();
-        // packagingCost.push_back(binPackInterface->CalculateCost());
+        binPackInterface->BinPack(cluster, bin);
+        clusterPackagings.push_back(binPackInterface->GetPackaging());
+        binPackInterface->CalculateCost();
+        packagingCost.push_back(binPackInterface->CalculateCost());
 
-        // if(verbose){
-        //     binPackInterface->PrintPackedData();
-        // }
-        // if(logToFile){
-        //     binPackInterface->PrintClustersToFile(logFileName);
-        // }
+        if(verbose){
+            binPackInterface->PrintPackedData();
+        }
+        if(logToFile){
+            binPackInterface->PrintPackedDataToFile(logFileName);
+        }
     }
     return;
 }
