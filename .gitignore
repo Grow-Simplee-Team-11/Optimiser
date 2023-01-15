@@ -1,1 +1,4 @@
 .vscode
+or-tools_*
+/include/ortools/
+lib/
