@@ -13,7 +13,6 @@
 #include<fstream>
 
 #include "../datastructures.hpp"
-
 using namespace std;
 
 class ClusteringInterface{

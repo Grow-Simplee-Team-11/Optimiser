@@ -1,5 +1,7 @@
 #include "clarke.hpp"
 
+// extern double toRadians(const double degree){}
+// extern double Dist(Coordinate &c1, Coordinate &c2){}
 double toRadians(const double degree){
     double one_deg = (M_PI) / 180;
     return (one_deg * degree);

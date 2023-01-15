@@ -9,7 +9,6 @@
 #include<fstream>
 #include<iostream>
 #include"../datastructures.hpp"
-
 using namespace std;
 
 class RoutePlanInterface{

@@ -8,19 +8,15 @@ CXX = g++
 LIBS = 
 CFLAGS = --std=c++17 -W -Wall -Wno-sign-compare -O3 -s -lm -pipe -mmmx -msse -msse2 -msse3 -g # -mcmodel=medium
 MEM = -D WATCH_MEM
-CLUS_INC_DIR = include/interface
 CLARKE_INCLUDE_DIR = src/clustering/Clarke
+TSP_INCLUDE_DIR = src/routeplan
 
-Clarke : main.o clarke.o
-	$(CXX) $(CFLAGS) main.o clarke.o -o Clarke
+all: Integrate 
 
-clarke.o : $(CLARKE_INCLUDE_DIR)/clarke.cpp
-	$(CXX) $(CFLAGS) -c $(CLARKE_INCLUDE_DIR)/clarke.cpp $(LIBS)
-
-main.o : main.cpp
-	$(CXX) $(CFLAGS) -c main.cpp $(LIBS)
+Integrate: main.cpp $(CLARKE_INCLUDE_DIR)/clarke.cpp $(CLARKE_INCLUDE_DIR)/clarke.hpp $(TSP_INCLUDE_DIR)/TSP.cpp $(TSP_INCLUDE_DIR)/tsp.h
+	$(CXX) $(CFLAGS) main.cpp $(CLARKE_INCLUDE_DIR)/clarke.cpp $(TSP_INCLUDE_DIR)/TSP.cpp -o Integrate
 
 clean :
-	rm *.o Clarke
+	rm Integrate
 
 
