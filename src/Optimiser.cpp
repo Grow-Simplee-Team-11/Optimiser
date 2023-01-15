@@ -1,6 +1,6 @@
 #include "../include/Optimiser.hpp"
 
-Optimizer::Optimizer(RoutePlanInterface* routePlannerInterface_, ClusteringInterface* clusteringInterface_, BinPackInterface* binPackInterface_, vector<item>& packages_, Coordinate& warehouse_, int numberRiders_, Bin& bin_, string& logFileName_, bool verbose_, bool logToFile_) {
+Optimizer::Optimizer(RoutePlanInterface* routePlannerInterface_, ClusteringInterface* clusteringInterface_, BinPackInterface* binPackInterface_, vector<item>& packages_, Coordinate& warehouse_, int numberRiders_, Bin& bin_, string logFileName_, bool verbose_, bool logToFile_) {
     routePlannerInterface = routePlannerInterface_;
     clusteringInterface = clusteringInterface_;
     binPackInterface = binPackInterface_;

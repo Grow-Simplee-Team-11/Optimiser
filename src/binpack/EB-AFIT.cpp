@@ -88,14 +88,9 @@ int boxStatus[1000];
 scrappad *scrapfirst, *scrapmemb, *smallestz, *trash;
 time_t start, finish;
 
-class EB_AFIT: public BinPackInterface{
-    public:
-        void BinPack(vector<item>& cluster, Bin b);
-        float CalculateCost();
-        // ~EB_AFIT(){
-        //     delete boxStatus;
-        // }
-};
+EB_AFIT::EB_AFIT(){
+
+}
 
 void EB_AFIT::BinPack(vector<item>& cluster, Bin b){
     time(&start);
@@ -915,15 +910,15 @@ void report(vector<item>& cluster)
 //     cluster[2].size.length = 52;
 //     cluster[2].size.height = 36;
 
-    Bin b(104, 96, 86);
-    eba.BinPack(cluster, b);
-    auto res = eba.GetPackaging();
-    eba.CalculateCost();
-    cout<<eba.GetPackagingCost()<<endl;
-    for(auto x:res){
-        x.print();
-        cout<<"\n";
-        cout<<x.position.x<<" "<<x.position.y<<" "<<x.position.z<<endl;
-    }
-    return 0;
-}
+//     Bin b(104, 96, 86);
+//     eba.BinPack(cluster, b);
+//     auto res = eba.GetPackaging();
+//     eba.CalculateCost();
+//     cout<<eba.GetPackagingCost()<<endl;
+//     for(auto x:res){
+//         x.print();
+//         cout<<"\n";
+//         cout<<x.position.x<<" "<<x.position.y<<" "<<x.position.z<<endl;
+//     }
+//     return 0;
+// }

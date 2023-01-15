@@ -21,7 +21,6 @@ FESIF_SRC_DIR = $(CLUS_SRC_DIR)/fesif
 RP_INC_DIR = include/routeplan
 # TSP_OR_INCLUDE_DIR = $(RP_INC_DIR)/
 RP_SRC_DIR = src/routeplan
-# FESIF_SRC_DIR = $(CLUS_SRC_DIR)/fesif
 
 
 all: main 
@@ -39,7 +38,7 @@ chst: $(FESIF_SRC_DIR)/constructHSTs.cpp $(FESIF_INCLUDE_DIR)/global.h $(FESIF_S
 	$(CXX) $(CFLAGS) -o chst global.o HST.o $(FESIF_SRC_DIR)/constructHSTs.cpp $(LIBS) $(MEM)
 
 fesif.o:  $(FESIF_SRC_DIR)/FESIF.cpp  $(FESIF_INCLUDE_DIR)/utils.h $(FESIF_SRC_DIR)/utils.cpp utils.o $(FESIF_INCLUDE_DIR)/HST.h $(FESIF_SRC_DIR)/HST.cpp HST.o $(FESIF_INCLUDE_DIR)/global.h $(FESIF_SRC_DIR)/global.cpp global.o
-	$(CXX) $(CFLAGS) -c $(FESIF_SRC_DIR)/FESIF.cpp $(LIBS) $(MEM)
+	$(CXX) $(CFLAGS) -c $(FESIF_SRC_DIR)/FESIF.cpp $(LIBS) 
 
 
 # Build TSP Code
@@ -47,9 +46,16 @@ TSP_OR.o:
 # $(CXX) -v -c $(RP_SRC_DIR)/TSP_OR.cpp $(CFLAGS) $(OR_CFLAGS) $(LDFLAGS) $(OR_LIBS) $(OR_TOOLS_LNK)  
 	/usr/bin/g++-11 -v -c -Iinclude/ortools -Iinclude -I. src/routeplan/TSP_OR.cpp --std=c++17 -W -Wall -Wno-sign-compare -O4 -pipe -mmmx -msse -msse2 -msse3 -g -DNDEBUG -DARCH_K8 -Wno-deprecated -DUSE_BOP -DUSE_GLOP -DUSE_CBC -DUSE_CLP -DUSE_SCIP -lz -lglog -L./lib -Llib -lortools
 
+# Build the EB-AFIT algorithm
+EB-AFIT.o:
+	$(CXX) $(CFLAGS) -c src/binpack/EB-AFIT.cpp $(LIBS)
+
+Optimiser.o:
+	$(CXX) $(CFLAGS) -c src/Optimiser.cpp $(LIBS) 
+
 # Build the executable
-main: main.cpp fesif.o TSP_OR.o
-	/usr/bin/g++-11 --std=c++17 -W -Wall -Wno-sign-compare -O4 -s -pipe -mmmx -msse -msse2 -msse3 -g -Iinclude/ortools -Iinclude -I.  -o main global.o HST.o utils.o FESIF.o TSP_OR.o main.cpp -L./lib -Llib -lortools 
+main: main.cpp fesif.o TSP_OR.o EB-AFIT.o Optimiser.o
+	/usr/bin/g++-11 --std=c++17 -W -Wall -Wno-sign-compare -O4 -s -pipe -mmmx -msse -msse2 -msse3 -g -Iinclude/ortools -Iinclude -I.  -o main global.o HST.o utils.o FESIF.o TSP_OR.o EB-AFIT.o Optimiser.o main.cpp -L./lib -Llib -lortools
 
 
 .PHONY: clean

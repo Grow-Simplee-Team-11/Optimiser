@@ -23,25 +23,13 @@ class BinPackInterface{
 
         void PrintPackedData()
         {
-            cout<<"Printing the packing -- ";
+            std::cout<<"Printing the packing -- ";
             for(auto &it : packed_items)
             {
-                it.print(); cout<<"\n";
+                it.print(); std::cout<<"\n";
             }
-            cout<<"\n";
+            std::cout<<"\n";
             return;
-        }
-
-        void PrintClustersToFile(string filename)
-        {
-            std::ofstream out(filename);
-            int32_t i=0;
-            out<<"The packing -- ";
-            for(auto &it : packed_items)
-            {
-                it.printToFile(out); cout<<"\n";
-            }
-            cout<<"\n";
         }
 
         vector<item> GetPackaging(){
