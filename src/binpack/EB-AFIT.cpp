@@ -38,7 +38,7 @@ struct scrappad{
 char packing;
 char layerdone;
 char evened;
-char variant;
+char variant_;
 char bestvariant;
 char packingbest;
 char hundredpercent;
@@ -229,7 +229,7 @@ void execiterations(vector<item>& cluster) {
       if ((packedvolume > bestvolume)) 
       { 
         bestvolume = packedvolume;
-        bestvariant = variant; 
+        bestvariant = variant_; 
         bestite = itelayer; 
         bestpackednum = packednumbox;
       }
