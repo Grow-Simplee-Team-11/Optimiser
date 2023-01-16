@@ -129,8 +129,8 @@ DataModel ReadVRPs(string filename){
 //  		items[i].weight = 1;
 //  	}
 // 	int numRiders = 5;
-// 	RoutePlanInterface* rp = new TSP;
-// 	ClusteringInterface* cls = new FESIF;
+// 	RoutePlanInterface* rp = new TSP_OR;
+// 	ClusteringInterface* cls = new Clarke;
 // 	BinPackInterface* bp =  new EB_AFIT;
 // 	Optimizer optim(rp, cls, bp, items, warehouse, numRiders, bin,"FESIF_TSP.txt", false, true);
 
@@ -186,10 +186,10 @@ int main(int argc, char** argv){
 	for(int i = 0;i < dm.packages.size();i++){
 		cout << i << " : x : " << dm.packages[i].coordinate.latitude << " y : " << dm.packages[i].coordinate.longitude << " weight : "<< dm.packages[i].weight << endl;
 	}
-	RoutePlanInterface* rp = new TSP_OR;
+	RoutePlanInterface* rp = new TSP_OR(EUCLIDEAN);
 	// RoutePlanInterface* rp = new TSP_LK;
 	// ClusteringInterface* cls = new FESIF;
-	ClusteringInterface* cls = new Clarke;
+	ClusteringInterface* cls = new Clarke(EUCLIDEAN);
 	BinPackInterface* bp =  new EB_AFIT;
 
 	bool verbose = true;

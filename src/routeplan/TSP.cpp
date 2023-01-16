@@ -8,39 +8,12 @@ const double R = 6371;
 #define MULT 10000
 #include "./tsp.h"
 
-double toRadians1(const double degree){
-    double one_deg = (M_PI) / 180;
-    return (one_deg * degree);
-}
-// double Dist1(Coordinate &c1,Coordinate &c2){
-//     double lat1 = toRadians1(c1.latitude);
-//     double long1 = toRadians1(c1.longitude);
-//     double lat2 = toRadians1(c2.latitude);
-//     double long2 = toRadians1(c2.longitude);
 
-//     double dlong = long2 - long1;
-//     double dlat = lat2 - lat1;
-
-//     double ans = pow(sin(dlat / 2), 2) +
-//                           cos(lat1) * cos(lat2) *
-//                           pow(sin(dlong / 2), 2);
-    
-//     ans = 2 * asin(sqrt(ans));
-    
-//     ans = ans * R;
-//     // cout<<ans<<endl;
-//     return ans;
-// }
-double Dist1(Coordinate &c1, Coordinate &c2){
-    return sqrt((c1.latitude-c2.latitude)*(c1.latitude-c2.latitude)+(c1.longitude-c2.longitude)*(c1.longitude-c2.longitude));
-}
 // extern double toRadians(const double degree){}
 // extern double Dist(Coordinate &c1, Coordinate &c2){}
 
 //Constructor
-TSP::TSP(){
-	
-}
+
 
 //Destructor
 TSP::~TSP(){
@@ -56,14 +29,14 @@ TSP::~TSP(){
 }
 
 double TSP::get_distance(item p1, item p2){
-	return Dist1(p1.coordinate, p2.coordinate);
+	return Dist(p1.coordinate, p2.coordinate);
 }
 
 void TSP::fillMatrix(){
 	for(int i = 0; i < n; i++){
 		for(int j = 0; j < n; j++){
       // cout<<"getting distance between "<<packages[i].coordinate.latitude<<" "<<packages[i].coordinate.longitude<<" and "<<packages[j].coordinate.latitude<<" "<<packages[j].coordinate.longitude<<endl;
-			double temp = Dist1(packages[i].coordinate,packages[j].coordinate);
+			double temp = Dist(packages[i].coordinate,packages[j].coordinate);
       graph[i][j] =  (int)(temp*MULT);
       graph[j][i] = graph[i][j];
       // cout<<"distance is "<<graph[i][j]<<endl;
