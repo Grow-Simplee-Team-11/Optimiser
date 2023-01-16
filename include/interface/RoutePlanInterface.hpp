@@ -58,16 +58,16 @@ class RoutePlanInterface{
         float GetPathPlanningCost(){
             return cost;
         }
-        double Dist(struct Coordinate &c1,struct Coordinate &c2){
+        double Dist(struct Coordinate c1,struct Coordinate c2){
             if(method == EUCLIDEAN)
                 return euclidean(c1,c2);
             else if(method == HAVERSINE) 
                 return haversine(c1,c2)*SCALING_FACTOR;
         }
-        double euclidean(struct Coordinate &c1,struct Coordinate &c2){
+        double euclidean(struct Coordinate c1,struct Coordinate c2){
             return sqrt((c1.latitude - c2.latitude)*(c1.latitude - c2.latitude) + (c1.longitude - c2.longitude)*(c1.longitude - c2.longitude));
         }
-        double haversine(struct Coordinate &c1,struct Coordinate &c2){
+        double haversine(struct Coordinate c1,struct Coordinate c2){
             double lat_1_deg = c1.latitude;
             double lon_1_deg = c1.longitude;
             double lat_2_deg = c2.latitude;
