@@ -188,6 +188,7 @@ int main(int argc, char** argv){
 	}
 	RoutePlanInterface* rp = new TSP_OR;
 	// RoutePlanInterface* rp = new TSP_LK;
+	// ClusteringInterface* cls = new FESIF;
 	ClusteringInterface* cls = new Clarke;
 	BinPackInterface* bp =  new EB_AFIT;
 

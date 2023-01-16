@@ -56,7 +56,7 @@ void TSP_OR::ComputeEuclideanDistanceMatrix(std::vector<item>& cluster)
     distances.assign(cluster.size()+1, std::vector<int64_t>(cluster.size()+1, int64_t{0}));
 
     std::vector<item> mod_cluster;
-    mod_cluster.push_back(item(10, 10, 10, warehouse.latitude, warehouse.longitude));
+    mod_cluster.push_back(item(1, 1, 1, warehouse.latitude, warehouse.longitude));
     for(auto x: cluster)
     {
         mod_cluster.push_back(x);
@@ -73,12 +73,13 @@ void TSP_OR::ComputeEuclideanDistanceMatrix(std::vector<item>& cluster)
 
 void TSP_OR::PlanRoute(vector<item> &cluster, Coordinate w){
     
+    plannedPath.clear();
+
     RoutingIndexManager manager(cluster.size()+1, num_vehicles, depot);
     RoutingModel routing(manager);
-    
+    std::cout<<"Warehouse : "<<w.latitude<<" "<<w.longitude<<endl;
     warehouse = w;
     ComputeEuclideanDistanceMatrix(cluster);
-    // cout << "reached here" << endl;
     const int transit_callback_index = routing.RegisterTransitCallback(
       [this, &manager](int64_t from_index,
                                    int64_t to_index) -> int64_t {
@@ -107,10 +108,16 @@ void TSP_OR::savePath(vector<item>&clusters ,const RoutingIndexManager& manager,
 {
     int64_t index = routing.Start(0);
     int64_t distance{0};
-
+    std::vector<item> mod_cluster;
+    mod_cluster.push_back(item(1, 1, 1, warehouse.latitude, warehouse.longitude));
+    for(auto x: clusters)
+    {
+        mod_cluster.push_back(x);
+    }
+    // std::cout<<"Debugggggg \n";
     while (routing.IsEnd(index) == false) {
-    
-    plannedPath.push_back(clusters[manager.IndexToNode(index).value()]) ;
+    // std::cout<<mod_cluster[manager.IndexToNode(index).value()].coordinate.latitude << " " << mod_cluster[manager.IndexToNode(index).value()].coordinate.longitude ;
+    plannedPath.push_back(mod_cluster[manager.IndexToNode(index).value()]) ;
     int64_t previous_index = index;
     index = solution.Value(routing.NextVar(index));
     distance += routing.GetArcCostForVehicle(previous_index, index, int64_t{0});

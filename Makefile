@@ -6,10 +6,10 @@ CC = gcc
 # CXX = /usr/bin/g++
 CXX = /usr/bin/g++-11
 OR_LIBS = -L./lib -lortools
-CFLAGS = --std=c++17 -W -Wall -Wno-sign-compare -O4 -s -pipe -mmmx -msse -msse2 -msse3 -g -Iinclude/ortools -Iinclude -I. # -mcmodel=medium
+CFLAGS = --std=c++17 -W -Wall -Wno-sign-compare -O4 -pipe -mmmx -msse -msse2 -msse3 -g -Iinclude/ortools -Iinclude -I. -lpthread # -mcmodel=medium
 # CFLAGS = 
-OR_CFLAGS = -v -fPIC -std=c++17 -O4 -DNDEBUG -Iinclude/ortools -Iinclude -I. -DARCH_K8 -Wno-deprecated -DUSE_BOP -DUSE_GLOP -DUSE_CBC -DUSE_CLP -DUSE_SCIP
-OR_TOOLS_LNK = -Llib -lortools
+OR_CFLAGS = -v -fPIC -std=c++17 -O4 -g -DNDEBUG -Iinclude/ortools -Iinclude -I. -DARCH_K8 -Wno-deprecated -DUSE_BOP -DUSE_GLOP -DUSE_CBC -DUSE_CLP -DUSE_SCIP
+OR_TOOLS_LNK = -Llib -lortools -lpthread
 LDFLAGS = -Wl,-rpath,@loader_path -Wl,-rpath,@loader_path/../lib -lz -lglog
 MEM = -D WATCH_MEM
 
@@ -62,7 +62,7 @@ Optimiser.o:
 
 # Build the executable
 Integrate: main.cpp fesif.o TSP_OR.o EB-AFIT.o Optimiser.o $(CLARKE_INCLUDE_DIR)/clarke.cpp $(CLARKE_INCLUDE_DIR)/clarke.hpp $(TSP_INCLUDE_DIR)/TSP.cpp $(TSP_INCLUDE_DIR)/tsp.h $(TSP_INCLUDE_DIR)/TSP_LK.cpp $(RP_INC_DIR)/TSP_LK.hpp
-	/usr/bin/g++-11 --std=c++17 -W -Wall -Wno-sign-compare -O4 -s -pipe -mmmx -msse -msse2 -msse3 -g -Iinclude/ortools -Iinclude -I.  -o main global.o HST.o utils.o FESIF.o TSP_OR.o EB-AFIT.o Optimiser.o main.cpp $(CLARKE_INCLUDE_DIR)/clarke.cpp $(TSP_INCLUDE_DIR)/TSP.cpp $(TSP_INCLUDE_DIR)/TSP_LK.cpp -o Integrate -L./lib -Llib -lortools
+	/usr/bin/g++-11 --std=c++17 -W -Wall -Wno-sign-compare -O4 -pipe -mmmx -msse -msse2 -msse3 -g -Iinclude/ortools -Iinclude -I.  -o main global.o HST.o utils.o FESIF.o TSP_OR.o EB-AFIT.o Optimiser.o main.cpp $(CLARKE_INCLUDE_DIR)/clarke.cpp $(TSP_INCLUDE_DIR)/TSP.cpp $(TSP_INCLUDE_DIR)/TSP_LK.cpp -o Integrate -L./lib -Llib -lortools
 
 
 .PHONY: clean
