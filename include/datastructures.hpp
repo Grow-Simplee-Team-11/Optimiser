@@ -3,6 +3,8 @@
 
 #include<iostream>
 #include<fstream>
+#include <bits/stdc++.h>
+
 using namespace std;
 
 struct Dimension {
@@ -72,7 +74,8 @@ struct item {
     }
 } ;
 
-struct Bin{
+class Bin{
+    public:
     Dimension size;
     float capacity;
     Bin(){}
@@ -90,9 +93,14 @@ struct Bin{
         capacity = c;
     }
 
-    float getVolume(){
-        return size.width*size.height*size.length;
+    float getCapacity(){
+        return capacity;
     }
+
+    float getVolume(){
+        return size.width * size.length * size.height * 0.85;
+    }
+
 };
 
 #endif
