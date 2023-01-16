@@ -6,6 +6,20 @@
 #include "./include/binpack/EB_AFIT.hpp"
 #include "./include/Optimiser.hpp"
 
+class DataModel{
+	Coordinate warehouse;
+	Bin bin;
+	vector<item> packages;
+};
+
+DataModel ReadVRPs(string filename){
+	DataModel dm;
+	ifstream input;
+	input.open(filename);
+	Coordinate warehouse;
+	input>>warehouse;
+}
+
 int main(int argc, char** argv) {
     
  	ifstream input;
