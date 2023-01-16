@@ -68,13 +68,23 @@ void TSP_OR::ComputeEuclideanDistanceMatrix(std::vector<item>& cluster)
           // haversine(mod_cluster[fromNode].coordinate.latitude, mod_cluster[fromNode].coordinate.longitude, mod_cluster[toNode].coordinate.latitude, mod_cluster[toNode].coordinate.longitude)*SCALING_FACTOR);
     }
   }
+  for (int fromNode = 0; fromNode < mod_cluster.size(); fromNode++) {
+    for (int toNode = 0; toNode < mod_cluster.size(); toNode++) {
+      cout<<distances[fromNode][toNode]<<" ";
+
+          // haversine(mod_cluster[fromNode].coordinate.latitude, mod_cluster[fromNode].coordinate.longitude, mod_cluster[toNode].coordinate.latitude, mod_cluster[toNode].coordinate.longitude)*SCALING_FACTOR);
+    }
+    cout<<endl;
+  }
+  cout<<"done"<<endl;
+
 }
 
 void TSP_OR::PlanRoute(vector<item> &cluster, Coordinate w){
     
-    RoutingIndexManager manager(cluster.size(), num_vehicles, depot);
+    RoutingIndexManager manager(cluster.size()+1, num_vehicles, depot);
     RoutingModel routing(manager);
-    
+    cout<<cluster.size()<<endl;
     warehouse = w;
     ComputeEuclideanDistanceMatrix(cluster);
     const int transit_callback_index = routing.RegisterTransitCallback(
@@ -93,10 +103,10 @@ void TSP_OR::PlanRoute(vector<item> &cluster, Coordinate w){
       FirstSolutionStrategy::PATH_CHEAPEST_ARC);
     search_parameters.set_local_search_metaheuristic(
       LocalSearchMetaheuristic::GUIDED_LOCAL_SEARCH);
-    search_parameters.mutable_time_limit()->set_seconds(5);
-
+    search_parameters.mutable_time_limit()->set_seconds(10);
+    
     const Assignment* solution = routing.SolveWithParameters(search_parameters);
-
+    cout<<"reached save"<<endl;
     savePath(cluster, manager, routing, *solution);
 }
 

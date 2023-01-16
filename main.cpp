@@ -63,20 +63,23 @@ DataModel ReadVRPs(string filename){
 	for (int i = 0; i < nbClients; i++)
 	{
 		inputFile >> node_number >> x_coords[i] >> y_coords[i];
-		if (node_number != i + 1) throw std::string("The node numbering is not in order.");
+		if (node_number != i + 2) throw std::string("The node numbering is not in order.");
 	}
-
+	cout << "coordinates taken" << endl;
 	// Reading demand information
 	inputFile >> content;
 	if (content != "DEMAND_SECTION") throw std::string("Unexpected data in input file: " + content);
-	for (int i = 0; i <= nbClients; i++)
+
+	inputFile >> content >> content;
+	for (int i = 0; i < nbClients; i++)
 	{
-		inputFile >> content >> demands[i];
-		service_time[i] = (i == 0) ? 0. : serviceTimeData ;
+		inputFile >> node_number >> demands[i];
+		if (node_number != i + 2) throw std::string("The node numbering is not in order.");
+		// service_time[i] = (i == 0) ? 0. : serviceTimeData ;
 	}
 
 	
-
+	cout << "demands taken" << endl;
 	// Reading depot information (in all current instances the depot is represented as node 1, the program will return an error otherwise)
 	inputFile >> content >> content2 >> content3 >> content3;
 	if (content != "DEPOT_SECTION") throw std::string("Unexpected data in input file: " + content);
@@ -87,16 +90,16 @@ DataModel ReadVRPs(string filename){
 	// add items to datamodel
 	dm.packages.resize(nbClients);
 	dm.bin.capacity = vehicleCapacity;
-	dm.bin.size.height = INT_MAX;
-	dm.bin.size.length = INT_MAX;
-	dm.bin.size.width = INT_MAX;
+	dm.bin.size.height = 1e5;
+	dm.bin.size.length = 1e5;
+	dm.bin.size.width = 1e5;
 	dm.warehouse.latitude  = depot_lat;
 	dm.warehouse.longitude = depot_lon;
 	for(int i=0; i<nbClients; i++)
 	{
 		dm.packages[i].coordinate.latitude = x_coords[i];
 		dm.packages[i].coordinate.longitude = y_coords[i];
-		dm.packages[i].volume = 0;
+		dm.packages[i].volume = 1;
 		dm.packages[i].weight = demands[i];
 	}
 	
@@ -163,18 +166,39 @@ DataModel ReadVRPs(string filename){
 int main(int argc, char** argv){
 	DataModel dm;
 	
-	// if(argv[1] != NULL){
-
-	// 	dm = ReadVRPs(argv[1]);
-	// }
-	// else{
-	// 	string s;
-	// 	cin >> s;
+	if(argv[1] != NULL){
+		try{
+			dm = ReadVRPs(argv[1]);
+		}
+		catch(string err){
+			cout << err;
+		}
+		
+	}
+	else{
+		string s;
+		cin >> s;
+		try{
+			dm = ReadVRPs(s);
+		}
+		catch(string err){
+			cout << err;
+		}
+		// dm = ReadVRPs(s);
+	}
+	// string s;
+	// cin >> s;
+	// cout << s << endl;
+	// try{
 	// 	dm = ReadVRPs(s);
 	// }
-	string s;
-	cin >> s;
-	dm = ReadVRPs(s);
+	// catch(string err){
+	// 	cout << err << endl;
+	// }
+	cout << "Capacity : " << dm.bin.capacity << " depoX :" << dm.warehouse.latitude <<" depoY : " << dm.warehouse.longitude << endl;
+	for(int i = 0;i < dm.packages.size();i++){
+		cout << i << " : x : " << dm.packages[i].coordinate.latitude << " y : " << dm.packages[i].coordinate.longitude << " weight : "<< dm.packages[i].weight << endl;
+	}
 	RoutePlanInterface* rp = new TSP_OR;
 	// RoutePlanInterface* rp = new TSP_LK;
 	ClusteringInterface* cls = new FESIF;

@@ -18,7 +18,7 @@ void Optimizer::optimize(){
     clusteringInterface->CalculateCost();
     clusteringCost = clusteringInterface->GetClusteringCost();
     clusters = clusteringInterface->GetClusters();
-
+    
     if(verbose){
         clusteringInterface->PrintClusters();
     }
@@ -38,11 +38,14 @@ void Optimizer::optimize(){
             out<<"Printing information for cluster - "<<i<<endl;
         }
         i++;
-
+    
         // Planning routes
         routePlannerInterface->PlanRoute(cluster, warehouse);
+        
         clusterPaths.push_back(routePlannerInterface->GetPaths());
+        
         routePlannerInterface->CalculateCost();
+        
         routePlanningCost.push_back(routePlannerInterface->GetPathPlanningCost());
 
         if(verbose){
