@@ -125,15 +125,14 @@ void FESIF::FESI() {
 
 vector<vector<item> > FESIF::wrapperLMD(vector<item>& items, Coordinate warehouse, int numberOfRiders, Bin bin) {
 	set<Coordinate> all_coordinates;
-	double scale = 1e4;
 	for(auto item : items) {
 		Coordinate temp = item.coordinate;
-		temp.latitude*=scale;
-		temp.longitude*=scale;
+		temp.latitude*=temp.scale;
+		temp.longitude*=temp.scale;
 		all_coordinates.insert(temp);
 	}
-	warehouse.latitude*=scale;
-	warehouse.longitude*=scale;
+	warehouse.latitude*=warehouse.scale;
+	warehouse.longitude*=warehouse.scale;
 	all_coordinates.insert(warehouse);
 	
 	

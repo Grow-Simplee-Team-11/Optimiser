@@ -25,6 +25,7 @@ struct Position {
 
 struct Coordinate {
     float longitude, latitude;
+    static const double scale = 1e4;
     Coordinate(){}
     Coordinate(float lat, float lng)
     {
@@ -44,34 +45,40 @@ struct PolarCoordinate {
     float radius, angle;
 };
 
-struct item {
-    Dimension size;
-    Position position;
-    Coordinate coordinate;
-    PolarCoordinate polarCoordinate;
-    float weight;
-    float volume;
-    item(){}
-    item(float w, float h, float d, float lat, float lng)
-    {
-        size.width = w;
-        size.height = h;
-        size.length = d;
-        coordinate.latitude = lat;
-        coordinate.longitude = lng;
-        weight = 0;
-        volume = w*h*d;
-    }
-    void print(){
-        cout<<coordinate.longitude<<" "<<coordinate.latitude<<"\n";
-        // cout<<"( Latitude - "<<coordinate.latitude<<" Longitude - "<<coordinate.longitude<<" Size - ("<<size.width<<", "<<size.length<<", "<<size.height<<") )";
-        return;
-    }
-    void printToFile(std::ofstream& out){
-        out<<coordinate.longitude<<" "<<coordinate.latitude<<"\n";
-        // out<<"( Latitude - "<<coordinate.latitude<<" Longitude - "<<coordinate.longitude<<" Size - ("<<size.width<<", "<<size.length<<", "<<size.height<<") )";
-        return;
-    }
+class item {
+    public:
+        int id;
+        Dimension size;
+        Position position;
+        Coordinate coordinate;
+        PolarCoordinate polarCoordinate;
+        float weight;
+        float volume;
+        item(){}
+        item(float w, float h, float d, float lat, float lng)
+        {
+            size.width = w;
+            size.height = h;
+            size.length = d;
+            coordinate.latitude = lat;
+            coordinate.longitude = lng;
+            weight = 0;
+            volume = w*h*d;
+        }
+        void print(){
+            cout<<coordinate.longitude<<" "<<coordinate.latitude<<"\n";
+            // cout<<"( Latitude - "<<coordinate.latitude<<" Longitude - "<<coordinate.longitude<<" Size - ("<<size.width<<", "<<size.length<<", "<<size.height<<") )";
+            return;
+        }
+        void printToFile(std::ofstream& out){
+            out<<coordinate.longitude<<" "<<coordinate.latitude<<"\n";
+            // out<<"( Latitude - "<<coordinate.latitude<<" Longitude - "<<coordinate.longitude<<" Size - ("<<size.width<<", "<<size.length<<", "<<size.height<<") )";
+            return;
+        }
+
+        float getVolume() {
+            return size.width * size.length * size.height;
+        }
 } ;
 
 class Bin{
