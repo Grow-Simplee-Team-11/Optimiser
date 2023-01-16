@@ -1,35 +1,37 @@
 #include "../../include/routeplan/TSP_OR.hpp"
 
-double TSP_OR::haversine(double lat_1_deg,double lon_1_deg,double lat_2_deg,double lon_2_deg)
-{ 
-    double PI = 3.14159265359;
-    double lat_1_rad, lon_1_rad, lat_2_rad, lon_2_rad;
-    lat_1_rad = lat_1_deg * (PI / 180);
-    lon_1_rad = lon_1_deg * (PI / 180);
-    lat_2_rad = lat_2_deg * (PI / 180);
-    lon_2_rad = lon_2_deg * (PI / 180);
-    double delta_lat, delta_lon;
-    delta_lat = lat_1_rad - lat_2_rad;
-    delta_lon = lon_1_rad - lon_2_rad;
+// double TSP_OR::haversine(double lat_1_deg,double lon_1_deg,double lat_2_deg,double lon_2_deg)
+// { 
+//     double PI = 3.14159265359;
+//     double lat_1_rad, lon_1_rad, lat_2_rad, lon_2_rad;
+//     lat_1_rad = lat_1_deg * (PI / 180);
+//     lon_1_rad = lon_1_deg * (PI / 180);
+//     lat_2_rad = lat_2_deg * (PI / 180);
+//     lon_2_rad = lon_2_deg * (PI / 180);
+//     double delta_lat, delta_lon;
+//     delta_lat = lat_1_rad - lat_2_rad;
+//     delta_lon = lon_1_rad - lon_2_rad;
 
-    // Calculate sin^2 (delta / 2) for both lat and long
-    double sdlat = pow(sin(delta_lat / 2), 2);
-    double sdlon = pow(sin(delta_lon / 2), 2);
+//     // Calculate sin^2 (delta / 2) for both lat and long
+//     double sdlat = pow(sin(delta_lat / 2), 2);
+//     double sdlon = pow(sin(delta_lon / 2), 2);
 
-    // Radius of the Earth (approximate)
-    const double radius_earth_miles = 3963;
-    const double radius_earth_km = 6378;
+//     // Radius of the Earth (approximate)
+//     const double radius_earth_miles = 3963;
+//     const double radius_earth_km = 6378;
 
-    // http://en.wikipedia/org/wiki/Haversine_formula
-    // d=2r*asin(sqrt(sin^2((lat1-lat2)/2)+cos(l1)cos(l2)sin^2((lon2-lon1)/2)))
-    //  if t = sqrt(sin^2((lat1-lat2)/2)+cos(l1)cos(l2)sin^2((lon2-lon1)/2)
-    //  -> d = 2 * radius_earth * asin (t)	
-    double t = sqrt(sdlat + (cos(lat_1_rad) * cos(lat_2_rad) * sdlon));
-    double distance_miles = 2 * radius_earth_miles * asin(t);
-    double distance_km = 2 * radius_earth_km * asin(t);
-    return distance_km;
+//     // http://en.wikipedia/org/wiki/Haversine_formula
+//     // d=2r*asin(sqrt(sin^2((lat1-lat2)/2)+cos(l1)cos(l2)sin^2((lon2-lon1)/2)))
+//     //  if t = sqrt(sin^2((lat1-lat2)/2)+cos(l1)cos(l2)sin^2((lon2-lon1)/2)
+//     //  -> d = 2 * radius_earth * asin (t)	
+//     double t = sqrt(sdlat + (cos(lat_1_rad) * cos(lat_2_rad) * sdlon));
+//     double distance_miles = 2 * radius_earth_miles * asin(t);
+//     double distance_km = 2 * radius_earth_km * asin(t);
+//     return distance_km;
+// }
+double TSP_OR::haversine(double lat_1_deg,double lon_1_deg,double lat_2_deg,double lon_2_deg){
+  return sqrt((lat_1_deg-lat_2_deg)*(lat_1_deg-lat_2_deg)+(lon_1_deg-lon_2_deg)*(lon_1_deg-lon_2_deg));
 }
-
 double TSP_OR::getX(double lon){
     // width is map width
     double x = fmod((2043*(180+lon)/360), (2043 +(2043/2)));
@@ -71,11 +73,12 @@ void TSP_OR::ComputeEuclideanDistanceMatrix(std::vector<item>& cluster)
 
 void TSP_OR::PlanRoute(vector<item> &cluster, Coordinate w){
     
-    RoutingIndexManager manager(cluster.size(), num_vehicles, depot);
+    RoutingIndexManager manager(cluster.size()+1, num_vehicles, depot);
     RoutingModel routing(manager);
     
     warehouse = w;
     ComputeEuclideanDistanceMatrix(cluster);
+    // cout << "reached here" << endl;
     const int transit_callback_index = routing.RegisterTransitCallback(
       [this, &manager](int64_t from_index,
                                    int64_t to_index) -> int64_t {
