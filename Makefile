@@ -5,7 +5,7 @@
 CC = gcc
 # CXX = /usr/bin/g++
 CXX = /usr/bin/g++-11
-OR_LIBS = -L./lib -lortools
+OR_LIBS = -L ./lib -Llib -lortools -Llib
 CFLAGS = --std=c++17 -W -Wall -Wno-sign-compare -O4 -s -pipe -mmmx -msse -msse2 -msse3 -g -Iinclude/ortools -Iinclude -I. # -mcmodel=medium
 # CFLAGS = 
 OR_CFLAGS = -v -fPIC -std=c++17 -O4 -DNDEBUG -Iinclude/ortools -Iinclude -I. -DARCH_K8 -Wno-deprecated -DUSE_BOP -DUSE_GLOP -DUSE_CBC -DUSE_CLP -DUSE_SCIP
@@ -41,23 +41,23 @@ fesif.o:  $(FESIF_SRC_DIR)/FESIF.cpp  $(FESIF_INCLUDE_DIR)/utils.h $(FESIF_SRC_D
 	$(CXX) $(CFLAGS) -c $(FESIF_SRC_DIR)/FESIF.cpp $(LIBS) 
 
 TSP_LK.o:
-	$(CXX) $(CFLAGS) -c src/routeplan/TSP_LK.cpp $(LIBS)
+	$(CXX) $(CFLAGS) -c src/routeplan/TSP_LK.cpp $(LIBS) $(OR_LIBS)
 
 # Build TSP Code
 TSP_OR.o: 
 # $(CXX) -v -c $(RP_SRC_DIR)/TSP_OR.cpp $(CFLAGS) $(OR_CFLAGS) $(LDFLAGS) $(OR_LIBS) $(OR_TOOLS_LNK)  
-	/usr/bin/g++-11 -v -c -Iinclude/ortools -Iinclude -I. src/routeplan/TSP_OR.cpp --std=c++17 -W -Wall -Wno-sign-compare -O4 -pipe -mmmx -msse -msse2 -msse3 -g -DNDEBUG -DARCH_K8 -Wno-deprecated -DUSE_BOP -DUSE_GLOP -DUSE_CBC -DUSE_CLP -DUSE_SCIP -lz -lglog -L./lib -Llib -lortools
+	/usr/bin/g++-11 -v -c -Iinclude/ortools -Iinclude -I. src/routeplan/TSP_OR.cpp --std=c++17 -W -Wall -Wno-sign-compare -O4 -pipe -mmmx -msse -msse2 -msse3 -g -DNDEBUG -DARCH_K8 -Wno-deprecated -DUSE_BOP -DUSE_GLOP -DUSE_CBC -DUSE_CLP -DUSE_SCIP -lz -lglog -L ./lib -Llib -lortools
 
 # Build the EB-AFIT algorithm
 EB-AFIT.o:
 	$(CXX) $(CFLAGS) -c src/binpack/EB-AFIT.cpp $(LIBS)
 
 Optimiser.o:
-	$(CXX) $(CFLAGS) -c src/Optimiser.cpp $(LIBS) 
+	$(CXX) $(CFLAGS) -c src/Optimiser.cpp $(LIBS) $(OR_LIBS)
 
 # Build the executable
 main: main.cpp fesif.o TSP_LK.o TSP_OR.o EB-AFIT.o Optimiser.o
-	/usr/bin/g++-11 --std=c++17 -W -Wall -Wno-sign-compare -O4 -s -pipe -mmmx -msse -msse2 -msse3 -g -Iinclude/ortools -Iinclude -I.  -o main global.o HST.o utils.o FESIF.o TSP_OR.o EB-AFIT.o TSP_LK.o Optimiser.o main.cpp -L./lib -Llib -lortools
+	/usr/bin/g++-11 --std=c++17 -W -Wall -Wno-sign-compare -O4 -s -pipe -mmmx -msse -msse2 -msse3 -g -Iinclude/ortools -Iinclude -I.  -o main global.o HST.o utils.o FESIF.o TSP_OR.o EB-AFIT.o TSP_LK.o Optimiser.o main.cpp -L ./lib -Llib -lortools
 
 
 .PHONY: clean

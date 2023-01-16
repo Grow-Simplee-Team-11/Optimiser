@@ -31,7 +31,9 @@ struct Coordinate {
         longitude = lng;
         latitude = lat;
     }
+
 };
+
 
 inline bool operator<(const Coordinate& a1, const Coordinate& a2)
 {

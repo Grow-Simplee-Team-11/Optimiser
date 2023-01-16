@@ -54,7 +54,9 @@ class RoutePlanInterface{
         float GetPathPlanningCost(){
             return cost;
         }
-
+        double euclidean(struct Coordinate &c1,struct Coordinate &c2){
+            return sqrt((c1.latitude - c2.latitude)*(c1.latitude - c2.latitude) + (c1.longitude - c2.longitude)*(c1.longitude - c2.longitude));
+        }
     protected:
         vector<item> plannedPath;
         float cost;

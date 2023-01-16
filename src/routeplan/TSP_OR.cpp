@@ -64,7 +64,8 @@ void TSP_OR::ComputeEuclideanDistanceMatrix(std::vector<item>& cluster)
     for (int toNode = 0; toNode < mod_cluster.size(); toNode++) {
       if (fromNode != toNode)
         distances[fromNode][toNode] = static_cast<int64_t>(
-          haversine(mod_cluster[fromNode].coordinate.latitude, mod_cluster[fromNode].coordinate.longitude, mod_cluster[toNode].coordinate.latitude, mod_cluster[toNode].coordinate.longitude)*SCALING_FACTOR);
+          euclidean(mod_cluster[fromNode].coordinate,mod_cluster[toNode].coordinate)*SCALING_FACTOR);
+          // haversine(mod_cluster[fromNode].coordinate.latitude, mod_cluster[fromNode].coordinate.longitude, mod_cluster[toNode].coordinate.latitude, mod_cluster[toNode].coordinate.longitude)*SCALING_FACTOR);
     }
   }
 }

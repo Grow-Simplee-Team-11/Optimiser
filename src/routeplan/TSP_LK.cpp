@@ -127,7 +127,8 @@ void TSP_LK::PlanRoute(vector<item>& cluster, Coordinate warehouse)
         for(int j=0;j<num;j++)
         {
             dist[i][j] = static_cast<int>(
-          haversine(mod_cluster[i].coordinate.latitude, mod_cluster[i].coordinate.longitude, mod_cluster[j].coordinate.latitude, mod_cluster[j].coordinate.longitude)*SCALING_FACTOR);
+                euclidean(mod_cluster[i].coordinate,mod_cluster[j].coordinate)*SCALING_FACTOR);
+        //   haversine(mod_cluster[i].coordinate.latitude, mod_cluster[i].coordinate.longitude, mod_cluster[j].coordinate.latitude, mod_cluster[j].coordinate.longitude)*SCALING_FACTOR);
         }
     }
 
