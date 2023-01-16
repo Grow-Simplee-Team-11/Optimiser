@@ -55,9 +55,13 @@ EB-AFIT.o:
 Optimiser.o:
 	$(CXX) $(CFLAGS) -c src/Optimiser.cpp $(LIBS) 
 
+# SelfClustering Algorithm
+cluster.o : 
+	$(CXX) $(CFLAGS) -c src/clustering/selfClustering/cluster.cpp $(LIBS)
+
 # Build the executable
-main: main.cpp fesif.o TSP_LK.o TSP_OR.o EB-AFIT.o Optimiser.o
-	/usr/bin/g++-11 --std=c++17 -W -Wall -Wno-sign-compare -O4 -s -pipe -mmmx -msse -msse2 -msse3 -g -Iinclude/ortools -Iinclude -I.  -o main global.o HST.o utils.o FESIF.o TSP_OR.o EB-AFIT.o TSP_LK.o Optimiser.o main.cpp -L./lib -Llib -lortools
+main: main.cpp fesif.o TSP_LK.o TSP_OR.o EB-AFIT.o Optimiser.o cluster.o
+	/usr/bin/g++-11 --std=c++17 -W -Wall -Wno-sign-compare -O4 -s -pipe -mmmx -msse -msse2 -msse3 -g -Iinclude/ortools -Iinclude -I.  -o main global.o HST.o utils.o FESIF.o TSP_OR.o EB-AFIT.o TSP_LK.o cluster.o Optimiser.o  main.cpp -L./lib -Llib -lortools
 
 
 .PHONY: clean
