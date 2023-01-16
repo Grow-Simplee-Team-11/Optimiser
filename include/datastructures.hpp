@@ -25,6 +25,7 @@ struct Position {
 
 struct Coordinate {
     float longitude, latitude;
+    static const double scale = 1e4;
     Coordinate(){}
     Coordinate(float lat, float lng)
     {

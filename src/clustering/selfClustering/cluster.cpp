@@ -247,8 +247,8 @@ int main() {
 	input.open("input.txt");
 	Coordinate warehouse;
 	input>>warehouse.longitude>>warehouse.latitude;
-    warehouse.longitude*=1e4;
-    warehouse.latitude*=1e4;
+    warehouse.longitude*=warehouse.scale;
+    warehouse.latitude*=warehouse.scale;
 	Bin bin;
 	input>>bin.size.length>>bin.size.width>>bin.size.height;
 	bin.capacity = 25;
@@ -257,8 +257,8 @@ int main() {
 	vector<item> items(n);
 	for(int i=0;i<n;i++) {
 		input>>items[i].coordinate.longitude>>items[i].coordinate.latitude;
-        items[i].coordinate.longitude*=1e4;
-        items[i].coordinate.latitude*=1e4;
+        items[i].coordinate.longitude*=items[i].scale;
+        items[i].coordinate.latitude*=items[i].scale;
 		input>>items[i].size.length>>items[i].size.width>>items[i].size.height;
 		items[i].weight = 1;
         items[i].id = i;
