@@ -1,5 +1,5 @@
 #include<bits/stdc++.h>
-#include "datastructures.hpp"
+#include "../../../include/clustering/selfClustering/selfClustering.hpp"
 using namespace std;
 
 int angularCutMetric = 3;
@@ -86,7 +86,7 @@ vector<vector<item> > createAngularCuts(vector<item>& circle, Bin deliveryBag) {
         cout << angles[i].first << " " << angles[i].second << endl;
     }
     // int numberOfAngularCuts  = (angles.size()+angularCutMetric-1)/angularCutMetric;
-    float maxVolume = deliveryBag.getVolume()*angularCutMetric, maxWeight = deliveryBag.getCapacity()*angularCutMetric;
+    float maxVolume = deliveryBag.getVolume()*SELFCLUSTERING::angularCutMetric, maxWeight = deliveryBag.getCapacity()*angularCutMetric;
     int starting = (angles.back().second+1)%n;
     angles.pop_back();
     vector<item> current;
@@ -204,7 +204,7 @@ void assignPolarCoordinate(item& temp, Coordinate warehouse) {
     cout<<temp.polarCoordinate.angle*180/M_PI<<" "<<x<<" "<<y<<endl;
 }
 
-vector<vector<item> > calculateCluster(vector<item>& items, Coordinate warehouse, int numberOfRiders, Bin bin) {
+vector<vector<item> > SELFCLUSTERING::calculateCluster(vector<item>& items, Coordinate warehouse, int numberOfRiders, Bin bin) {
 
     // vector<item> items;
     for(int i=0;i<items.size();i++) {
