@@ -1,8 +1,12 @@
 #include<iostream>
 #include<vector>
 #include "./include/clustering/fesif/fesif.hpp"
+#include "./src/clustering/Clarke/clarke.hpp"
+
 #include "./include/routeplan/TSP_OR.hpp"
 #include "./include/routeplan/TSP_LK.hpp"
+#include "./src/routeplan/tsp.h"
+
 #include "./include/binpack/EB_AFIT.hpp"
 #include "./include/Optimiser.hpp"
 
@@ -114,38 +118,51 @@ int main(int argc, char** argv) {
  	for(int i=0;i<n;i++) {
  		input>>items[i].coordinate.longitude>>items[i].coordinate.latitude;
  		input>>items[i].size.length>>items[i].size.width>>items[i].size.height;
+		items[i].volume = items[i].size.length * items[i].size.width * items[i].size.height;
  		items[i].weight = 1;
  	}
 	int numRiders = 5;
 	
 	// RoutePlanInterface* rp = new TSP_OR;
-	RoutePlanInterface* rp = new TSP_LK;
-	ClusteringInterface* cls = new FESIF;
+	// RoutePlanInterface* rp = new TSP_LK;
+	// ClusteringInterface* cls = new FESIF;
+	// BinPackInterface* bp =  new EB_AFIT;
+
+	// bool verbose = true;
+	// bool logToFile = true;
+	// string logFileName = "FESIF_TSP_LK.txt";
+
+	// Optimizer optim(rp, cls, bp, items, warehouse, numRiders, bin, logFileName, verbose, logToFile);
+
+	// optim.optimize();
+	// vector<float> rcosts = optim.GetRoutingCost();
+	// float total_cost = 0;
+	// for(auto &x : rcosts)
+	// {
+	// 	total_cost+=x;
+	// }	
+
+	// if(verbose)
+	// 	std::cout<<"\nTotal Cost for routing: "<<total_cost<<" km"<<std::endl;
+ 	
+	// if(logToFile)
+	// {
+	// 	std::ofstream out(logFileName, std::ios_base::app);
+	// 	out<<"\nTotal Cost for routing: "<<total_cost<<" km"<<std::endl;
+	// }
+	// f.ComputeClusters(items, warehouse, 100, bin); //wrapperLMD(items, warehouse, 100, bin);
+	RoutePlanInterface* rp = new TSP;
+	ClusteringInterface* cls = new Clarke;
 	BinPackInterface* bp =  new EB_AFIT;
-
-	bool verbose = true;
-	bool logToFile = true;
-	string logFileName = "FESIF_TSP_LK.txt";
-
-	Optimizer optim(rp, cls, bp, items, warehouse, numRiders, bin, logFileName, verbose, logToFile);
+	Optimizer optim(rp, cls, bp, items, warehouse, numRiders, bin,"FESIF_TSP.txt", false, true);
 
 	optim.optimize();
-	vector<float> rcosts = optim.GetRoutingCost();
+	vector<float> costs = optim.GetRoutingCost();
 	float total_cost = 0;
-	for(auto &x : rcosts)
-	{
-		total_cost+=x;
-	}	
-
-	if(verbose)
-		std::cout<<"\nTotal Cost for routing: "<<total_cost<<" km"<<std::endl;
- 	
-	if(logToFile)
-	{
-		std::ofstream out(logFileName, std::ios_base::app);
-		out<<"\nTotal Cost for routing: "<<total_cost<<" km"<<std::endl;
-	}
-	// f.ComputeClusters(items, warehouse, 100, bin); //wrapperLMD(items, warehouse, 100, bin);
+	for(int i = 0 ; i< costs.size();i++)
+		total_cost+=costs[i];
+	cout<<"Total Cost of All Routes is ===> "<< total_cost<<endl;
+ 	// f.ComputeClusters(items, warehouse, 100, bin); //wrapperLMD(items, warehouse, 100, bin);
  	// freeGlobalMemory();
  	// f.localFree();
 	// f.PrintClustersToFile("clusters.txt");
