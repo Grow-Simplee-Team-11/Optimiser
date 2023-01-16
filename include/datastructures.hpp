@@ -1,6 +1,10 @@
 #ifndef __DATASTRUCTURES__HEADER__
 #define __DATASTRUCTURES__HEADER__
 
+#include <bits/stdc++.h>
+
+using namespace std;
+
 struct Dimension {
     float length, width, height;
 
@@ -40,6 +44,7 @@ struct PolarCoordinate {
 
 class item {
     public:
+        int id;
         Dimension size;
         Position position;
         Coordinate coordinate;
@@ -63,9 +68,13 @@ class item {
             out<<"( Latitude - "<<coordinate.latitude<<" Longitude - "<<coordinate.longitude<<" Size - ("<<size.width<<", "<<size.length<<", "<<size.height<<") )";
             return;
         }
+        float getVolume() {
+            return size.width * size.length * size.height;
+        }
 } ;
 
-struct Bin{
+class Bin{
+    public:
     Dimension size;
     float capacity;
     Bin(){}
@@ -82,6 +91,15 @@ struct Bin{
         size.height = h;
         capacity = c;
     }
+
+    float getCapacity(){
+        return capacity;
+    }
+
+    float getVolume(){
+        return size.width * size.length * size.height * 0.85;
+    }
+
 };
 
 #endif

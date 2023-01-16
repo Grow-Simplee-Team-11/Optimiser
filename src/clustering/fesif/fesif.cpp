@@ -143,6 +143,7 @@ int main(int argc, char** argv) {
 	input>>n;
 	vector<item> items(n);
 	for(int i=0;i<n;i++) {
+		items[i].id = i;
 		input>>items[i].coordinate.longitude>>items[i].coordinate.latitude;
 		input>>items[i].size.length>>items[i].size.width>>items[i].size.height;
 		items[i].weight = 1;
