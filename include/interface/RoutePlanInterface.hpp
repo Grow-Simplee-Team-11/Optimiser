@@ -18,9 +18,9 @@ class RoutePlanInterface{
             cost = 0;
         }
         // store the path planned for all clusters  
-        virtual void PlanRoute(vector<item> cluster, Coordinate warehouse, Bin b) = 0;
+        virtual void PlanRoute(vector<item>& cluster, Coordinate warehouse) = 0;
         // calculate the cost of the path computed 
-        virtual float CalculateCost() = 0; 
+        virtual void CalculateCost() = 0; 
 
         void PrintRoutes()
         {
@@ -36,7 +36,7 @@ class RoutePlanInterface{
 
         void PrintRoutesToFile(string filename)
         {
-            std::ofstream out(filename);
+            std::ofstream out(filename, std::ios_base::app);
             int32_t i=0;
             out<<"The Routes for the cluster -- " << endl;
             out<<"Warehouse -> ";
@@ -55,7 +55,7 @@ class RoutePlanInterface{
             return cost;
         }
 
-    private:
+    protected:
         vector<item> plannedPath;
         float cost;
 

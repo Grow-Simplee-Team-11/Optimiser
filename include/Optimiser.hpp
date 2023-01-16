@@ -14,98 +14,21 @@ using namespace std;
 
 class Optimizer{
     public:
-        Optimizer(RoutePlanInterface* routePlannerInterface_, ClusteringInterface* clusteringInterface_, BinPackInterface* binPackInterface_, vector<item>& packages_, Coordinate& warehouse_, int numberRiders_, Bin& bin_, string& logFileName_, bool verbose_, bool logToFile_) {
-            routePlannerInterface = routePlannerInterface_;
-            clusteringInterface = clusteringInterface_;
-            binPackInterface = binPackInterface_;
-            packages = packages_;
-            warehouse = warehouse_;
-            bin = bin_;
-            numberRiders = numberRiders_;
-            logFileName = logFileName_;
-            verbose = verbose_;
-            logToFile = logToFile_;
-        }
+        Optimizer(){}
+        Optimizer(RoutePlanInterface* routePlannerInterface_, ClusteringInterface* clusteringInterface_, BinPackInterface* binPackInterface_, vector<item>& packages_, Coordinate& warehouse_, int numberRiders_, Bin& bin_, string logFileName_, bool verbose_, bool logToFile_);
 
         // Function to perform optimization for set of packages
-        void Optimize(){
-            clusteringInterface->ComputeClusters(packages, warehouse, numberRiders, bin);
-            clusteringInterface->CalculateCost();
-            clusteringCost = clusteringInterface->GetClusteringCost();
-            clusters = clusteringInterface->GetClusters();
+        void optimize();
+        vector<vector<item>> GetClusters();
 
-            if(verbose){
-                clusteringInterface->PrintClusters();
-            }
-            if(logToFile){
-                clusteringInterface->PrintClustersToFile(logFileName);
-            }
+        vector<item> GetPathForCluster(int seqNumberOfCluster);
 
-            int i = 0;
+        vector<item> GetPackagingForCluster(int seqNumberOfCluster);
+        float GetClusteringCost();
 
-            for(auto& cluster: clusters){
-                
-                if(verbose){
-                    cout<<"Printing information for cluster - "<<i<<endl;
-                }
-                if(logToFile){
-                    std::ofstream out(logFileName);
-                    out<<"Printing information for cluster - "<<i<<endl;
-                }
-                i++;
+        vector<float> GetPackagingCost();
 
-                // Planning routes
-                routePlannerInterface->PlanRoute(cluster, warehouse, bin);
-                clusterPaths.push_back(routePlannerInterface->GetPaths());
-                routePlannerInterface->CalculateCost();
-                routePlanningCost.push_back(routePlannerInterface->GetPathPlanningCost());
-
-                if(verbose){
-                    routePlannerInterface->PrintRoutes();
-                }
-                if(logToFile){
-                    routePlannerInterface->PrintRoutesToFile(logFileName);
-                }
-
-                // Computing bin packaging
-                binPackInterface->BinPack(cluster, bin);
-                clusterPackagings.push_back(binPackInterface->GetPackaging());
-                binPackInterface->CalculateCost();
-                packagingCost.push_back(binPackInterface->CalculateCost());
-
-                if(verbose){
-                    binPackInterface->PrintPackedData();
-                }
-                if(logToFile){
-                    binPackInterface->PrintClustersToFile(logFileName);
-                }
-            }
-            return;
-        }
-
-        vector<vector<item>> GetClusters(){
-            return clusters;
-        }
-
-        vector<item> GetPathForCluster(int seqNumberOfCluster){
-            return clusterPaths[seqNumberOfCluster];
-        }
-
-        vector<item> GetPackagingForCluster(int seqNumberOfCluster){
-            return clusterPackagings[seqNumberOfCluster];
-        }
-
-        float GetClusteringCost(){
-            return clusteringCost;
-        }
-
-        vector<float> GetPackagingCost(){
-            return packagingCost;
-        }
-
-        vector<float> GetRoutingCost(){
-            return routePlanningCost;
-        }
+        vector<float> GetRoutingCost();
 
     private:
         RoutePlanInterface* routePlannerInterface;

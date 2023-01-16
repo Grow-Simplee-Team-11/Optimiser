@@ -22,35 +22,35 @@ class ClusteringInterface{
             cost = 0;
         }
         // store the computed cluster in clusters 
-        virtual void ComputeClusters(vector<item> packages, Coordinate warehouse, int numRiders, Bin b) = 0;
+        virtual void ComputeClusters(vector<item>& packages, Coordinate warehouse, int numRiders, Bin b) = 0;
         // calculate the cost of the cluster computed 
-        virtual float CalculateCost() = 0;
+        virtual void CalculateCost() = 0;
 
         void PrintClusters()
         {
             int32_t i=0;
             for(auto &cluster : clusters)
             {
-                cout<<"Printing Cluster -- " << i++;
+                cout<<"Printing Cluster -- " << i++ <<endl;
                 for(auto &it : cluster){
-                    it.print(); cout<<" ";
+                    it.print();
                 }
-                cout<<"\n";
+                
             }
             return;
         }
 
         void PrintClustersToFile(string filename)
         {
-            std::ofstream out(filename);
+            std::ofstream out(filename, std::ios_base::app);
             int32_t i=0;
             for(auto &cluster : clusters)
             {
-                out<<"Printing Cluster -- " << i++;
+                out<<"Printing Cluster -- " << i++ <<" \n";
                 for(auto &it : cluster){
-                    it.printToFile(out); out<<" ";
+                    it.printToFile(out);
                 }
-                out<<"\n";
+                
             }
             return;
         }
@@ -63,9 +63,21 @@ class ClusteringInterface{
             return cost;
         }
 
-    private:
+        void setClusters(vector<vector<item> > createdClusters) {
+            clusters = createdClusters;
+        }
+
+        Coordinate getWarehouse(){
+            return warehouse;
+        }
+
+        
+    protected:
         vector<vector<item>> clusters;
         float cost;
+        Coordinate warehouse;
+        Bin b;
+        int numRiders;
 
 };
 #endif 

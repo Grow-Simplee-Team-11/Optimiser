@@ -17,31 +17,31 @@ class BinPackInterface{
             cost = 0;
         }
         // store the computed cluster in clusters 
-        virtual void BinPack(vector<item> cluster, Bin b) = 0;
+        virtual void BinPack(vector<item>& cluster, Bin b) = 0;
         // calculate the cost of the cluster computed 
         virtual float CalculateCost() = 0; 
 
         void PrintPackedData()
         {
-            cout<<"Printing the packing -- ";
+            std::cout<<"Printing the packing -- \n";
             for(auto &it : packed_items)
             {
-                it.print(); cout<<"\n";
+                it.print(); std::cout<<"\n";
             }
-            cout<<"\n";
+            std::cout<<"\n";
             return;
         }
 
-        void PrintClustersToFile(string filename)
+        void PrintPackedDataToFile(string file_name)
         {
-            std::ofstream out(filename);
-            int32_t i=0;
-            out<<"The packing -- ";
+            std::ofstream out(file_name, std::ios_base::app);
+            out<<"Printing the packing -- \n";
             for(auto &it : packed_items)
             {
-                it.printToFile(out); cout<<"\n";
+                it.printToFile(out); out<<"\n";
             }
-            cout<<"\n";
+            out<<"\n";
+            return;
         }
 
         vector<item> GetPackaging(){
@@ -52,7 +52,7 @@ class BinPackInterface{
             return cost;
         }
 
-    private:
+    protected:
         vector<item> packed_items;
         float cost;
 
