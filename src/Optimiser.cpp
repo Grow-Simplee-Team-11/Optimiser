@@ -51,7 +51,6 @@ void Optimizer::optimize(){
         if(logToFile){
             routePlannerInterface->PrintRoutesToFile(logFileName);
         }
-
         // Computing bin packaging
         binPackInterface->BinPack(cluster, bin);
         clusterPackagings.push_back(binPackInterface->GetPackaging());

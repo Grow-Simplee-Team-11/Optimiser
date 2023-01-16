@@ -1,6 +1,6 @@
 ##
 #	Sample Makefile from the fesif project, needs adjustment to the new directory structure,
-#	Author: Archisman Pathak
+#	Author: Archisman Pathak & Aniket Kumar(Slightly)
 ##
 CC = gcc
 # CXX = /usr/bin/g++
@@ -18,12 +18,17 @@ FESIF_INCLUDE_DIR = $(CLUS_INC_DIR)/fesif
 CLUS_SRC_DIR = src/clustering
 FESIF_SRC_DIR = $(CLUS_SRC_DIR)/fesif
 
+CLARKE_INCLUDE_DIR = src/clustering/Clarke
+TSP_INCLUDE_DIR = src/routeplan
+OPT_INCLUDE_DIR = src
+OPT_HEADER_DIR = include
+
 RP_INC_DIR = include/routeplan
 # TSP_OR_INCLUDE_DIR = $(RP_INC_DIR)/
 RP_SRC_DIR = src/routeplan
 
 
-all: main 
+all: Integrate 
 #  Build FESIF Code 
 global.o: $(FESIF_SRC_DIR)/global.cpp
 	$(CXX) $(CFLAGS) -c $(FESIF_SRC_DIR)/global.cpp $(LIBS)
@@ -60,11 +65,22 @@ cluster.o :
 	$(CXX) $(CFLAGS) -c src/clustering/selfClustering/cluster.cpp $(LIBS)
 
 # Build the executable
+<<<<<<< HEAD
 main: main.cpp fesif.o TSP_LK.o TSP_OR.o EB-AFIT.o Optimiser.o cluster.o
 	/usr/bin/g++-11 --std=c++17 -W -Wall -Wno-sign-compare -O4 -s -pipe -mmmx -msse -msse2 -msse3 -g -Iinclude/ortools -Iinclude -I.  -o main global.o HST.o utils.o FESIF.o TSP_OR.o EB-AFIT.o TSP_LK.o cluster.o Optimiser.o  main.cpp -L./lib -Llib -lortools
+=======
+Integrate: main.cpp fesif.o TSP_OR.o EB-AFIT.o Optimiser.o $(CLARKE_INCLUDE_DIR)/clarke.cpp $(CLARKE_INCLUDE_DIR)/clarke.hpp $(TSP_INCLUDE_DIR)/TSP.cpp $(TSP_INCLUDE_DIR)/tsp.h $(TSP_INCLUDE_DIR)/TSP_LK.cpp $(RP_INC_DIR)/TSP_LK.hpp
+	/usr/bin/g++-11 --std=c++17 -W -Wall -Wno-sign-compare -O4 -s -pipe -mmmx -msse -msse2 -msse3 -g -Iinclude/ortools -Iinclude -I.  -o main global.o HST.o utils.o FESIF.o TSP_OR.o EB-AFIT.o Optimiser.o main.cpp $(CLARKE_INCLUDE_DIR)/clarke.cpp $(TSP_INCLUDE_DIR)/TSP.cpp $(TSP_INCLUDE_DIR)/TSP_LK.cpp -o Integrate -L./lib -Llib -lortools
+>>>>>>> FullyIntegrated
 
 
 .PHONY: clean
 clean:
 		-@rm *.o *.gcno *~ 2> /dev/null || true
 		-@rm fesif chst 2> /dev/null || true
+		rm Integrate
+# Integrate: main.cpp  $(OPT_INCLUDE_DIR)/Optimiser.cpp $(OPT_HEADER_DIR)/Optimiser.hpp
+# 	$(CXX) $(CFLAGS) main.cpp  $(OPT_INCLUDE_DIR)/Optimiser.cpp -o Integrate
+
+
+
