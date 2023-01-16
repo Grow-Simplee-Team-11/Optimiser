@@ -6,7 +6,7 @@
 
 #include "./include/routeplan/TSP_OR.hpp"
 #include "./include/routeplan/TSP_LK.hpp"
-#include "./src/routeplan/tsp.h"
+#include "./include/routeplan/TSP_CK.hpp"
 
 #include "./include/binpack/EB_AFIT.hpp"
 
