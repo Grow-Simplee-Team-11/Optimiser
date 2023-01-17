@@ -197,6 +197,7 @@ int main(int argc, char** argv){
 	for(int i = 0;i < dm.packages.size();i++){
 		cout << i << " : x : " << dm.packages[i].coordinate.latitude << " y : " << dm.packages[i].coordinate.longitude << " weight : "<< dm.packages[i].weight << endl;
 	}
+
 	RoutePlanInterface* rp = NULL;
 	if (std::string(argv[2]) == "TSP_OR") rp = new TSP_OR;
 	else if (std::string(argv[2]) == "TSP_LK") rp = new TSP_LK;
