@@ -44,6 +44,9 @@ protected:
 
 
 public:
+	TSP(bool method):RoutePlanInterface(method){
+		
+	}
 	// Number of cities
 	int n;//done
 
@@ -64,7 +67,7 @@ public:
   vector<int>* adjlist;
 
 	// Constructor
-	TSP();
+
 
 	// Destructor
 	~TSP();
