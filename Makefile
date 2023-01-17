@@ -6,10 +6,12 @@ CC = gcc
 # CXX = /usr/bin/g++
 CXX = /usr/bin/g++-11
 OR_LIBS = -L./lib -lortools
-CFLAGS = --std=c++17 -W -Wall -Wno-sign-compare -O4 -pipe -mmmx -msse -msse2 -msse3 -g -Iinclude/ortools -Iinclude -I. -lpthread # -mcmodel=medium
+
+CFLAGS = --std=c++17 -W -Wall -Wno-sign-compare -O4 -pipe -mmmx -msse -msse2 -msse3 -g -Iinclude/ortools -Iinclude -I. # -mcmodel=medium
 # CFLAGS = 
-OR_CFLAGS = -v -fPIC -std=c++17 -O4 -g -DNDEBUG -Iinclude/ortools -Iinclude -I. -DARCH_K8 -Wno-deprecated -DUSE_BOP -DUSE_GLOP -DUSE_CBC -DUSE_CLP -DUSE_SCIP
-OR_TOOLS_LNK = -Llib -lortools -lpthread
+OR_CFLAGS = -v -fPIC -std=c++17 -O4 -DNDEBUG -Iinclude/ortools -Iinclude -I. -g -DARCH_K8 -Wno-deprecated -DUSE_BOP -DUSE_GLOP -DUSE_CBC -DUSE_CLP -DUSE_SCIP
+OR_TOOLS_LNK = -Llib -lortools
+
 LDFLAGS = -Wl,-rpath,@loader_path -Wl,-rpath,@loader_path/../lib -lz -lglog
 MEM = -D WATCH_MEM
 
@@ -28,7 +30,7 @@ RP_INC_DIR = include/routeplan
 RP_SRC_DIR = src/routeplan
 
 
-all: Integrate 
+all: main 
 #  Build FESIF Code 
 global.o: $(FESIF_SRC_DIR)/global.cpp
 	$(CXX) $(CFLAGS) -c $(FESIF_SRC_DIR)/global.cpp $(LIBS)
@@ -60,18 +62,27 @@ EB-AFIT.o:
 Optimiser.o:
 	$(CXX) $(CFLAGS) -c src/Optimiser.cpp $(LIBS) 
 
-# Build the executable
-Integrate: main.cpp fesif.o TSP_OR.o EB-AFIT.o Optimiser.o $(CLARKE_INCLUDE_DIR)/clarke.cpp $(CLARKE_INCLUDE_DIR)/clarke.hpp $(TSP_INCLUDE_DIR)/TSP.cpp $(TSP_INCLUDE_DIR)/tsp.h $(TSP_INCLUDE_DIR)/TSP_LK.cpp $(RP_INC_DIR)/TSP_LK.hpp
-	/usr/bin/g++-11 --std=c++17 -W -Wall -Wno-sign-compare -O4 -pipe -mmmx -msse -msse2 -msse3 -g -Iinclude/ortools -Iinclude -I.  -o main global.o HST.o utils.o FESIF.o TSP_OR.o EB-AFIT.o Optimiser.o main.cpp $(CLARKE_INCLUDE_DIR)/clarke.cpp $(TSP_INCLUDE_DIR)/TSP.cpp $(TSP_INCLUDE_DIR)/TSP_LK.cpp -o Integrate -L./lib -Llib -lortools
+# SelfClustering Algorithm
+cluster.o : 
+	$(CXX) $(CFLAGS) -c src/clustering/selfClustering/cluster.cpp $(LIBS)
 
+TSP_CK.o :
+	$(CXX) $(CFLAGS) -c src/routeplan/TSP_CK.cpp $(LIBS)
+
+clarke.o : 
+	$(CXX) $(CFLAGS) -c src/clustering/Clarke/clarke.cpp $(LIBS)
+
+# Build the executable
+main: main.cpp fesif.o TSP_LK.o TSP_OR.o EB-AFIT.o Optimiser.o cluster.o TSP_CK.o clarke.o
+	/usr/bin/g++-11 --std=c++17 -W -Wall -Wno-sign-compare -O4 -pipe -mmmx -msse -msse2 -msse3 -g -Iinclude/ortools -Iinclude -I.  -o main global.o HST.o utils.o FESIF.o TSP_OR.o EB-AFIT.o TSP_LK.o cluster.o Optimiser.o TSP_CK.o clarke.o main.cpp -L./lib -Llib -lortools
 
 .PHONY: clean
 clean:
 		-@rm *.o *.gcno *~ 2> /dev/null || true
 		-@rm fesif chst 2> /dev/null || true
-		rm Integrate
-# Integrate: main.cpp  $(OPT_INCLUDE_DIR)/Optimiser.cpp $(OPT_HEADER_DIR)/Optimiser.hpp
-# 	$(CXX) $(CFLAGS) main.cpp  $(OPT_INCLUDE_DIR)/Optimiser.cpp -o Integrate
-
-
+.PHONY: distclean
+distclean:
+		-@rm *.o *.gcno *~ 2> /dev/null || true
+		-@rm fesif chst 2> /dev/null || true
+		rm main FESIF*
 

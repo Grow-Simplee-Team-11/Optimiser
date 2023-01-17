@@ -27,6 +27,8 @@ void Optimizer::optimize(){
     }
 
     int i = 0;
+    int avg = 0;
+    int maximum = -INT_MAX;
     int maximum = -INT_MAX;
     int avg = 0;
     for(auto& cluster: clusters){
@@ -68,6 +70,8 @@ void Optimizer::optimize(){
         if(logToFile){
             binPackInterface->PrintPackedDataToFile(logFileName);
         }
+        avg+= cluster.size();
+        maximum = max(maximum, (int)cluster.size());
     }
     ofstream output;
     output.open("./tests/clusters.txt");
@@ -85,8 +89,7 @@ void Optimizer::optimize(){
         output << warehouse.latitude <<" "<< warehouse.longitude<<endl;
     }
     output.close();
-    cout<<"Avg ===> "<<avg/clusters.size()<<endl;
-    cout<<"Max ===> "<<maximum<<endl;
+    cout<<"Metrics\n"<<avg/clusters.size()<<"\n"<<maximum<<"\n"<<clusters.size()<<"\n";
     return;
 }
 

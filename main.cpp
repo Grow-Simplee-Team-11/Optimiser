@@ -1,13 +1,15 @@
 #include<iostream>
 #include<vector>
 #include "./include/clustering/fesif/fesif.hpp"
+#include "./include/clustering/selfClustering/selfClustering.hpp"
 #include "./src/clustering/Clarke/clarke.hpp"
 
 #include "./include/routeplan/TSP_OR.hpp"
 #include "./include/routeplan/TSP_LK.hpp"
-#include "./src/routeplan/tsp.h"
+#include "./include/routeplan/TSP_CK.hpp"
 
 #include "./include/binpack/EB_AFIT.hpp"
+
 #include "./include/Optimiser.hpp"
 
 class DataModel{
@@ -15,6 +17,7 @@ class DataModel{
 	Coordinate warehouse;
 	Bin bin;
 	vector<item> packages;
+	int optimal;
 };
 
 DataModel ReadVRPs(string filename){
@@ -24,14 +27,21 @@ DataModel ReadVRPs(string filename){
 	if(!inputFile.is_open()){
 		std::cout<<"Cannot Open File\n";
 	}
-
+	
 	Coordinate warehouse;
-
 	std::string content, content2, content3;
 	double serviceTimeData = 0.;
-
+	
 	getline(inputFile, content);
 	getline(inputFile, content);
+	string opt;
+	int index = content.length()-1;
+	while(content[index] != ' '){
+		opt.push_back(content[index]);
+		index--;
+	}
+	reverse(opt.begin(),opt.end());
+	dm.optimal = stoi(opt.substr(0,opt.length() - 1));
 	getline(inputFile, content);
 	int nbClients;int durationLimit;
 	double vehicleCapacity = 1.e30;
@@ -110,6 +120,7 @@ DataModel ReadVRPs(string filename){
 	// input>>warehouse;
 }
 
+
 // int main(int argc, char** argv) {
     
 //  	// ifstream input;
@@ -186,11 +197,27 @@ int main(int argc, char** argv){
 	for(int i = 0;i < dm.packages.size();i++){
 		cout << i << " : x : " << dm.packages[i].coordinate.latitude << " y : " << dm.packages[i].coordinate.longitude << " weight : "<< dm.packages[i].weight << endl;
 	}
-	RoutePlanInterface* rp = new TSP_OR(EUCLIDEAN);
+	RoutePlanInterface* rp = NULL;
+	if (std::string(argv[2]) == "TSP_OR") rp = new TSP_OR;
+	else if (std::string(argv[2]) == "TSP_LK") rp = new TSP_LK;
+	else if (std::string(argv[2]) == "TSP_CK") rp = new TSP;
+
+	ClusteringInterface* cls = NULL;
+	if (std::string(argv[3]) == "CLARKE") cls = new Clarke;
+	else if (std::string(argv[3]) == "FESIF") cls = new FESIF;
+	else if (std::string(argv[3]) == "SELF") cls = new SELFCLUSTERING;
+	
+	BinPackInterface* bp = NULL;
+	if (std::string(argv[4]) == "EB_AFIT") bp = new EB_AFIT;
 	// RoutePlanInterface* rp = new TSP_LK;
-	// ClusteringInterface* cls = new FESIF;
-	ClusteringInterface* cls = new Clarke(EUCLIDEAN);
-	BinPackInterface* bp =  new EB_AFIT;
+
+	// ClusteringInterface* cls = new Clarke;
+	// BinPackInterface* bp =  new EB_AFIT;
+
+	assert(rp!=NULL);
+	assert(cls!=NULL);
+	assert(bp!=NULL);
+
 
 	bool verbose = true;
 	bool logToFile = true;
@@ -205,10 +232,10 @@ int main(int argc, char** argv){
 	for(auto &x : rcosts)
 	{
 		total_cost+=x;
-	}	
+	}
 
 	if(verbose)
-		std::cout<<"\nTotal Cost for routing: "<<total_cost<<" km"<<std::endl;
+		std::cout<<total_cost<<std::endl<<dm.optimal<<std::endl;
  	
 	if(logToFile)
 	{
