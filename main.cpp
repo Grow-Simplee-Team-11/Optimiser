@@ -208,12 +208,14 @@ int main(int argc, char** argv){
 	BinPackInterface* bp = NULL;
 	if (std::string(argv[4]) == "EB_AFIT") bp = new EB_AFIT;
 	// RoutePlanInterface* rp = new TSP_LK;
+
 	// ClusteringInterface* cls = new Clarke;
 	// BinPackInterface* bp =  new EB_AFIT;
 
 	assert(rp!=NULL);
 	assert(cls!=NULL);
 	assert(bp!=NULL);
+
 
 	bool verbose = true;
 	bool logToFile = true;

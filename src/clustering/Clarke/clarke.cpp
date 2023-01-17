@@ -35,6 +35,7 @@ Cluster::Cluster(){
         distance = 0;
 }
 void Clarke::ComputeClusters(vector<item> &packages, Coordinate warehouse, int numRiders, Bin b){
+    clusters.clear();
     this->packages = packages;
     this->warehouse = warehouse;
     this->numPackages = packages.size();
