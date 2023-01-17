@@ -67,7 +67,7 @@ void Optimizer::optimize(){
         avg+= cluster.size();
         maximum = max(maximum, (int)cluster.size());
     }
-    cout<<"Metrics\n"<<avg/clusters.size()<<"\n"<<maximum<<"\n";
+    cout<<"Metrics\n"<<avg/clusters.size()<<"\n"<<maximum<<"\n"<<clusters.size()<<"\n";
     return;
 }
 

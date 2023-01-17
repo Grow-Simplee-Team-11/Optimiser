@@ -17,6 +17,7 @@ class DataModel{
 	Coordinate warehouse;
 	Bin bin;
 	vector<item> packages;
+	int optimal;
 };
 
 DataModel ReadVRPs(string filename){
@@ -26,14 +27,21 @@ DataModel ReadVRPs(string filename){
 	if(!inputFile.is_open()){
 		std::cout<<"Cannot Open File\n";
 	}
-
+	
 	Coordinate warehouse;
-
 	std::string content, content2, content3;
 	double serviceTimeData = 0.;
-
+	
 	getline(inputFile, content);
 	getline(inputFile, content);
+	string opt;
+	int index = content.length()-1;
+	while(content[index] != ' '){
+		opt.push_back(content[index]);
+		index--;
+	}
+	reverse(opt.begin(),opt.end());
+	dm.optimal = stoi(opt.substr(0,opt.length() - 1));
 	getline(inputFile, content);
 	int nbClients;int durationLimit;
 	double vehicleCapacity = 1.e30;
@@ -111,6 +119,7 @@ DataModel ReadVRPs(string filename){
 	return dm;
 	// input>>warehouse;
 }
+
 
 // int main(int argc, char** argv) {
     
@@ -219,10 +228,10 @@ int main(int argc, char** argv){
 	for(auto &x : rcosts)
 	{
 		total_cost+=x;
-	}	
+	}
 
 	if(verbose)
-		std::cout<<total_cost<<std::endl;
+		std::cout<<total_cost<<std::endl<<dm.optimal<<std::endl;
  	
 	if(logToFile)
 	{
