@@ -7,11 +7,10 @@
 
 using namespace std;
 
-struct Dimension {
+struct Dimension_ {
     float length, width, height;
-
-    Dimension(){}
-    Dimension(float l, float w, float h)
+    Dimension_(){}
+    Dimension_(float l, float w, float h)
     {
         length = l;
         width = w;
@@ -48,8 +47,8 @@ struct PolarCoordinate {
 class item {
     public:
         int id;
-        Dimension size;
         Position position;
+        Dimension_ size;
         Coordinate coordinate;
         PolarCoordinate polarCoordinate;
         float weight;
@@ -83,7 +82,7 @@ class item {
 
 class Bin{
     public:
-    Dimension size;
+    Dimension_ size;
     float capacity;
     Bin(){}
     Bin(float w,float l, float h){
