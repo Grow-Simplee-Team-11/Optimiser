@@ -27,7 +27,8 @@ void Optimizer::optimize(){
     }
 
     int i = 0;
-
+    int avg = 0;
+    int maximum = -INT_MAX;
     for(auto& cluster: clusters){
         
         if(verbose){
@@ -66,7 +67,10 @@ void Optimizer::optimize(){
         if(logToFile){
             binPackInterface->PrintPackedDataToFile(logFileName);
         }
+        avg+= cluster.size();
+        maximum = max(maximum, (int)cluster.size());
     }
+    cout<<"Metrics\n"<<avg/clusters.size()<<"\n"<<maximum<<"\n"<<clusters.size()<<"\n";
     return;
 }
 

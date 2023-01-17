@@ -6,7 +6,7 @@ Date: 08/16/17
 *************************************************************************/
 const double R = 6371;
 #define MULT 10000
-#include "./tsp.h"
+#include "../../include/routeplan/TSP_CK.hpp"
 
 double toRadians1(const double degree){
     double one_deg = (M_PI) / 180;
