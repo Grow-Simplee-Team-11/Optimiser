@@ -2,10 +2,10 @@ import numpy as np
 import random
 
 def generate_latlon(func):
-    NUM_BOXES = 250
+    NUM_BOXES = 30
     BIN_LEN = 100
     BIN_BRE = 80
-    BIN_HEI = 80
+    BIN_HEI = 4
     MEAN_LEN = 20
     MEAN_BRE = 20
     MEAN_HEI = 10

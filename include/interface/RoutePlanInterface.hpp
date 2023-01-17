@@ -62,7 +62,7 @@ class RoutePlanInterface{
             if(method == EUCLIDEAN)
                 return euclidean(c1,c2);
             else if(method == HAVERSINE) 
-                return haversine(c1,c2)*SCALING_FACTOR;
+                return haversine(c1,c2);
         }
         double euclidean(struct Coordinate c1,struct Coordinate c2){
             return sqrt((c1.latitude - c2.latitude)*(c1.latitude - c2.latitude) + (c1.longitude - c2.longitude)*(c1.longitude - c2.longitude));

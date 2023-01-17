@@ -57,17 +57,17 @@ void Optimizer::optimize(){
             routePlannerInterface->PrintRoutesToFile(logFileName);
         }
         // Computing bin packaging
-        binPackInterface->BinPack(cluster, bin);
-        clusterPackagings.push_back(binPackInterface->GetPackaging());
-        binPackInterface->CalculateCost();
-        packagingCost.push_back(binPackInterface->CalculateCost());
+        // binPackInterface->BinPack(cluster, bin);
+        // clusterPackagings.push_back(binPackInterface->GetPackaging());
+        // binPackInterface->CalculateCost();
+        // packagingCost.push_back(binPackInterface->CalculateCost());
 
-        if(verbose){
-            binPackInterface->PrintPackedData();
-        }
-        if(logToFile){
-            binPackInterface->PrintPackedDataToFile(logFileName);
-        }
+        // if(verbose){
+        //     binPackInterface->PrintPackedData();
+        // }
+        // if(logToFile){
+        //     binPackInterface->PrintPackedDataToFile(logFileName);
+        // }
     }
     ofstream output;
     output.open("./tests/clusters.txt");
