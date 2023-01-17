@@ -188,10 +188,23 @@ int main(int argc, char** argv){
 	for(int i = 0;i < dm.packages.size();i++){
 		cout << i << " : x : " << dm.packages[i].coordinate.latitude << " y : " << dm.packages[i].coordinate.longitude << " weight : "<< dm.packages[i].weight << endl;
 	}
-	RoutePlanInterface* rp = new TSP_OR;
+	RoutePlanInterface* rp = NULL;
+	if (std::string(argv[2]) == "TSP_OR") rp = new TSP_OR;
+	else if (std::string(argv[2]) == "TSP_LK") rp = new TSP_LK;
+
+	ClusteringInterface* cls = NULL;
+	if (std::string(argv[3]) == "CLARKE") cls = new Clarke;
+	else if (std::string(argv[3]) == "FESIF") cls = new FESIF;
+	
+	BinPackInterface* bp = NULL;
+	if (std::string(argv[4]) == "EB_AFIT") bp = new EB_AFIT;
 	// RoutePlanInterface* rp = new TSP_LK;
-	ClusteringInterface* cls = new Clarke;
-	BinPackInterface* bp =  new EB_AFIT;
+	// ClusteringInterface* cls = new Clarke;
+	// BinPackInterface* bp =  new EB_AFIT;
+
+	assert(rp!=NULL);
+	assert(cls!=NULL);
+	assert(bp!=NULL);
 
 	bool verbose = true;
 	bool logToFile = true;
@@ -209,7 +222,7 @@ int main(int argc, char** argv){
 	}	
 
 	if(verbose)
-		std::cout<<"\nTotal Cost for routing: "<<total_cost<<" km"<<std::endl;
+		std::cout<<total_cost<<std::endl;
  	
 	if(logToFile)
 	{
