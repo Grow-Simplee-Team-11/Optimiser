@@ -80,8 +80,9 @@ main: main.cpp fesif.o TSP_LK.o TSP_OR.o EB-AFIT.o Optimiser.o cluster.o TSP_CK.
 clean:
 		-@rm *.o *.gcno *~ 2> /dev/null || true
 		-@rm fesif chst 2> /dev/null || true
-# Integrate: main.cpp  $(OPT_INCLUDE_DIR)/Optimiser.cpp $(OPT_HEADER_DIR)/Optimiser.hpp
-# 	$(CXX) $(CFLAGS) main.cpp  $(OPT_INCLUDE_DIR)/Optimiser.cpp -o Integrate
-
-
+.PHONY: distclean
+distclean:
+		-@rm *.o *.gcno *~ 2> /dev/null || true
+		-@rm fesif chst 2> /dev/null || true
+		rm main FESIF*
 

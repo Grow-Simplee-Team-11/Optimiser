@@ -200,10 +200,12 @@ int main(int argc, char** argv){
 	RoutePlanInterface* rp = NULL;
 	if (std::string(argv[2]) == "TSP_OR") rp = new TSP_OR;
 	else if (std::string(argv[2]) == "TSP_LK") rp = new TSP_LK;
+	else if (std::string(argv[2]) == "TSP_CK") rp = new TSP;
 
 	ClusteringInterface* cls = NULL;
 	if (std::string(argv[3]) == "CLARKE") cls = new Clarke;
 	else if (std::string(argv[3]) == "FESIF") cls = new FESIF;
+	else if (std::string(argv[3]) == "SELF") cls = new SELFCLUSTERING;
 	
 	BinPackInterface* bp = NULL;
 	if (std::string(argv[4]) == "EB_AFIT") bp = new EB_AFIT;
