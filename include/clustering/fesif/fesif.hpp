@@ -10,6 +10,7 @@
 using namespace std;
 
 class FESIF : public ClusteringInterface {
+
     private:
         int nP;
         int* reqPool;
@@ -27,7 +28,7 @@ class FESIF : public ClusteringInterface {
         vector<vector<item> > wrapperLMD(vector<item>& items, Coordinate warehouse, int numberOfRiders, Bin bin);
 
     public:
-        FESIF(): nP(0), step(2.0), rho(1){
+        FESIF(bool method): nP(0), step(2.0), rho(1), ClusteringInterface(method){
             delta = rho;
         }
         void ComputeClusters(vector<item>& packages, Coordinate warehouse, int numRiders, Bin b) {

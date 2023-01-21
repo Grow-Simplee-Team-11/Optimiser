@@ -1,28 +1,4 @@
-#include "../../../include/clustering/Clarke/clarke.hpp"
-
-// extern double toRadians(const double degree){}
-// extern double Dist(Coordinate &c1, Coordinate &c2){}
-double toRadians(const double degree){
-    double one_deg = (M_PI) / 180;
-    return (one_deg * degree);
-}
-// double Dist(Coordinate &c1,Coordinate &c2){
-//     double lat1 = toRadians(c1.latitude);
-//     double long1 = toRadians(c1.longitude);
-//     double lat2 = toRadians(c2.latitude);
-//     double long2 = toRadians(c2.longitude);
-
-//     double dlong = long2 - long1;
-//     double dlat = lat2 - lat1;
-
-//     double ans = pow(sin(dlat / 2), 2) +
-//                           cos(lat1) * cos(lat2) *
-//                           pow(sin(dlong / 2), 2);
- 
-//     ans = 2 * asin(sqrt(ans));
-//     ans = ans * R;
-//     return ans;
-// }
+#include "../../include/clustering/HGS/clarle.hpp"
 
 void Clarke::merge_sort(vector<pair<int,int>> final_points, int l , int r){
     if(r-l+1==1){
@@ -56,10 +32,6 @@ void Clarke::merge_sort(vector<pair<int,int>> final_points, int l , int r){
     return;
 }
 
-
-double Dist(Coordinate &c1, Coordinate &c2){
-    return sqrt((c1.latitude-c2.latitude)*(c1.latitude-c2.latitude)+(c1.longitude-c2.longitude)*(c1.longitude-c2.longitude));
-}
 Cluster::Cluster(){
         p1 = 0;
         p2 = 0;
@@ -87,7 +59,7 @@ double Clarke::depotDist(Coordinate &c){
     return Dist(c,warehouse);
 }
 double Clarke::compute_savings(item& item1,item& item2){
-    return depotDist(item1.coordinate) + depotDist(item2.coordinate) - Dist(item1.coordinate,item2.coordinate);
+    return depotDist(item1.coordinate) + depotDist(item2.coordinate) - Dist(item1.coordinate,item2.coordinate) + abs(item1.time -item2.time);
 }
 void Clarke::create_pq(){
     q = priority_queue<pair<double,pair<int,int>>> ();

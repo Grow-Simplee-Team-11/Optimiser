@@ -2,7 +2,7 @@
 // #include "../../include/datastructures.hpp"
 #ifndef __CLARKE__HEADER__
 #define __CLARKE__HEADER__
-#include "../../interface/ClusteringInterface.hpp"
+#include "../../../include/interface/ClusteringInterface.hpp"
 using namespace std;
 
 
@@ -26,6 +26,7 @@ class Cluster{
 
 class Clarke: public ClusteringInterface{
     public:
+    Clarke(bool method) : ClusteringInterface(method){}
     vector<item> packages; Coordinate warehouse; int numPackages;int numRiders; Bin b;double distThresh;
     vector<Cluster> Clusters;
     vector<Cluster> final_Clusters;
@@ -38,12 +39,12 @@ class Clarke: public ClusteringInterface{
     void ComputeClusters(vector<item>& packages, Coordinate warehouse, int numRiders, Bin b);
     double compute_savings(item&,item&);
     void create_pq();
-    void consolodate_further();
-    bool cmp(pair<int,int>, pair<int,int>);
-    void merge_sort(vector<pair<int,int>> final_points, int l , int r);
     void make_set(int);
     int find_set(int);
     void test();
+    void consolodate_further();
+    bool cmp(const pair<int,int> ,const pair<int,int> );
+    void merge_sort(vector<pair<int,int>> , int  , int );
     Cluster initCluster(int);
     int union_sets(int a,int b, bool);
     void CalculateCost();
