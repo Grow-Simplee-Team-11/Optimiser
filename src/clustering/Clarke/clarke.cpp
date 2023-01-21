@@ -191,8 +191,19 @@ void Clarke::solve(){
     cluster_list.clear();
 
     for(int i = 0;i<numPackages;i++){
+        s.insert(find_set(i));
         cluster_list[find_set(i)].push_back(packages[i]);
     }
+    ofstream output;
+    output.open("./tests/cluster_vol.txt");
+    for(auto it = s.begin();it != s.end();it++){
+        output << Clusters[*it].weight << endl;
+        for(int i = 0;i < cluster_list[*it].size();i++){
+            output << cluster_list[*it][i].weight << ' ';
+        }
+        output << endl;
+    }
+    output.close();
     for(auto it = cluster_list.begin();it != cluster_list.end();it++){
         clusters.push_back(it->second);
     } 
