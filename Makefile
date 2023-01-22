@@ -114,4 +114,10 @@ distclean:
 		-@rm *.o *.gcno *~ 2> /dev/null || true
 		-@rm fesif chst 2> /dev/null || true
 		
+obj_remove:
+	-@rm *.o *.gcno *.so *~ 2> /dev/null || true
+# Integrate: main.cpp  $(OPT_INCLUDE_DIR)/Optimiser.cpp $(OPT_HEADER_DIR)/Optimiser.hpp
+# 	$(CXX) $(CFLAGS) main.cpp  $(OPT_INCLUDE_DIR)/Optimiser.cpp -o Integrate
+
+
 
