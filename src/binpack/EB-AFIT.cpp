@@ -124,6 +124,7 @@ double EB_AFIT::getInversionCount(vector<item>& cluster) {
     }
     int n = cluster.size();
     double ans = 1 - (double)num_cnt / ((n * (n - 1)) / 2);
+    cout << num_cnt << endl;
     return ans;
 }
 
@@ -799,37 +800,50 @@ void report(vector<item>& cluster) {
     printf("PERCENTAGE OF PALLET VOLUME USED   : %.6f %%\n", percentageused);
     printf("PERCENTAGE OF PACKEDBOXES (VOLUME) : %.6f%%\n", percentagepackedbox);
 }
-
+int get_rand(int a,int b){
+    return a + rand()%(b - a);
+}
 int main() {
     EB_AFIT eba;
     //     104, 96, 84
     // 1. 70, 104, 24, 4
     // 2. 14, 104, 48, 2
     // 3. 40, 52, 36, 3
+    srand(time(NULL));
+    int CLUSTER_SIZE = 25;
+    vector<int> min_dimensions(3),max_dimensions(3),bin_dimensions(3);
+    min_dimensions = {3,3,3};
+    max_dimensions = {40,20,40};
+    bin_dimensions = {80,100,80};
 
-    vector<item> cluster(3);
-    cluster[0].size.width = 10;
-    cluster[0].size.length = 10;
-    cluster[0].size.height = 10;
-    cluster[1].size.width = 20;
-    cluster[1].size.length = 20;
-    cluster[1].size.height = 20;
-    cluster[2].size.width = 20;
-    cluster[2].size.length = 20;
-    cluster[2].size.height = 30;
+    vector<item> cluster(CLUSTER_SIZE);
+    for(int i = 0;i < CLUSTER_SIZE;i++){
+        cluster[i].size.length = get_rand(min_dimensions[0],max_dimensions[0]);
+        cluster[i].size.width = get_rand(min_dimensions[1],max_dimensions[1]);
+        cluster[i].size.height = get_rand(min_dimensions[2],max_dimensions[2]);
+    }
+    // cluster[0].size.width = 10;
+    // cluster[0].size.length = 10;
+    // cluster[0].size.height = 10;
+    // cluster[1].size.width = 20;
+    // cluster[1].size.length = 20;
+    // cluster[1].size.height = 20;
+    // cluster[2].size.width = 20;
+    // cluster[2].size.length = 20;
+    // cluster[2].size.height = 30;
 
-    Bin b(40, 40, 20);
+    Bin b(bin_dimensions[0], bin_dimensions[1], bin_dimensions[2]);
     eba.BinPack(cluster, b);
     auto res = eba.GetPackaging();
     eba.CalculateCost();
     cout << eba.GetPackagingCost() << endl;
     cout << eba.getInversionCount(cluster) << endl;
-    for (auto x : cluster) {
-        // x.print();
-        cout << x.orig_rank << "\n";
-        cout << "\n";
-        cout << x.position.x << " " << x.position.y << " " << x.position.z << endl;
-    }
+    // for (auto x : cluster) {
+    //     // x.print();
+    //     cout << x.orig_rank << "\n";
+    //     cout << "\n";
+    //     cout << x.position.x << " " << x.position.y << " " << x.position.z << endl;
+    // }
 
     return 0;
 }
