@@ -10,6 +10,7 @@
 #include "./include/routeplan/TSP_LK.hpp"
 #include "./include/clustering/HGS/HGS.hpp"
 #include "./include/routeplan/TSP_CK.hpp"
+#include "./include/clustering/HGS/HGS.hpp"
 
 #include "./include/binpack/EB_AFIT.hpp"
 
