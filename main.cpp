@@ -5,6 +5,7 @@
 #include "./include/clustering/Clarke/clarke.hpp"
 
 
+
 #include "./include/routeplan/TSP_OR.hpp"
 #include "./include/routeplan/TSP_OR_EDD.hpp"
 #include "./include/routeplan/TSP_LK.hpp"
@@ -21,7 +22,6 @@ class DataModel{
 	Coordinate warehouse;
 	Bin bin;
 	vector<item> packages;
-<<<<<<< HEAD
 	int optimal;
 	int numRiders = 5;
 };
