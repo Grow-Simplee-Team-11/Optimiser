@@ -66,7 +66,11 @@ void TSP_OR::ComputeEuclideanDistanceMatrix(std::vector<item>& cluster)
     for (int toNode = 0; toNode < mod_cluster.size(); toNode++) {
       if (fromNode != toNode)
         distances[fromNode][toNode] = static_cast<int64_t>(
+<<<<<<< HEAD
           haversine(mod_cluster[fromNode].coordinate.latitude, mod_cluster[fromNode].coordinate.longitude, mod_cluster[toNode].coordinate.latitude, mod_cluster[toNode].coordinate.longitude)*SCALING_FACTOR);
+=======
+          Dist(mod_cluster[fromNode].coordinate, mod_cluster[toNode].coordinate)*scale);
+>>>>>>> 3326125 (HGS Integration Complete)
     }
   }
 }
@@ -122,7 +126,12 @@ void TSP_OR::savePath(vector<item>&clusters ,const RoutingIndexManager& manager,
     index = solution.Value(routing.NextVar(index));
     distance += routing.GetArcCostForVehicle(previous_index, index, int64_t{0});
   }
+<<<<<<< HEAD
   double tot_dist = (double)distance / SCALING_FACTOR;
+=======
+  double tot_dist = (double)distance ;
+  tot_dist /= scale;
+>>>>>>> 3326125 (HGS Integration Complete)
   cost = tot_dist;
   std::cout << "Route distance: " << tot_dist<< "km";
   std::cout << "  ";

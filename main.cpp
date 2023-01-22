@@ -19,17 +19,38 @@ class DataModel{
 	Coordinate warehouse;
 	Bin bin;
 	vector<item> packages;
+<<<<<<< HEAD
 	int optimal;
+=======
+	int numRiders = 5;
+>>>>>>> 3326125 (HGS Integration Complete)
 };
 
 DataModel ReadVRPs(string filename){
 	DataModel dm;
 	ifstream inputFile;
 	inputFile.open(filename);
+	int index = 0;
+	cout << 'a';
+	while(filename[index] != 'k')
+		index++;
+	index++;
+	string nums;
+	cout << 'b';
+	while(filename[index] != '.'){
+		nums.push_back(filename[index]);
+		index++;
+	}
+	cout << 'c';
+	dm.numRiders = stoi(nums);
+	cout << nums << dm.numRiders << endl;
 	if(!inputFile.is_open()){
 		std::cout<<"Cannot Open File\n";
 	}
+<<<<<<< HEAD
 	
+=======
+>>>>>>> 3326125 (HGS Integration Complete)
 	Coordinate warehouse;
 	std::string content, content2, content3;
 	double serviceTimeData = 0.;
@@ -59,7 +80,7 @@ DataModel ReadVRPs(string filename){
 	}
 	if (nbClients <= 0) throw std::string("Number of nodes is undefined");
 	if (vehicleCapacity == 1.e30) throw std::string("Vehicle capacity is undefined");
-
+	
 	std::vector<double> x_coords = std::vector<double>(nbClients);
 	std::vector<double> y_coords = std::vector<double>(nbClients);
 	std::vector<double> demands = std::vector<double>(nbClients);
@@ -207,8 +228,8 @@ int main(int argc, char** argv){
 	bool logToFile = true;
 	string logFileName = "FESIF_TSP_LK.txt";
 
-	int numRiders = 5;
-	Optimizer optim(rp, cls, bp, dm.packages, dm.warehouse, numRiders, dm.bin, logFileName, verbose, logToFile);
+	// int numRiders = 5;
+	Optimizer optim(rp, cls, bp, dm.packages, dm.warehouse, dm.numRiders, dm.bin, logFileName, verbose, logToFile);
 
 	optim.optimize();
 	vector<float> rcosts = optim.GetRoutingCost();
