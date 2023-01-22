@@ -24,6 +24,8 @@ CLARKE_INCLUDE_DIR = src/clustering/Clarke
 TSP_INCLUDE_DIR = src/routeplan
 OPT_INCLUDE_DIR = src
 OPT_HEADER_DIR = include
+HGS_INCLUDE_DIR = $(CLUS_INC_DIR)/HGS
+HGS_SRC_DIR = $(CLUS_SRC_DIR)/HGS
 
 RP_INC_DIR = include/routeplan
 # TSP_OR_INCLUDE_DIR = $(RP_INC_DIR)/
@@ -71,6 +73,29 @@ TSP_CK.o :
 
 clarke.o : 
 	$(CXX) $(CFLAGS) -c src/clustering/Clarke/clarke.cpp $(LIBS)
+AlgorithmParameters.o: $(HGS_SRC_DIR)/AlgorithmParameters.cpp
+	$(CXX) $(CFLAGS) -c $(HGS_SRC_DIR)/AlgorithmParameters.cpp $(LIBS)
+C_Interface.o :  $(HGS_SRC_DIR)/C_Interface.cpp AlgorithmParameters.o
+	$(CXX) $(CFLAGS) -c $(HGS_SRC_DIR)/C_Interface.cpp $(LIBS)
+Params.o : $(HGS_SRC_DIR)/Params.cpp AlgorithmParameters.o
+	$(CXX) $(CFLAGS) -c $(HGS_SRC_DIR)/Params.cpp $(LIBS)
+Individual.o : $(HGS_SRC_DIR)/Params.cpp Params.o
+	$(CXX) $(CFLAGS) -c $(HGS_SRC_DIR)/Individual.cpp $(LIBS)
+LocalSearch.o : $(HGS_SRC_DIR)/LocalSearch.cpp Individual.o
+	$(CXX) $(CFLAGS) -c $(HGS_SRC_DIR)/LocalSearch.cpp $(LIBS)
+Population.o : $(HGS_SRC_DIR)/Population.cpp Individual.o LocalSearch.o
+	$(CXX) $(CFLAGS) -c $(HGS_SRC_DIR)/Population.cpp $(LIBS)
+Split.o : $(HGS_SRC_DIR)/Split.cpp Individual.o Params.o
+	$(CXX) $(CFLAGS) -c $(HGS_SRC_DIR)/Split.cpp $(LIBS)
+Genetic.o : $(HGS_SRC_DIR)/Genetic.cpp Individual.o Population.o
+	$(CXX) $(CFLAGS) -c $(HGS_SRC_DIR)/Population.cpp $(LIBS)
+InstanceCVRPLIB.o : $(HGS_SRC_DIR)/InstanceCVRPLIB.cpp 
+	$(CXX) $(CFLAGS) -c $(HGS_SRC_DIR)/InstanceCVRPLIB.cpp $(LIBS)
+HGS.o: AlgorithmParameters.o C_Interface.o Params.o Individual.o LocalSearch.o Population.o Split.o Genetic.o InstanceCVRPLIB.o 
+	$(CXX) $(CFLAGS) -c $(HGS_SRC_DIR)/HGS.cpp
+# Build the executable
+Integrate: main.cpp fesif.o TSP_OR.o EB-AFIT.o HGS.o Optimiser.o $(CLARKE_INCLUDE_DIR)/clarke.cpp $(CLARKE_INCLUDE_DIR)/clarke.hpp $(TSP_INCLUDE_DIR)/TSP.cpp $(TSP_INCLUDE_DIR)/tsp.h $(TSP_INCLUDE_DIR)/TSP_LK.cpp $(RP_INC_DIR)/TSP_LK.hpp $(HGS_SRC_DIR)/HGS.cpp
+	/usr/bin/g++-11 --std=c++17 -W -Wall -Wno-sign-compare -O4 -pipe -mmmx -msse -msse2 -msse3 -g -Iinclude/ortools -Iinclude -I.  -o main global.o HST.o utils.o FESIF.o TSP_OR.o EB-AFIT.o Optimiser.o HGS.o main.cpp $(CLARKE_INCLUDE_DIR)/clarke.cpp $(TSP_INCLUDE_DIR)/TSP.cpp $(TSP_INCLUDE_DIR)/TSP_LK.cpp -o Integrate -L./lib -Llib -lortools
 
 # Build the executable
 main: main.cpp fesif.o TSP_LK.o TSP_OR.o EB-AFIT.o Optimiser.o cluster.o TSP_CK.o clarke.o
