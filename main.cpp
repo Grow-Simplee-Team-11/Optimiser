@@ -1,10 +1,13 @@
 #include<iostream>
 #include<vector>
 #include "./include/clustering/fesif/fesif.hpp"
+#include "./include/clustering/HGS/HGS.hpp"
 #include "./src/clustering/Clarke/clarke.hpp"
+
 
 #include "./include/routeplan/TSP_OR.hpp"
 #include "./include/routeplan/TSP_LK.hpp"
+#include "./include/clustering/HGS/HGS.hpp"
 #include "./src/routeplan/tsp.h"
 
 #include "./include/binpack/EB_AFIT.hpp"
@@ -189,7 +192,8 @@ int main(int argc, char** argv){
 	RoutePlanInterface* rp = new TSP_OR(EUCLIDEAN);
 	// RoutePlanInterface* rp = new TSP_LK;
 	// ClusteringInterface* cls = new FESIF;
-	ClusteringInterface* cls = new Clarke(EUCLIDEAN);
+	// ClusteringInterface* cls = new Clarke(EUCLIDEAN);
+	ClusteringInterface* cls = new HGS(EUCLIDEAN);
 	BinPackInterface* bp =  new EB_AFIT;
 
 	bool verbose = true;
