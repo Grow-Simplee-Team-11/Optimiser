@@ -11,7 +11,8 @@
 #include<string>
 #include<iostream>
 #include<fstream>
-
+#define EUCLIDEAN 0
+#define HAVERSINE 1
 #include "../datastructures.hpp"
 #define PI 3.14159265359
 using namespace std;

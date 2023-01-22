@@ -45,10 +45,7 @@ DataModel ReadVRPs(string filename){
 	if(!inputFile.is_open()){
 		std::cout<<"Cannot Open File\n";
 	}
-<<<<<<< HEAD
-	
-=======
->>>>>>> 3326125 (HGS Integration Complete)
+
 	Coordinate warehouse;
 	std::string content, content2, content3;
 	double serviceTimeData = 0.;
@@ -204,7 +201,6 @@ int main(int argc, char** argv){
 			cout << err;
 		}
 	}
-<<<<<<< HEAD
 
 	RoutePlanInterface* rp = NULL;
 	if (std::string(argv[2]) == "TSP_OR") rp = new TSP_OR;
@@ -222,14 +218,12 @@ int main(int argc, char** argv){
 	assert(cls!=NULL);
 	assert(bp!=NULL);
 
-=======
 	RoutePlanInterface* rp = new TSP_OR(EUCLIDEAN);
 	// RoutePlanInterface* rp = new TSP_LK;
 	// ClusteringInterface* cls = new FESIF;
 	// ClusteringInterface* cls = new Clarke(EUCLIDEAN);
 	ClusteringInterface* cls = new HGS(EUCLIDEAN);
 	BinPackInterface* bp =  new EB_AFIT;
->>>>>>> c496bee (HGS done, makefile still left)
 
 	bool verbose = true;
 	bool logToFile = true;

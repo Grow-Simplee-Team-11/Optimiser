@@ -4,19 +4,12 @@
 HGS::HGS(bool method): ClusteringInterface(method){
 			// pathInstance = instance_path_name;
 			// pathSolution = solution_path_name;
-<<<<<<< HEAD
 			isRoundingInteger = false;
 			verbose = true;
 			pathSolution = "./tests/HGS_sol.txt";
 			ap = default_algorithm_parameters();
 			// ap.timeLimit = 30.0;
 			ap.nbIter = 25000;
-=======
-			isRoundingInteger = true;
-			verbose = true;
-			pathSolution = "./tests/HGS_sol.txt";
-			ap = default_algorithm_parameters();
->>>>>>> c496bee (HGS done, makefile still left)
 }
 void HGS::ComputeClusters(vector<item> &packages, Coordinate warehouse, int numRiders, Bin b) {
 							
