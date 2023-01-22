@@ -17,7 +17,7 @@ void TSP_OR::ComputeEuclideanDistanceMatrix(std::vector<item>& cluster)
     for (int toNode = 0; toNode < mod_cluster.size(); toNode++) {
       if (fromNode != toNode)
         distances[fromNode][toNode] = static_cast<int64_t>(
-          Dist(mod_cluster[fromNode].coordinate, mod_cluster[toNode].coordinate));
+          Dist(mod_cluster[fromNode].coordinate, mod_cluster[toNode].coordinate)*scale);
     }
   }
 }
@@ -74,6 +74,7 @@ void TSP_OR::savePath(vector<item>&clusters ,const RoutingIndexManager& manager,
     distance += routing.GetArcCostForVehicle(previous_index, index, int64_t{0});
   }
   double tot_dist = (double)distance ;
+  tot_dist /= scale;
   cost = tot_dist;
   std::cout << "Route distance: " << tot_dist<< "km";
   std::cout << "  ";

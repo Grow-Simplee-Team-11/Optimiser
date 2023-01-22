@@ -33,6 +33,7 @@ class TSP_OR : public RoutePlanInterface{
         const int num_vehicles=1;
         
         // for scaling the distances from float to integer type
+        const int scale = 1000;
         Coordinate warehouse;
         const RoutingIndexManager::NodeIndex depot{0};
 };

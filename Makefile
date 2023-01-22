@@ -63,33 +63,35 @@ Optimiser.o:
 	$(CXX) $(CFLAGS) -c src/Optimiser.cpp $(LIBS) 
 
 AlgorithmParameters.o: $(HGS_SRC_DIR)/AlgorithmParameters.cpp
-	$(CXX) $(CFLAGS) -c $(HGS_SRC_DIR)/AlgorithmParameters.cpp $(LIBS)
-C_Interface.o :  $(HGS_SRC_DIR)/C_Interface.cpp AlgorithmParameters.o
-	$(CXX) $(CFLAGS) -c $(HGS_SRC_DIR)/C_Interface.cpp $(LIBS)
-Params.o : $(HGS_SRC_DIR)/Params.cpp AlgorithmParameters.o
-	$(CXX) $(CFLAGS) -c $(HGS_SRC_DIR)/Params.cpp $(LIBS)
-Individual.o : $(HGS_SRC_DIR)/Params.cpp Params.o
-	$(CXX) $(CFLAGS) -c $(HGS_SRC_DIR)/Individual.cpp $(LIBS)
-LocalSearch.o : $(HGS_SRC_DIR)/LocalSearch.cpp Individual.o
-	$(CXX) $(CFLAGS) -c $(HGS_SRC_DIR)/LocalSearch.cpp $(LIBS)
-Population.o : $(HGS_SRC_DIR)/Population.cpp Individual.o LocalSearch.o
-	$(CXX) $(CFLAGS) -c $(HGS_SRC_DIR)/Population.cpp $(LIBS)
-Split.o : $(HGS_SRC_DIR)/Split.cpp Individual.o Params.o
-	$(CXX) $(CFLAGS) -c $(HGS_SRC_DIR)/Split.cpp $(LIBS)
-Genetic.o : $(HGS_SRC_DIR)/Genetic.cpp Individual.o Population.o
-	$(CXX) $(CFLAGS) -c $(HGS_SRC_DIR)/Population.cpp $(LIBS)
+	$(CXX)  -fPIC -c $(HGS_SRC_DIR)/AlgorithmParameters.cpp 
+C_Interface.o :  $(HGS_SRC_DIR)/C_Interface.cpp 
+	$(CXX)  -fPIC -c $(HGS_SRC_DIR)/C_Interface.cpp 
+Params.o : $(HGS_SRC_DIR)/Params.cpp 
+	$(CXX)  -fPIC -c $(HGS_SRC_DIR)/Params.cpp 
+Individual.o : $(HGS_SRC_DIR)/Params.cpp 
+	$(CXX)  -fPIC -c $(HGS_SRC_DIR)/Individual.cpp 
+LocalSearch.o : $(HGS_SRC_DIR)/LocalSearch.cpp 
+	$(CXX)  -fPIC -c $(HGS_SRC_DIR)/LocalSearch.cpp 
+Population.o : $(HGS_SRC_DIR)/Population.cpp 
+	$(CXX)  -fPIC -c $(HGS_SRC_DIR)/Population.cpp 
+Split.o : $(HGS_SRC_DIR)/Split.cpp 
+	$(CXX)  -fPIC -c $(HGS_SRC_DIR)/Split.cpp 
+Genetic.o : $(HGS_SRC_DIR)/Genetic.cpp
+	$(CXX)  -fPIC -c $(HGS_SRC_DIR)/Genetic.cpp
 InstanceCVRPLIB.o : $(HGS_SRC_DIR)/InstanceCVRPLIB.cpp 
-	$(CXX) $(CFLAGS) -c $(HGS_SRC_DIR)/InstanceCVRPLIB.cpp $(LIBS)
-HGS.o: AlgorithmParameters.o C_Interface.o Params.o Individual.o LocalSearch.o Population.o Split.o Genetic.o InstanceCVRPLIB.o 
-	$(CXX) $(CFLAGS) -c $(HGS_SRC_DIR)/HGS.cpp
+	$(CXX)  -fPIC -c $(HGS_SRC_DIR)/InstanceCVRPLIB.cpp 
+HGS.o: $(HGS_SRC_DIR)/HGS.cpp
+	$(CXX) $(CFLAGS) -fPIC -c $(HGS_SRC_DIR)/HGS.cpp
+libHGS.so : AlgorithmParameters.o C_Interface.o Params.o Individual.o LocalSearch.o Population.o Split.o Genetic.o InstanceCVRPLIB.o HGS.o
+	$(CXX)  -shared -fPIC -o libHGS.so AlgorithmParameters.o C_Interface.o Params.o Individual.o LocalSearch.o Population.o Split.o Genetic.o InstanceCVRPLIB.o HGS.o
 # Build the executable
-Integrate: main.cpp fesif.o TSP_OR.o EB-AFIT.o HGS.o Optimiser.o $(CLARKE_INCLUDE_DIR)/clarke.cpp $(CLARKE_INCLUDE_DIR)/clarke.hpp $(TSP_INCLUDE_DIR)/TSP.cpp $(TSP_INCLUDE_DIR)/tsp.h $(TSP_INCLUDE_DIR)/TSP_LK.cpp $(RP_INC_DIR)/TSP_LK.hpp $(HGS_SRC_DIR)/HGS.cpp
-	/usr/bin/g++-11 --std=c++17 -W -Wall -Wno-sign-compare -O4 -pipe -mmmx -msse -msse2 -msse3 -g -Iinclude/ortools -Iinclude -I.  -o main global.o HST.o utils.o FESIF.o TSP_OR.o EB-AFIT.o Optimiser.o HGS.o main.cpp $(CLARKE_INCLUDE_DIR)/clarke.cpp $(TSP_INCLUDE_DIR)/TSP.cpp $(TSP_INCLUDE_DIR)/TSP_LK.cpp -o Integrate -L./lib -Llib -lortools
+Integrate: main.cpp fesif.o TSP_OR.o EB-AFIT.o HGS.o Optimiser.o $(CLARKE_INCLUDE_DIR)/clarke.cpp $(CLARKE_INCLUDE_DIR)/clarke.hpp $(TSP_INCLUDE_DIR)/TSP.cpp $(TSP_INCLUDE_DIR)/tsp.h $(TSP_INCLUDE_DIR)/TSP_LK.cpp $(RP_INC_DIR)/TSP_LK.hpp libHGS.so
+	/usr/bin/g++-11 --std=c++17 -W -Wall -Wno-sign-compare -O4 -pipe -mmmx -msse -msse2 -msse3 -g -Iinclude/ortools -Iinclude -I.  -o main global.o HST.o utils.o FESIF.o TSP_OR.o EB-AFIT.o Optimiser.o  main.cpp $(CLARKE_INCLUDE_DIR)/clarke.cpp $(TSP_INCLUDE_DIR)/TSP.cpp $(TSP_INCLUDE_DIR)/TSP_LK.cpp -o Integrate -L./lib -Llib -lortools -L. -lHGS
 
 
 .PHONY: clean
 clean:
-		-@rm *.o *.gcno *~ 2> /dev/null || true
+		-@rm *.o *.gcno *.so *~ 2> /dev/null || true
 		-@rm fesif chst 2> /dev/null || true
 		rm Integrate
 # Integrate: main.cpp  $(OPT_INCLUDE_DIR)/Optimiser.cpp $(OPT_HEADER_DIR)/Optimiser.hpp

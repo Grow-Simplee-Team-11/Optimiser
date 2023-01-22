@@ -14,7 +14,7 @@
 #define EUCLIDEAN 0
 #define HAVERSINE 1
 #include "../datastructures.hpp"
-
+#define PI 3.14159265359
 using namespace std;
 
 class ClusteringInterface{
@@ -88,7 +88,7 @@ class ClusteringInterface{
             double lon_1_deg = c1.longitude;
             double lat_2_deg = c2.latitude;
             double lon_2_deg = c2.longitude;
-            double PI = 3.14159265359;
+            // double PI = 3.14159265359;
             double lat_1_rad, lon_1_rad, lat_2_rad, lon_2_rad;
             lat_1_rad = lat_1_deg * (PI / 180);
             lon_1_rad = lon_1_deg * (PI / 180);
