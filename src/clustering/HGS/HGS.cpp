@@ -4,10 +4,12 @@
 HGS::HGS(bool method): ClusteringInterface(method){
 			// pathInstance = instance_path_name;
 			// pathSolution = solution_path_name;
-			isRoundingInteger = true;
+			isRoundingInteger = false;
 			verbose = true;
 			pathSolution = "./tests/HGS_sol.txt";
 			ap = default_algorithm_parameters();
+			// ap.timeLimit = 30.0;
+			ap.nbIter = 25000;
 }
 void HGS::ComputeClusters(vector<item> &packages, Coordinate warehouse, int numRiders, Bin b) {
 							
@@ -28,17 +30,36 @@ void HGS::ComputeClusters(vector<item> &packages, Coordinate warehouse, int numR
 			}
 			for (int i = 0; i <= n; i++){
 				for (int j = 0; j <= n; j++){
-					dist_mtx[i][j] = Dist(packages[i].coordinate,packages[j].coordinate);
+					if(i != 0 && j != 0)
+						dist_mtx[i][j] = Dist(packages[i-1].coordinate,packages[j-1].coordinate);
+					else if(i == 0 && j != 0)
+						dist_mtx[i][j] = Dist(warehouse,packages[j-1].coordinate);
+					else if(j == 0 && i != 0)
+						dist_mtx[i][j] = Dist(packages[i-1].coordinate,warehouse);
+					else dist_mtx[i][j] = 0;
+					// dist_mtx[i][j] = Dist(packages[i].coordinate,packages[j].coordinate);
 					if (isRoundingInteger) dist_mtx[i][j] = round(dist_mtx[i][j]);
 				}
 			}
-			
-
+			cout << "X : ";
+			for(int i = 0;i < x_coords.size();i++){
+				cout << x_coords[i]<< ' ';
+			}
+			cout << "\nY : ";
+			for(int i = 0;i < y_coords.size();i++){
+				cout << y_coords[i]<< ' ';
+			}
+			cout<<"\nD : ";
+			for(int i = 0;i < demands.size();i++){
+				cout << demands[i]<< ' ';
+			}
+			cout << endl;
 			// Params params(x_coords,y_coords,)
 			// Params params(cvrp.x_coords,cvrp.y_coords,cvrp.dist_mtx,cvrp.service_time,cvrp.demands,
 						// cvrp.vehicleCapacity,cvrp.durationLimit,nbVeh,cvrp.isDurationConstraint,verbose,ap);
 			Params params(x_coords,y_coords,dist_mtx,service_time,demands,
 						b.capacity,1.e30,numRiders,false,verbose,ap);
+			print_algorithm_parameters(ap);
 			// Running HGS
 			Genetic solver(params);
 			solver.run();

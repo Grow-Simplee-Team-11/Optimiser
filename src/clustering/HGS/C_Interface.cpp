@@ -10,6 +10,7 @@
 #include <vector>
 #include <cmath>
 
+
 Solution *prepare_solution(Population &population, Params &params)
 {
 	// Preparing the best solution
