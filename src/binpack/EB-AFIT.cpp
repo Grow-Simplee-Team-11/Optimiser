@@ -108,12 +108,12 @@ double EB_AFIT::getInversionCount(vector<item>& cluster) {
                     cluster[i].position.x + cluster[i].size.length > cluster[j].position.x) {
                     if (cluster[i].position.z < cluster[j].position.z + cluster[j].size.height ||
                         cluster[i].position.z + cluster[i].size.height > cluster[j].position.z) {
-                        cout << "Inversion detected" << endl;
-                        cout << i << " " << j << endl;
-                        // cluster[i].print();
-                        cout << cluster[i].position.x << " " << cluster[i].position.y << " " << cluster[i].position.z << endl;
-                        cout << "and" << endl;
-                        cout << cluster[j].position.x << " " << cluster[j].position.y << " " << cluster[j].position.z << endl;
+                        // cout << "Inversion detected" << endl;
+                        // cout << i << " " << j << endl;
+                        // // cluster[i].print();
+                        // cout << cluster[i].position.x << " " << cluster[i].position.y << " " << cluster[i].position.z << endl;
+                        // cout << "and" << endl;
+                        // cout << cluster[j].position.x << " " << cluster[j].position.y << " " << cluster[j].position.z << endl;
                         // cluster[j].print();
 
                         num_cnt++;
