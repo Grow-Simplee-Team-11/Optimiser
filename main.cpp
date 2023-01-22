@@ -5,6 +5,7 @@
 #include "./include/clustering/Clarke/clarke.hpp"
 
 
+
 #include "./include/routeplan/TSP_OR.hpp"
 #include "./include/routeplan/TSP_LK.hpp"
 #include "./include/routeplan/TSP_CK.hpp"
@@ -19,11 +20,8 @@ class DataModel{
 	Coordinate warehouse;
 	Bin bin;
 	vector<item> packages;
-<<<<<<< HEAD
 	int optimal;
-=======
 	int numRiders = 5;
->>>>>>> 3326125 (HGS Integration Complete)
 };
 
 DataModel ReadVRPs(string filename){
@@ -206,6 +204,7 @@ int main(int argc, char** argv){
 			cout << err;
 		}
 	}
+<<<<<<< HEAD
 
 	RoutePlanInterface* rp = NULL;
 	if (std::string(argv[2]) == "TSP_OR") rp = new TSP_OR;
@@ -223,6 +222,14 @@ int main(int argc, char** argv){
 	assert(cls!=NULL);
 	assert(bp!=NULL);
 
+=======
+	RoutePlanInterface* rp = new TSP_OR(EUCLIDEAN);
+	// RoutePlanInterface* rp = new TSP_LK;
+	// ClusteringInterface* cls = new FESIF;
+	// ClusteringInterface* cls = new Clarke(EUCLIDEAN);
+	ClusteringInterface* cls = new HGS(EUCLIDEAN);
+	BinPackInterface* bp =  new EB_AFIT;
+>>>>>>> c496bee (HGS done, makefile still left)
 
 	bool verbose = true;
 	bool logToFile = true;
