@@ -52,10 +52,7 @@ DataModel ReadVRPs(string filename){
 	if(!inputFile.is_open()){
 		std::cout<<"Cannot Open File\n";
 	}
-<<<<<<< HEAD
-	
-=======
->>>>>>> 3326125 (HGS Integration Complete)
+
 	Coordinate warehouse;
 	std::string content, content2, content3;
 	double serviceTimeData = 0.;

@@ -4,7 +4,6 @@
 HGS::HGS(bool method): ClusteringInterface(method){
 			// pathInstance = instance_path_name;
 			// pathSolution = solution_path_name;
-<<<<<<< HEAD
 			isRoundingInteger = false;
 			verbose = true;
 			pathSolution = "./tests/HGS_sol.txt";
