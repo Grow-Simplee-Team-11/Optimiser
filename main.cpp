@@ -1,12 +1,14 @@
 #include<iostream>
 #include<vector>
 #include "./include/clustering/fesif/fesif.hpp"
-#include "./include/clustering/selfClustering/selfClustering.hpp"
-#include "./include/clustering/Clarke/clarke.hpp"
+#include "./include/clustering/HGS/HGS.hpp"
+#include "./src/clustering/Clarke/clarke.hpp"
+
 
 #include "./include/routeplan/TSP_OR.hpp"
 #include "./include/routeplan/TSP_LK.hpp"
-#include "./include/routeplan/TSP_CK.hpp"
+#include "./include/clustering/HGS/HGS.hpp"
+#include "./src/routeplan/tsp.h"
 
 #include "./include/binpack/EB_AFIT.hpp"
 
@@ -201,23 +203,25 @@ int main(int argc, char** argv){
 			cout << err;
 		}
 	}
-
-	RoutePlanInterface* rp = NULL;
-	if (std::string(argv[2]) == "TSP_OR") rp = new TSP_OR;
-	else if (std::string(argv[2]) == "TSP_LK") rp = new TSP_LK;
-	else if (std::string(argv[2]) == "TSP_CK") rp = new TSP;
-
-	ClusteringInterface* cls = NULL;
-	if (std::string(argv[3]) == "CLARKE") cls = new Clarke;
-	else if (std::string(argv[3]) == "FESIF") cls = new FESIF;
-	else if (std::string(argv[3]) == "SELF") cls = new SELFCLUSTERING;
-	
-	BinPackInterface* bp = NULL;
-	if (std::string(argv[4]) == "EB_AFIT") bp = new EB_AFIT;
-	assert(rp!=NULL);
-	assert(cls!=NULL);
-	assert(bp!=NULL);
-
+	// string s;
+	// cin >> s;
+	// cout << s << endl;
+	// try{
+	// 	dm = ReadVRPs(s);
+	// }
+	// catch(string err){
+	// 	cout << err << endl;
+	// }
+	cout << "Capacity : " << dm.bin.capacity << " depoX :" << dm.warehouse.latitude <<" depoY : " << dm.warehouse.longitude << endl;
+	for(int i = 0;i < dm.packages.size();i++){
+		cout << i << " : x : " << dm.packages[i].coordinate.latitude << " y : " << dm.packages[i].coordinate.longitude << " weight : "<< dm.packages[i].weight << endl;
+	}
+	RoutePlanInterface* rp = new TSP_OR(EUCLIDEAN);
+	// RoutePlanInterface* rp = new TSP_LK;
+	// ClusteringInterface* cls = new FESIF;
+	// ClusteringInterface* cls = new Clarke(EUCLIDEAN);
+	ClusteringInterface* cls = new HGS(EUCLIDEAN);
+	BinPackInterface* bp =  new EB_AFIT;
 
 	bool verbose = true;
 	bool logToFile = true;
