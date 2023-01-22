@@ -20,7 +20,7 @@ class BinPackInterface{
         virtual void BinPack(vector<item>& cluster, Bin b) = 0;
         // calculate the cost of the cluster computed 
         virtual float CalculateCost() = 0; 
-
+        virtual double getInversionCount(vector<item>& cluster) = 0;
         void PrintPackedData()
         {
             std::cout<<"Printing the packing -- \n";
