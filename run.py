@@ -30,7 +30,7 @@ def run_each(index):
         print("Decoding error")
         # print(stdout)
         # print(stderr,stdout)
-    # print(metrics)
+    print(metrics)
     data = [1, params["input"], params["clustering"], params["routing"], params["binpacking"], str(metrics[1])+" , "+str(metrics[0]), metrics[2], str(metrics[3])+"/"+str(metrics[4])]
     # print(wks)
     wks.append_table(data)
