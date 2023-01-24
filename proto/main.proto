@@ -42,7 +42,7 @@ message OptimizerRequest{
 }
 
 message Coordinate{
-    int64 longtitude=1;
+    int64 longitude=1;
     int64 latitude=2;
 }
 

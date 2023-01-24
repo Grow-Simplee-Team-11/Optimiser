@@ -23,16 +23,16 @@ using grpc::ServerBuilder;
 using grpc::ServerContext;
 using grpc::Status;
 
-using optimiser::Package;
-using optimiser::ResponsePackage;
-using optimiser::Bin;
-using optimiser::Dimension;
-using optimiser::Coordinate;
-using optimiser::Position;
-using optimiser::Cluster;
-using optimiser::OptimiserRequest;
-using optimiser::OptimiserResponse;
-using optimiser::optimiser;
+using optimizer::Package;
+using optimizer::ResponsePackage;
+// using optimizer::Bin;
+// using optimizer::Dimension;
+// using optimizer::Coordinate;
+// using optimizer::Position;
+// using optimizer::Cluster;
+using optimizer::OptimizerRequest;
+using optimizer::OptimizerResponse;
+// using optimizer::optimizer;
 
 class DataModel{
 	public:
@@ -43,34 +43,34 @@ class DataModel{
     DataModel(){
         warehouse.latitude = 0;
         warehouse.longitude = 0;
-        packages = vector<item>;
+        packages = vector<item>();
         bin = Bin();
     }
 };
-DataModel getData(const OptimiserRequest *request){
+DataModel getData(const OptimizerRequest *request){
     DataModel dm;
     dm.numRiders = request->riders();
     dm.warehouse.latitude = request->warehouse().latitude();
     dm.warehouse.longitude = request->warehouse().longitude();
-    for(Package &package : request->packages()){
+    for(Package package : request->packages()){
         item i;
         i.id = package.id();
         i.coordinate.latitude = package.coordinates().latitude();
         i.coordinate.longitude = package.coordinates().longitude();
-        i.weight = packages.weight();
-        i.size.height = packages.size().height();
-        i.size.width = packages.size().width();
-        i.size.length = packages.size().length();
+        i.weight = package.weight();
+        i.size.height = package.size().height();
+        i.size.width = package.size().width();
+        i.size.length = package.size().length();
         i.volume = i.getVolume();
         dm.packages.push_back(i);
     }
     dm.bin.capacity = request->bin().capacity();
-    dm.bin.size.height = request->bin().height();
-    dm.bin.size.width = request->bin().width();
-    dm.bin.size.length = request->bin().length();
+    dm.bin.size.height = request->bin().size().height();
+    dm.bin.size.width = request->bin().size().width();
+    dm.bin.size.length = request->bin().size().length();
     return dm;
 }
-void setData(Optimiser &optim,OptimiserResponse *reply){
+void setData(Optimizer &optim,OptimizerResponse *reply){
     int numClusters = optim.getNumClusters();
     for(int i = 0;i < numClusters;i++){
         reply->add_clusters();
@@ -79,25 +79,28 @@ void setData(Optimiser &optim,OptimiserResponse *reply){
         for(int j = 0;j < numPackages;j++){
             ResponsePackage pkg;
             pkg.set_id(cluster[j].id);
-            Position pos;
+            optimizer::Position pos;
             pos.set_x(cluster[j].position.x);
             pos.set_y(cluster[j].position.y);
             pos.set_z(cluster[j].position.z);
             pos.set_length(cluster[j].size.length);
-            pos.set_width(cluster[j].size.width);
+            pos.set_breadth(cluster[j].size.width);
             pos.set_height(cluster[j].size.height);
-            pkg.set_pos(pos);
-            reply->mutable_cluster(i)->add_packages(pkg);
+            // pkg.set_position(pos);
+            *(pkg.mutable_position()) = pos;
+            reply->mutable_clusters(i)->add_packages();
+            *(reply->mutable_clusters(i)->mutable_packages(j)) = pkg;
         }
     }
 }
-class OptimiserServiceImpl final : public optimiser::Service
+
+class OptimizerServiceImpl final : public optimizer::optimizer::Service
 {
-    Status StartService(ServerContext *context, const OptimiserRequest *request,
-                   OptimiserResponse *reply) override
+    Status StartService(ServerContext *context, const OptimizerRequest *request,
+                   OptimizerResponse *reply) override
     {
         std::cout << "Received request" << std::endl;
-        (*reply) = OptimiserResponse();
+        (*reply) = OptimizerResponse();
         RoutePlanInterface* rp = new TSP_OR(EUCLIDEAN);
     	ClusteringInterface* cls = new HGS(EUCLIDEAN);
 	    BinPackInterface* bp =  new EB_AFIT;
@@ -133,7 +136,7 @@ class OptimiserServiceImpl final : public optimiser::Service
 void RunServer(const std::string &port)
 {
     std::string server_address("0.0.0.0:" + port);
-    OptimiserServiceImpl service;
+    OptimizerServiceImpl service;
 
     ServerBuilder builder;
     builder.AddListeningPort(server_address, grpc::InsecureServerCredentials());

@@ -1,7 +1,32 @@
 ##
-#	Sample Makefile from the fesif project, needs adjustment to the new directory structure,
-#	Author: Archisman Pathak & Aniket Kumar(Slightly)
+#	
+# GRPC Integrated Makefile
+# Author: Archisman Pathak & Aniket Kumar(Slightly)
 ##
+
+HOST_SYSTEM = $(shell uname | cut -f 1 -d_)
+SYSTEM ?= $(HOST_SYSTEM)
+CXX = g++
+CPPFLAGS += `pkg-config --cflags protobuf grpc`
+CXXFLAGS += -std=c++14
+ifeq ($(SYSTEM),Darwin)
+LDFLAGS += -L/usr/local/lib `pkg-config --libs --static protobuf grpc++`\
+					 -pthread\
+           -lgrpc++_reflection\
+           -ldl
+else
+LDFLAGS += -L/usr/local/lib `pkg-config --libs --static protobuf grpc++`\
+           -pthread\
+           -Wl,--no-as-needed -lgrpc++_reflection -Wl,--as-needed\
+           -ldl
+endif
+PROTOC = protoc
+GRPC_CPP_PLUGIN = grpc_cpp_plugin
+GRPC_CPP_PLUGIN_PATH ?= `which $(GRPC_CPP_PLUGIN)`
+
+PROTOS_PATH = ./proto
+vpath %.proto $(PROTOS_PATH)
+
 CC = gcc
 # CXX = /usr/bin/g++
 CXX = /usr/bin/g++-11
@@ -10,7 +35,7 @@ CFLAGS = --std=c++17 -W -Wall -Wno-sign-compare -O4 -pipe -mmmx -msse -msse2 -ms
 # CFLAGS = 
 OR_CFLAGS = -v -fPIC -std=c++17 -O4 -g -DNDEBUG -Iinclude/ortools -Iinclude -I. -DARCH_K8 -Wno-deprecated -DUSE_BOP -DUSE_GLOP -DUSE_CBC -DUSE_CLP -DUSE_SCIP
 OR_TOOLS_LNK = -Llib -lortools -lpthread
-LDFLAGS = -Wl,-rpath,@loader_path -Wl,-rpath,@loader_path/../lib -lz -lglog
+# LDFLAGS = -Wl,-rpath,@loader_path -Wl,-rpath,@loader_path/../lib -lz -lglog
 MEM = -D WATCH_MEM
 
 CLUS_INC_DIR = include/clustering
@@ -30,7 +55,7 @@ RP_INC_DIR = include/routeplan
 RP_SRC_DIR = src/routeplan
 
 
-all: Integrate 
+all: system-check server 
 #  Build FESIF Code 
 global.o: $(FESIF_SRC_DIR)/global.cpp
 	$(CXX) $(CFLAGS) -c $(FESIF_SRC_DIR)/global.cpp $(LIBS)
@@ -85,19 +110,79 @@ HGS.o: $(HGS_SRC_DIR)/HGS.cpp
 libHGS.so : AlgorithmParameters.o C_Interface.o Params.o Individual.o LocalSearch.o Population.o Split.o Genetic.o InstanceCVRPLIB.o HGS.o
 	$(CXX)  -shared -fPIC -o libHGS.so AlgorithmParameters.o C_Interface.o Params.o Individual.o LocalSearch.o Population.o Split.o Genetic.o InstanceCVRPLIB.o HGS.o
 # Build the executable
-Integrate: main.cpp fesif.o TSP_OR.o EB-AFIT.o HGS.o Optimiser.o $(CLARKE_INCLUDE_DIR)/clarke.cpp $(CLARKE_INCLUDE_DIR)/clarke.hpp $(TSP_INCLUDE_DIR)/TSP.cpp $(TSP_INCLUDE_DIR)/tsp.h $(TSP_INCLUDE_DIR)/TSP_LK.cpp $(RP_INC_DIR)/TSP_LK.hpp libHGS.so
-	/usr/bin/g++-11 --std=c++17 -W -Wall -Wno-sign-compare -O4 -pipe -mmmx -msse -msse2 -msse3 -g -Iinclude/ortools -Iinclude -I.  -o main global.o HST.o utils.o FESIF.o TSP_OR.o EB-AFIT.o Optimiser.o  main.cpp $(CLARKE_INCLUDE_DIR)/clarke.cpp $(TSP_INCLUDE_DIR)/TSP.cpp $(TSP_INCLUDE_DIR)/TSP_LK.cpp -o Integrate -L./lib -Llib -lortools -L. -lHGS
+server: server.cpp fesif.o TSP_OR.o EB-AFIT.o HGS.o Optimiser.o $(CLARKE_INCLUDE_DIR)/clarke.cpp $(CLARKE_INCLUDE_DIR)/clarke.hpp $(TSP_INCLUDE_DIR)/TSP.cpp $(TSP_INCLUDE_DIR)/tsp.h $(TSP_INCLUDE_DIR)/TSP_LK.cpp $(RP_INC_DIR)/TSP_LK.hpp libHGS.so main.pb.o main.grpc.pb.o server.o
+	/usr/bin/g++-11 --std=c++17 -W -Wall -Wno-sign-compare -O4 -pipe -mmmx -msse -msse2 -msse3 -g -Iinclude/ortools -Iinclude -I.  global.o HST.o utils.o FESIF.o TSP_OR.o EB-AFIT.o Optimiser.o main.pb.o main.grpc.pb.o server.cpp $(CLARKE_INCLUDE_DIR)/clarke.cpp $(TSP_INCLUDE_DIR)/TSP.cpp $(TSP_INCLUDE_DIR)/TSP_LK.cpp -o server.o -L./lib -Llib -lortools -L. -lHGS  $(LDFLAGS)
+
+
+%.grpc.pb.cc: %.proto
+	$(PROTOC) -I $(PROTOS_PATH) --grpc_out=. --plugin=protoc-gen-grpc=$(GRPC_CPP_PLUGIN_PATH) $<
+
+%.pb.cc: %.proto
+	$(PROTOC) -I $(PROTOS_PATH) --cpp_out=. $<
 
 
 .PHONY: clean
 clean:
-		-@rm *.o *.gcno *.so *~ 2> /dev/null || true
+		-@rm *.o *.gcno *.so  *.pb.cc *.pb.h server *~ 2> /dev/null || true
 		-@rm fesif chst 2> /dev/null || true
-		rm Integrate
+		
 obj_remove:
 	-@rm *.o *.gcno *.so *~ 2> /dev/null || true
 # Integrate: main.cpp  $(OPT_INCLUDE_DIR)/Optimiser.cpp $(OPT_HEADER_DIR)/Optimiser.hpp
 # 	$(CXX) $(CFLAGS) main.cpp  $(OPT_INCLUDE_DIR)/Optimiser.cpp -o Integrate
 
+
+# The following is to test your system and ensure a smoother experience.
+# They are by no means necessary to actually compile a grpc-enabled software.
+
+PROTOC_CMD = which $(PROTOC)
+PROTOC_CHECK_CMD = $(PROTOC) --version | grep -q libprotoc.3
+PLUGIN_CHECK_CMD = which $(GRPC_CPP_PLUGIN)
+HAS_PROTOC = $(shell $(PROTOC_CMD) > /dev/null && echo true || echo false)
+ifeq ($(HAS_PROTOC),true)
+HAS_VALID_PROTOC = $(shell $(PROTOC_CHECK_CMD) 2> /dev/null && echo true || echo false)
+endif
+HAS_PLUGIN = $(shell $(PLUGIN_CHECK_CMD) > /dev/null && echo true || echo false)
+
+SYSTEM_OK = false
+ifeq ($(HAS_VALID_PROTOC),true)
+ifeq ($(HAS_PLUGIN),true)
+SYSTEM_OK = true
+endif
+endif
+
+system-check:
+ifneq ($(HAS_VALID_PROTOC),true)
+	@echo " DEPENDENCY ERROR"
+	@echo
+	@echo "You don't have protoc 3.0.0 installed in your path."
+	@echo "Please install Google protocol buffers 3.0.0 and its compiler."
+	@echo "You can find it here:"
+	@echo
+	@echo "   https://github.com/protocolbuffers/protobuf/releases/tag/v3.0.0"
+	@echo
+	@echo "Here is what I get when trying to evaluate your version of protoc:"
+	@echo
+	-$(PROTOC) --version
+	@echo
+	@echo
+endif
+ifneq ($(HAS_PLUGIN),true)
+	@echo " DEPENDENCY ERROR"
+	@echo
+	@echo "You don't have the grpc c++ protobuf plugin installed in your path."
+	@echo "Please install grpc. You can find it here:"
+	@echo
+	@echo "   https://github.com/grpc/grpc"
+	@echo
+	@echo "Here is what I get when trying to detect if you have the plugin:"
+	@echo
+	-which $(GRPC_CPP_PLUGIN)
+	@echo
+	@echo
+endif
+ifneq ($(SYSTEM_OK),true)
+	@false
+endif
 
 
