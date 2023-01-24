@@ -113,3 +113,8 @@ vector<float> Optimizer::GetPackagingCost(){
 vector<float> Optimizer::GetRoutingCost(){
     return routePlanningCost;
 }
+
+int Optimizer::getNumClusters(){
+    return clusterPackagings.size();
+}
+    

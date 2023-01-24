@@ -24,6 +24,7 @@ using grpc::ServerContext;
 using grpc::Status;
 
 using optimiser::Package;
+using optimiser::ResponsePackage;
 using optimiser::Bin;
 using optimiser::Dimension;
 using optimiser::Coordinate;
@@ -70,7 +71,25 @@ DataModel getData(const OptimiserRequest *request){
     return dm;
 }
 void setData(Optimiser &optim,OptimiserResponse *reply){
-
+    int numClusters = optim.getNumClusters();
+    for(int i = 0;i < numClusters;i++){
+        reply->add_clusters();
+        vector<item> cluster = optim.GetPackagingForCluster(i);
+        int numPackages = cluster.size();
+        for(int j = 0;j < numPackages;j++){
+            ResponsePackage pkg;
+            pkg.set_id(cluster[j].id);
+            Position pos;
+            pos.set_x(cluster[j].position.x);
+            pos.set_y(cluster[j].position.y);
+            pos.set_z(cluster[j].position.z);
+            pos.set_length(cluster[j].size.length);
+            pos.set_width(cluster[j].size.width);
+            pos.set_height(cluster[j].size.height);
+            pkg.set_pos(pos);
+            reply->mutable_cluster(i)->add_packages(pkg);
+        }
+    }
 }
 class OptimiserServiceImpl final : public optimiser::Service
 {
