@@ -32,7 +32,7 @@ add_custom_command(
 
 MACRO(HEADER_DIRECTORIES return_list)
       FILE(GLOB_RECURSE new_list "${CMAKE_SOURCE_DIR}/include/*.hpp"
-      "${CMAKE_SOURCE_DIR}/include/*.h")
+      "${CMAKE_SOURCE_DIR}/include/*.hpp")
       SET(dir_list "")
       FOREACH(file_path ${new_list})
           GET_FILENAME_COMPONENT(dir_path ${file_path} PATH)
@@ -45,7 +45,7 @@ ENDMACRO()
 MACRO(SRC_DIRECTORIES return_list)
       FILE(GLOB_RECURSE new_list 
       "${CMAKE_SOURCE_DIR}/src/*.cpp"
-      "${CMAKE_SOURCE_DIR}/src/*.c")
+      "${CMAKE_SOURCE_DIR}/src/*.cpp")
       SET(dir_list "")
       FOREACH(file_path ${new_list})
           GET_FILENAME_COMPONENT(dir_path ${file_path} PATH)
@@ -56,7 +56,9 @@ MACRO(SRC_DIRECTORIES return_list)
 ENDMACRO() 
 
 HEADER_DIRECTORIES(header_dir_list)
+message("${header_dir_list}")
 SRC_DIRECTORIES(src_dir_list)
+message("${src_dir_list}")
 
 include_directories("${CMAKE_CURRENT_BINARY_DIR}")
 include_directories(
