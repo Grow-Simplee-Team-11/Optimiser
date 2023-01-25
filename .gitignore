@@ -3,3 +3,9 @@ or-tools_*
 /include/ortools/
 lib/
 FESIF_TSP.txt
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+build/
+bin/
