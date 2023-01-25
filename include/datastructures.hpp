@@ -47,7 +47,7 @@ struct PolarCoordinate {
 
 class item {
     public:
-        string id;
+        int id;
         Dimension size;
         Position position;
         Coordinate coordinate;

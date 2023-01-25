@@ -17,7 +17,7 @@ message Cluster{
 }
 
 message ResponsePackage{
-    string id=1;
+    int32 id=1;
     Position position=2;
 }
 
