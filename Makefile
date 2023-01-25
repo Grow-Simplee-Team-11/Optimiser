@@ -125,19 +125,13 @@ Integrate: main.cpp fesif.o TSP_OR.o EB-AFIT.o HGS.o Optimiser.o $(CLARKE_INCLUD
 	/usr/bin/g++-11 --std=c++17 -W -Wall -Wno-sign-compare -O4 -pipe -mmmx -msse -msse2 -msse3 -g -Iinclude/ortools -Iinclude -I.  -o main global.o HST.o utils.o FESIF.o TSP_OR.o EB-AFIT.o Optimiser.o  main.cpp $(CLARKE_INCLUDE_DIR)/clarke.cpp $(TSP_INCLUDE_DIR)/TSP.cpp $(TSP_INCLUDE_DIR)/TSP_LK.cpp -o Integrate -L./lib -Llib -lortools -L. -lHGS
 
 
-<<<<<<< HEAD
 # Build the executable
 main: main.cpp fesif.o TSP_LK.o TSP_OR.o EB-AFIT.o Optimiser.o cluster.o TSP_CK.o clarke.o
 	/usr/bin/g++-11 --std=c++17 -W -Wall -Wno-sign-compare -O4 -pipe -mmmx -msse -msse2 -msse3 -g -Iinclude/ortools -Iinclude -I.  -o main global.o HST.o utils.o FESIF.o TSP_OR.o EB-AFIT.o TSP_LK.o cluster.o Optimiser.o TSP_CK.o clarke.o main.cpp -L./lib -Llib -lortools
 	
 .PHONY: distclean
 distclean:
-		-@rm *.o *.gcno *~ 2> /dev/null || true
-=======
-.PHONY: clean
-clean:
 		-@rm *.o *.gcno *.so *~ 2> /dev/null || true
->>>>>>> 3326125 (HGS Integration Complete)
 		-@rm fesif chst 2> /dev/null || true
 		rm main FESIF*
 		rm Integrate

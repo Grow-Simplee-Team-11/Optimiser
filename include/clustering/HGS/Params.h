@@ -76,9 +76,11 @@ public:
 	double vehicleCapacity;									// Capacity limit
 	double totalDemand ;									// Total demand required by the clients
 	double maxDemand;										// Maximum demand of a client
-	double maxDist;											// Maximum distance between two clients
+	double maxDist;		
+	double averageSpeed = 17.5;									// Maximum distance between two clients
 	std::vector< Client > cli ;								// Vector containing information on each client
 	const std::vector< std::vector< double > >& timeCost;	// Distance matrix
+	const std::vector<double> timeExpectation;
 	std::vector< std::vector< int > > correlatedVertices;	// Neighborhood restrictions: For each client, list of nearby customers
 	bool areCoordinatesProvided;                            // Check if valid coordinates are provided
 
@@ -93,6 +95,7 @@ public:
 		int nbVeh,
 		bool isDurationConstraint,
 		bool verbose,
+		const std::vector<double> expectations,
 		const AlgorithmParameters& ap);
 };
 #endif

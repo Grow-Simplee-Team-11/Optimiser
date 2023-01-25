@@ -14,10 +14,11 @@ Params::Params(
 	int nbVeh,
 	bool isDurationConstraint,
 	bool verbose,
+	const std::vector<double> expectation,
 	const AlgorithmParameters& ap
 )
 	: ap(ap), isDurationConstraint(isDurationConstraint), nbVehicles(nbVeh), durationLimit(durationLimit),
-	  vehicleCapacity(vehicleCapacity), timeCost(dist_mtx), verbose(verbose)
+	  vehicleCapacity(vehicleCapacity), timeCost(dist_mtx), verbose(verbose), timeExpectation(expectation)
 {
 	// This marks the starting time of the algorithm
 	startTime = clock();
