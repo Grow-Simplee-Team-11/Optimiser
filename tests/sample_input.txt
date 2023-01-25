@@ -1,0 +1,82 @@
+{
+    "bin": {
+        "capacity": 100,
+        "size":{
+            "length":100,
+            "breadth":80,
+            "height":80
+        }
+    },
+    "packages": [
+        {
+            "id": 0,
+            "size": {
+                "width": 30,
+                "length": 30,
+                "height":30
+            },
+            "weight": 10,
+            "coordinates": {
+                "latitude": 10,
+                "longitude": 10
+            }
+        },
+        {
+            "id": 1,
+            "size": {
+                "width": 30,
+                "length": 30,
+                "height":30
+            },
+            "weight": 10,
+            "coordinates": {
+                "latitude": -10,
+                "longitude": -10
+            }
+        },
+        {
+            "id": 2,
+            "size": {
+                "width": 30,
+                "length": 30,
+                "height":30
+            },
+            "weight": 10,
+            "coordinates": {
+                "latitude": 13,
+                "longitude": 5
+            }
+        },
+        {
+            "id": 3,
+            "size": {
+                "width": 30,
+                "length": 30,
+                "height":30
+            },
+            "weight": 10,
+            "coordinates": {
+                "latitude": 16,
+                "longitude": 25
+            }
+        },
+        {
+            "id": 4,
+            "size": {
+                "width": 30,
+                "length": 30,
+                "height":30
+            },
+            "weight": 10,
+            "coordinates": {
+                "latitude": -40,
+                "longitude": -11
+            }
+        }
+    ],
+    "riders": 5,
+    "warehouse": {
+        "latitude": 0,
+        "longitude": 0
+    }
+}
