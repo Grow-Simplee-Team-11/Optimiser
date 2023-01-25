@@ -233,12 +233,28 @@ int main(int argc, char** argv){
 		std::ofstream out(logFileName, std::ios_base::app);
 		out<<"\nTotal Cost for routing: "<<total_cost<<" km"<<std::endl;
 	}
-	// f.ComputeClusters(items, warehouse, 100, bin); //wrapperLMD(items, warehouse, 100, bin);
- 	// freeGlobalMemory();
- 	// f.localFree();
-	// f.PrintClustersToFile("clusters.txt");
- 	
-	// TSP_OR tsp;
-	// tsp.PlanRoute(f.GetClusters()[0], f.getWarehouse());
+
 	return 0;
 }
+
+// int main(){
+// 	TSP_OR tsp(HAVERSINE);
+// 	// vector<item> fluster;
+// 	Coordinate w;
+// 	int n;
+// 	cin >> n;
+// 	vector<item> fluster(n);
+// 	cin >> w.latitude >> w.longitude;
+// 	for(int i = 0;i < n;i++){
+// 		cin >> fluster[i].coordinate.latitude >> fluster[i].coordinate.longitude;
+// 		fluster[i].id = i;
+// 	}		
+// 	tsp.PlanRoute(fluster,w);
+// 	vector<item> route = tsp.GetPaths();
+// 	cout << "Path Generated : \n";
+// 	for(auto item : route){
+// 		cout << item.id << ' ';
+// 	}
+// 	cout << endl;
+
+// }
