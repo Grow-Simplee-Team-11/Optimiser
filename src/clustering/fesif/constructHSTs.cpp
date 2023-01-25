@@ -58,16 +58,16 @@ void trainHST(string src, string des) {
 	}
 }
 
-int main(int argc, char **argv) {
-	string srcFileName, desFileName;
+// int main(int argc, char **argv) {
+// 	string srcFileName, desFileName;
 	
-	if (argc > 1)
-		srcFileName = string(argv[1]);
-	if (argc > 2)
-		desFileName = string(argv[2]);
+// 	if (argc > 1)
+// 		srcFileName = string(argv[1]);
+// 	if (argc > 2)
+// 		desFileName = string(argv[2]);
 	
-	trainHST(srcFileName, desFileName);
-	freeMemory();
+// 	trainHST(srcFileName, desFileName);
+// 	freeMemory();
 	
-	return 0;
-}
+// 	return 0;
+// }

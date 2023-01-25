@@ -242,31 +242,31 @@ void printClusters(vector<vector<item> >& clusters, vector<item>& items) {
 	myfile.close();
 }
 
-int main() {
-    ifstream input;
-	input.open("input.txt");
-	Coordinate warehouse;
-	input>>warehouse.longitude>>warehouse.latitude;
-    warehouse.longitude*=warehouse.scale;
-    warehouse.latitude*=warehouse.scale;
-	Bin bin;
-	input>>bin.size.length>>bin.size.width>>bin.size.height;
-	bin.capacity = 25;
-	int n;
-	input>>n;
-	vector<item> items(n);
-	for(int i=0;i<n;i++) {
-		input>>items[i].coordinate.longitude>>items[i].coordinate.latitude;
-        items[i].coordinate.longitude*=items[i].scale;
-        items[i].coordinate.latitude*=items[i].scale;
-		input>>items[i].size.length>>items[i].size.width>>items[i].size.height;
-		items[i].weight = 1;
-        items[i].id = i;
-	}
+// int main() {
+//     ifstream input;
+// 	input.open("input.txt");
+// 	Coordinate warehouse;
+// 	input>>warehouse.longitude>>warehouse.latitude;
+//     warehouse.longitude*=warehouse.scale;
+//     warehouse.latitude*=warehouse.scale;
+// 	Bin bin;
+// 	input>>bin.size.length>>bin.size.width>>bin.size.height;
+// 	bin.capacity = 25;
+// 	int n;
+// 	input>>n;
+// 	vector<item> items(n);
+// 	for(int i=0;i<n;i++) {
+// 		input>>items[i].coordinate.longitude>>items[i].coordinate.latitude;
+//         items[i].coordinate.longitude*=items[i].scale;
+//         items[i].coordinate.latitude*=items[i].scale;
+// 		input>>items[i].size.length>>items[i].size.width>>items[i].size.height;
+// 		items[i].weight = 1;
+//         items[i].id = i;
+// 	}
 
-    vector<vector<item> > clusters = calculateCluster(items, warehouse, 1, bin);
+//     vector<vector<item> > clusters = calculateCluster(items, warehouse, 1, bin);
     
-    printClusters(clusters, items);
+//     printClusters(clusters, items);
 
-    return 0;
-}
+//     return 0;
+// }
