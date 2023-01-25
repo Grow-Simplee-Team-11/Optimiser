@@ -83,7 +83,7 @@ class ClusteringInterface{
         double euclidean(struct Coordinate c1,struct Coordinate c2){
             return sqrt((c1.latitude - c2.latitude)*(c1.latitude - c2.latitude) + (c1.longitude - c2.longitude)*(c1.longitude - c2.longitude));
         }
-        double haversine(struct Coordinate c1,struct Coordinate c2){
+        double static haversine(struct Coordinate c1,struct Coordinate c2){
             double lat_1_deg = c1.latitude;
             double lon_1_deg = c1.longitude;
             double lat_2_deg = c2.latitude;

@@ -165,12 +165,7 @@ clean:
 		rm Integrate
 .PHONY: distclean
 distclean:
-		-@rm *.o *.gcno *~ 2> /dev/null || true
-=======
-.PHONY: clean
-clean:
 		-@rm *.o *.gcno *.so *~ 2> /dev/null || true
->>>>>>> 3326125 (HGS Integration Complete)
 		-@rm fesif chst 2> /dev/null || true
 		
 obj_remove:

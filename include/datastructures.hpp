@@ -43,9 +43,7 @@ struct PolarCoordinate {
 };
 
 class item {
-   public:
     int id;
-    int time;
     Position position;
     Dimension_ size;
     Coordinate coordinate;
@@ -72,7 +70,19 @@ class item {
         position.x = -1;
         position.y = -1;
         position.z = -1;
+        time = 540;
     }
+    item(float w, float h, float d, float lat, float lng, double providedEdd)
+        {
+            size.width = w;
+            size.height = h;
+            size.length = d;
+            coordinate.latitude = lat;
+            coordinate.longitude = lng;
+            weight = 0;
+            volume = w*h*d;
+            time = providedEdd;
+        }
     void print() {
         cout << coordinate.longitude << " " << coordinate.latitude << "\n";
         // cout<<"( Latitude - "<<coordinate.latitude<<" Longitude - "<<coordinate.longitude<<" Size - ("<<size.width<<", "<<size.length<<", "<<size.height<<") )";
@@ -83,38 +93,5 @@ class item {
         // out<<"( Latitude - "<<coordinate.latitude<<" Longitude - "<<coordinate.longitude<<" Size - ("<<size.width<<", "<<size.length<<", "<<size.height<<") )";
         return;
     }
+}
 
-    float getVolume() {
-        return size.width * size.length * size.height;
-    }
-};
-
-class Bin {
-   public:
-    Dimension_ size;
-    float capacity;
-    Bin() {}
-    Bin(float w, float l, float h) {
-        size.width = w;
-        size.length = l;
-        size.height = h;
-        capacity = 1000;
-    }
-
-    Bin(float w, float l, float h, float c) {
-        size.width = w;
-        size.length = l;
-        size.height = h;
-        capacity = c;
-    }
-
-    float getCapacity() {
-        return capacity;
-    }
-
-    float getVolume() {
-        return size.width * size.length * size.height * 0.85;
-    }
-};
-
-#endif

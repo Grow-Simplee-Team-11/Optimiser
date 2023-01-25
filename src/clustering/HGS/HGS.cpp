@@ -54,11 +54,16 @@ void HGS::ComputeClusters(vector<item> &packages, Coordinate warehouse, int numR
 				cout << demands[i]<< ' ';
 			}
 			cout << endl;
+			std::vector<double> expectation(n); 
+			// TODO: add expectation in HGS
+			for(int i=0;i<n;i++) expectation[i] = packages[i].edd;
+
+
 			// Params params(x_coords,y_coords,)
 			// Params params(cvrp.x_coords,cvrp.y_coords,cvrp.dist_mtx,cvrp.service_time,cvrp.demands,
 						// cvrp.vehicleCapacity,cvrp.durationLimit,nbVeh,cvrp.isDurationConstraint,verbose,ap);
 			Params params(x_coords,y_coords,dist_mtx,service_time,demands,
-						b.capacity,1.e30,numRiders,false,verbose,ap);
+						b.capacity,1.e30,numRiders,false,verbose, expectation,ap);
 			print_algorithm_parameters(ap);
 			// Running HGS
 			Genetic solver(params);

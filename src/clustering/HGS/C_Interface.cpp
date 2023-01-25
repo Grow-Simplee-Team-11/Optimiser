@@ -5,6 +5,7 @@
 #include "../../../include/clustering/HGS/Population.h"
 #include "../../../include/clustering/HGS/Params.h"
 #include "../../../include/clustering/HGS/Genetic.h"
+#include "../../../include/interface/ClusteringInterface.hpp"
 #include <string>
 #include <iostream>
 #include <vector>
@@ -65,10 +66,7 @@ extern "C" Solution *solve_cvrp(
 		{
 			for (int j = 0; j < n; j++)
 			{
-				distance_matrix[i][j] = std::sqrt(
-					(x_coords[i] - x_coords[j])*(x_coords[i] - x_coords[j])
-					+ (y_coords[i] - y_coords[j])*(y_coords[i] - y_coords[j])
-				);
+				distance_matrix[i][j] = ClusteringInterface::haversine(Coordinate(x_coords[i], y_coords[i]), Coordinate(x_coords[j], y_coords[j]));
 				if (isRoundingInteger)
 					distance_matrix[i][j] = std::round(distance_matrix[i][j]);
 			}
@@ -112,7 +110,7 @@ extern "C" Solution *solve_cvrp_dist_mtx(
 			}
 		}
 
-		Params params(x_coords,y_coords,distance_matrix,service_time,demands,vehicleCapacity,durationLimit,max_nbVeh,isDurationConstraint,verbose,*ap);
+		Params params(x_coords,y_coords,distance_matrix,service_time,demands,vehicleCapacity,durationLimit,max_nbVeh,isDurationConstraint,verbose,expectation, *ap);
 		
 		// Running HGS and returning the result
 		Genetic solver(params);
