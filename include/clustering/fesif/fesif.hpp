@@ -10,7 +10,6 @@
 using namespace std;
 
 class FESIF : public ClusteringInterface {
-
     private:
         int nP;
         int* reqPool;

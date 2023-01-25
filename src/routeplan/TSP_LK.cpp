@@ -47,8 +47,10 @@ double TSP_LK::haversine(double lat_1_deg,double lon_1_deg,double lat_2_deg,doub
 double TSP_LK::tour_distance(int tour[])
 {
     double d = 0;
-    for (int i = 0; i < num; i++)
+    for (int i = 0; i < num-1; i++){
         d += dist[tour[i]][tour[i + 1]];
+    }
+    d+=dist[tour[0]][tour[num-1]];
     return d;
 }
 
@@ -137,8 +139,12 @@ void TSP_LK::PlanRoute(vector<item>& cluster, Coordinate warehouse)
     lin_kernighan();
 
     cout << "Best Tour: ";
-    for (int i = 0; i < num; i++)
-        cout << best_tour[i] << " ";
+    plannedPath.resize(num);
+    for (int i = 0; i < num; i++){
+        // cout << best_tour[i] << " ";
+        cout<<best_tour[i]<<" "<<mod_cluster[best_tour[i]].coordinate.longitude<<" "<<mod_cluster[best_tour[i]].coordinate.latitude<<endl; 
+        plannedPath[i] = mod_cluster[best_tour[i]];
+    }
     cout << best_tour[0] << endl;
 
     cout.setf(ios::fixed);

@@ -51,6 +51,7 @@ class item {
         Dimension_ size;
         Coordinate coordinate;
         PolarCoordinate polarCoordinate;
+        int time;
         float weight;
         float volume;
         item(){}
