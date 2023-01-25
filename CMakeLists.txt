@@ -81,7 +81,11 @@ file (GLOB_RECURSE ALL_SRCS
 "${CMAKE_SOURCE_DIR}/src/*.c"
 )
 
-add_executable(server main.cpp ${ALL_SRCS} )
+link_libraries(
+    ${CMAKE_SOURCE_DIR}/lib/libortools.so
+    ${CMAKE_SOURCE_DIR}/lib/libortools.so.9
+)
+add_executable(server server.cpp ${ALL_SRCS} )
 target_link_libraries(server
     dp_grpc_proto
     ${_REFLECTION}
