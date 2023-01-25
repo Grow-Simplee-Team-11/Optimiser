@@ -31,21 +31,20 @@ add_custom_command(
       DEPENDS "${dp_proto}")
 
 MACRO(HEADER_DIRECTORIES return_list)
-      FILE(GLOB_RECURSE new_list "${CMAKE_SOURCE_DIR}/include/*.hpp"
-      "${CMAKE_SOURCE_DIR}/include/*.hpp")
+      FILE(GLOB_RECURSE new_list "${CMAKE_SOURCE_DIR}/include/*.hpp")
       SET(dir_list "")
       FOREACH(file_path ${new_list})
           GET_FILENAME_COMPONENT(dir_path ${file_path} PATH)
           SET(dir_list ${dir_list} ${dir_path})
       ENDFOREACH()
       LIST(REMOVE_DUPLICATES dir_list)
-      SET(${return_list} ${dir_list})
+      SET(${return_list} "${dir_list};${CMAKE_SOURCE_DIR}/include/ortools/")
 ENDMACRO()  
 
 MACRO(SRC_DIRECTORIES return_list)
       FILE(GLOB_RECURSE new_list 
       "${CMAKE_SOURCE_DIR}/src/*.cpp"
-      "${CMAKE_SOURCE_DIR}/src/*.cpp")
+      "${CMAKE_SOURCE_DIR}/src/*.c")
       SET(dir_list "")
       FOREACH(file_path ${new_list})
           GET_FILENAME_COMPONENT(dir_path ${file_path} PATH)
@@ -56,9 +55,7 @@ MACRO(SRC_DIRECTORIES return_list)
 ENDMACRO() 
 
 HEADER_DIRECTORIES(header_dir_list)
-message("${header_dir_list}")
 SRC_DIRECTORIES(src_dir_list)
-message("${src_dir_list}")
 
 include_directories("${CMAKE_CURRENT_BINARY_DIR}")
 include_directories(
@@ -79,15 +76,18 @@ add_library(dp_grpc_proto
 
 file (GLOB_RECURSE ALL_SRCS
 "${CMAKE_SOURCE_DIR}/include/*.hpp"
-"${CMAKE_SOURCE_DIR}/include/*.h"
+"${CMAKE_SOURCE_DIR}/include/ortools/*.h"
 "${CMAKE_SOURCE_DIR}/src/*.cpp"
 "${CMAKE_SOURCE_DIR}/src/*.c"
 )
-add_executable(server ${ALL_SRCS})
+
+add_executable(server main.cpp ${ALL_SRCS} )
 target_link_libraries(server
     dp_grpc_proto
     ${_REFLECTION}
     ${_GRPC_GRPCPP}
     ${_PROTOBUF_LIBPROTOBUF}
     ${CURL_LIBRARIES}
+    -L${CMAKE_SOURCE_DIR}/lib
+    -lortools
 )
