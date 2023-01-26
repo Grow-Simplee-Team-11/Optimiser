@@ -4,9 +4,12 @@
 #include "./include/clustering/selfClustering/selfClustering.hpp"
 #include "./include/clustering/Clarke/clarke.hpp"
 
+
+
 #include "./include/routeplan/TSP_OR.hpp"
 #include "./include/routeplan/TSP_LK.hpp"
 #include "./include/routeplan/TSP_CK.hpp"
+#include "./include/clustering/HGS/HGS.hpp"
 
 #include "./include/binpack/EB_AFIT.hpp"
 
@@ -18,16 +21,31 @@ class DataModel{
 	Bin bin;
 	vector<item> packages;
 	int optimal;
+	int numRiders = 5;
 };
 
 DataModel ReadVRPs(string filename){
 	DataModel dm;
 	ifstream inputFile;
 	inputFile.open(filename);
+	int index = 0;
+	cout << 'a';
+	while(filename[index] != 'k')
+		index++;
+	index++;
+	string nums;
+	cout << 'b';
+	while(filename[index] != '.'){
+		nums.push_back(filename[index]);
+		index++;
+	}
+	cout << 'c';
+	dm.numRiders = stoi(nums);
+	cout << nums << dm.numRiders << endl;
 	if(!inputFile.is_open()){
 		std::cout<<"Cannot Open File\n";
 	}
-	
+
 	Coordinate warehouse;
 	std::string content, content2, content3;
 	double serviceTimeData = 0.;
@@ -57,7 +75,7 @@ DataModel ReadVRPs(string filename){
 	}
 	if (nbClients <= 0) throw std::string("Number of nodes is undefined");
 	if (vehicleCapacity == 1.e30) throw std::string("Vehicle capacity is undefined");
-
+	
 	std::vector<double> x_coords = std::vector<double>(nbClients);
 	std::vector<double> y_coords = std::vector<double>(nbClients);
 	std::vector<double> demands = std::vector<double>(nbClients);
@@ -200,13 +218,19 @@ int main(int argc, char** argv){
 	assert(cls!=NULL);
 	assert(bp!=NULL);
 
+	RoutePlanInterface* rp = new TSP_OR(EUCLIDEAN);
+	// RoutePlanInterface* rp = new TSP_LK;
+	// ClusteringInterface* cls = new FESIF;
+	// ClusteringInterface* cls = new Clarke(EUCLIDEAN);
+	ClusteringInterface* cls = new HGS(EUCLIDEAN);
+	BinPackInterface* bp =  new EB_AFIT;
 
 	bool verbose = true;
 	bool logToFile = true;
 	string logFileName = "FESIF_TSP_LK.txt";
 
-	int numRiders = 5;
-	Optimizer optim(rp, cls, bp, dm.packages, dm.warehouse, numRiders, dm.bin, logFileName, verbose, logToFile);
+	// int numRiders = 5;
+	Optimizer optim(rp, cls, bp, dm.packages, dm.warehouse, dm.numRiders, dm.bin, logFileName, verbose, logToFile);
 
 	optim.optimize();
 	vector<float> rcosts = optim.GetRoutingCost();
@@ -224,5 +248,31 @@ int main(int argc, char** argv){
 		std::ofstream out(logFileName, std::ios_base::app);
 		out<<"\nTotal Cost for routing: "<<total_cost<<" km"<<std::endl;
 	}
+<<<<<<< HEAD
+=======
+
+>>>>>>> 507f7ae (makefile changed)
 	return 0;
 }
+
+// int main(){
+// 	TSP_OR tsp(HAVERSINE);
+// 	// vector<item> fluster;
+// 	Coordinate w;
+// 	int n;
+// 	cin >> n;
+// 	vector<item> fluster(n);
+// 	cin >> w.latitude >> w.longitude;
+// 	for(int i = 0;i < n;i++){
+// 		cin >> fluster[i].coordinate.latitude >> fluster[i].coordinate.longitude;
+// 		fluster[i].id = i;
+// 	}		
+// 	tsp.PlanRoute(fluster,w);
+// 	vector<item> route = tsp.GetPaths();
+// 	cout << "Path Generated : \n";
+// 	for(auto item : route){
+// 		cout << item.id << ' ';
+// 	}
+// 	cout << endl;
+
+// }

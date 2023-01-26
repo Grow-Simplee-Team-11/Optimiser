@@ -19,7 +19,7 @@ The Folder Structure would finally look as follows
 ![Folder Structure](folder_structure.png)
 3. To make sure g++ looks for linking libraries in the created lib folder, run this command once at the root of this folder - 
 ```bash
-export LD_LIBRARY_PATH=./lib:/usr/lib:/usr/local/lib 
+export LD_LIBRARY_PATH=./lib:/usr/lib:/usr/local/lib
 ```
 ## Execution
 Run the following commands at the root of this folder to make and run the executable - 

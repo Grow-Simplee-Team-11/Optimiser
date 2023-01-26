@@ -43,36 +43,52 @@ struct PolarCoordinate {
 };
 
 class item {
-   public:
-    int id;
-    Position position;
-    Dimension_ size;
-    Coordinate coordinate;
-    PolarCoordinate polarCoordinate;
-    float weight;
-    float volume;
-    int orig_rank;
-    item() {}
-    item(float w, float h, float d, float lat, float lng) {
-        size.width = w;
-        size.height = h;
-        size.length = d;
-        coordinate.latitude = lat;
-        coordinate.longitude = lng;
-        weight = 0;
-        volume = w * h * d;
-        orig_rank = -1;
-    }
-    void print() {
-        cout << coordinate.longitude << " " << coordinate.latitude << "\n";
-        // cout<<"( Latitude - "<<coordinate.latitude<<" Longitude - "<<coordinate.longitude<<" Size - ("<<size.width<<", "<<size.length<<", "<<size.height<<") )";
-        return;
-    }
-    void printToFile(std::ofstream& out) {
-        out << coordinate.longitude << " " << coordinate.latitude << "\n";
-        // out<<"( Latitude - "<<coordinate.latitude<<" Longitude - "<<coordinate.longitude<<" Size - ("<<size.width<<", "<<size.length<<", "<<size.height<<") )";
-        return;
-    }
+   
+    public:
+        int id;
+        Dimension_ size;
+        Position position;
+        Coordinate coordinate;
+        PolarCoordinate polarCoordinate;
+        float weight;
+        float volume;
+        double edd;
+        int orig_rank = -1;
+        item(){}
+        item(float w, float h, float d, float lat, float lng)
+        {
+            size.width = w;
+            size.height = h;
+            size.length = d;
+            coordinate.latitude = lat;
+            coordinate.longitude = lng;
+            weight = 0;
+            volume = w*h*d;
+            edd = 540;
+        }
+
+        item(float w, float h, float d, float lat, float lng, double providedEdd)
+        {
+            size.width = w;
+            size.height = h;
+            size.length = d;
+            coordinate.latitude = lat;
+            coordinate.longitude = lng;
+            weight = 0;
+            volume = w*h*d;
+            edd = providedEdd;
+        }
+        
+        void print(){
+            cout<<coordinate.longitude<<" "<<coordinate.latitude<<"\n";
+            // cout<<"( Latitude - "<<coordinate.latitude<<" Longitude - "<<coordinate.longitude<<" Size - ("<<size.width<<", "<<size.length<<", "<<size.height<<") )";
+            return;
+        }
+        void printToFile(std::ofstream& out){
+            out<<coordinate.longitude<<" "<<coordinate.latitude<<"\n";
+            // out<<"( Latitude - "<<coordinate.latitude<<" Longitude - "<<coordinate.longitude<<" Size - ("<<size.width<<", "<<size.length<<", "<<size.height<<") )";
+            return;
+        }
 
     float getVolume() {
         return size.width * size.length * size.height;

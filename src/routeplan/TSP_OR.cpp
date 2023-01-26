@@ -122,7 +122,8 @@ void TSP_OR::savePath(vector<item>&clusters ,const RoutingIndexManager& manager,
     index = solution.Value(routing.NextVar(index));
     distance += routing.GetArcCostForVehicle(previous_index, index, int64_t{0});
   }
-  double tot_dist = (double)distance / SCALING_FACTOR;
+  double tot_dist = (double)distance ;
+  tot_dist /= scale;
   cost = tot_dist;
   std::cout << "Route distance: " << tot_dist<< "km";
   std::cout << "  ";
