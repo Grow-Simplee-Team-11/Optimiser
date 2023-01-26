@@ -38,7 +38,6 @@ class Binpacker{
     double cboxx, cboxy, cboxz, cboxi;
     double bfx, bfy, bfz;
     double bbfx, bbfy, bbfz;
-    double xx, yy, zz;
     double px, py, pz;
 
     double packedvolume;
@@ -89,7 +88,7 @@ class Binpacker{
         hundredpercent = binpacker.hundredpercent;
         unpacked = binpacker.unpacked;
         quit = binpacker.quit;
-        
+
         px = binpacker.px; 
         py = binpacker.py;
         pz = binpacker.pz;
@@ -102,6 +101,29 @@ class Binpacker{
         percentageused = binpacker.percentageused;
         percentagepackedbox = binpacker.percentagepackedbox;
         elapsedtime = binpacker.elapsedtime;
+
+        boxx = binpacker.boxx;
+        boxy = binpacker.boxy;
+        boxz = binpacker.boxz; 
+        boxi = binpacker.boxi;
+
+        bboxx = binpacker.bboxx; 
+        bboxy = binpacker.bboxy;
+        bboxz = binpacker.bboxz; 
+        bboxi = binpacker.bboxi;
+
+        cboxx = binpacker.cboxx; 
+        cboxy = binpacker.cboxy;
+        cboxz = binpacker.cboxz; 
+        cboxi = binpacker.cboxi;
+
+        bfx = binpacker.bfx; 
+        bfy = binpacker.bfy;
+        bfz = binpacker.bfz; 
+        
+        bbfx = binpacker.bbfx; 
+        bbfy = binpacker.bbfy;
+        bbfz = binpacker.bbfz;
 
         n = binpacker.n;
         layerlistlen = binpacker.layerlistlen;
@@ -166,6 +188,25 @@ class Binpacker{
         px = binpacker.px; 
         py = binpacker.py;
         pz = binpacker.pz;
+
+        boxx = binpacker.boxx;
+        boxy = binpacker.boxy;
+        boxz = binpacker.boxz; 
+        boxi = binpacker.boxi;
+        bboxx = binpacker.bboxx; 
+        bboxy = binpacker.bboxy;
+        bboxz = binpacker.bboxz; 
+        bboxi = binpacker.bboxi;
+        cboxx = binpacker.cboxx; 
+        cboxy = binpacker.cboxy;
+        cboxz = binpacker.cboxz; 
+        cboxi = binpacker.cboxi;
+        bfx = binpacker.bfx; 
+        bfy = binpacker.bfy;
+        bfz = binpacker.bfz; 
+        bbfx = binpacker.bbfx; 
+        bbfy = binpacker.bbfy;
+        bbfz = binpacker.bbfz;
 
         packedvolume = binpacker.packedvolume;
         bestvolume = binpacker.bestvolume;

@@ -25,8 +25,6 @@ double EB_AFIT::getInversionCount(vector<item>& cluster) {
                     cluster[i].position.x + cluster[i].size.length > cluster[j].position.x) {
                     if (cluster[i].position.z < cluster[j].position.z + cluster[j].size.height ||
                         cluster[i].position.z + cluster[i].size.height > cluster[j].position.z) {
-                  
-
                         num_cnt++;
                     }
                 }
@@ -108,6 +106,7 @@ void EB_AFIT::BinPack(vector<item>& cluster, Bin b) {
         if(allPacked){
           ans = mid;
           ansVar = tempPacker;
+          tempPacker.scrapmemb = tempPacker.scrapfirst;
           r = mid-1;
           
           for(int i=ans;i<=index;i++){
@@ -130,6 +129,33 @@ void EB_AFIT::BinPack(vector<item>& cluster, Bin b) {
 
         binpacker.packedy = ansVar.packedy;
         binpacker.prepackedy = ansVar.prepackedy;
+        binpacker.preremainpy = ansVar.preremainpy;
+
+        binpacker.scrapfirst = ansVar.scrapfirst;
+
+        binpacker.boxx = ansVar.boxx;
+        binpacker.boxy = ansVar.boxy;
+        binpacker.boxz = ansVar.boxz;
+
+        binpacker.bboxx = ansVar.bboxx;
+        binpacker.bboxy = ansVar.bboxy;
+        binpacker.bboxz = ansVar.bboxz;
+
+        binpacker.cboxx = ansVar.cboxx;
+        binpacker.cboxy = ansVar.cboxy;
+        binpacker.cboxz = ansVar.cboxz;
+
+        binpacker.bfx = ansVar.bfx;
+        binpacker.bfy = ansVar.bfy;
+        binpacker.bfz = ansVar.bfz;
+
+        binpacker.bbfx = ansVar.bbfx;
+        binpacker.bbfy = ansVar.bbfy;
+        binpacker.bbfz = ansVar.bbfz;
+
+        binpacker.px = ansVar.px;
+        binpacker.py = ansVar.py;
+        binpacker.pz = ansVar.pz;
       }
     }
     
@@ -170,8 +196,7 @@ int main() {
     i.size.length = 80;
     i.size.width = 80;
     i.size.height = 80;
-    // cluster.push_back(i);
-    // cluster.push_back(i);
+    cluster.push_back(i);
     // cluster[0].size.width = 10;
     // cluster[0].size.length = 10;
     // cluster[0].size.height = 10;
