@@ -28,7 +28,7 @@ class TSP_OR : public RoutePlanInterface{
 
         // Convert the Google OR-Tool based route to vector<item> Path
         void savePath(vector<item>&clusters, const RoutingIndexManager& manager,
-                   const RoutingModel& routing, const Assignment& solution);
+                   const RoutingModel& routing, const Assignment* solution);
 
         Coordinate getWarehouse(){
             return warehouse;
@@ -40,6 +40,7 @@ class TSP_OR : public RoutePlanInterface{
         const int SCALING_FACTOR=100; 
         // for scaling the distances from float to integer type
         Coordinate warehouse;
+        const int speed=100;
         const RoutingIndexManager::NodeIndex depot{0};
 };
 

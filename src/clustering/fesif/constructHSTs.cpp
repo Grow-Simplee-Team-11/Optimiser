@@ -3,8 +3,8 @@
 	\Date:	2019/05/27
 **/
 #include <bits/stdc++.h>
-#include "global.h"
-#include "HST.h"
+#include "../../../include/clustering/fesif/global.h"
+#include "../../../include/clustering/fesif/HST.h"
 using namespace std;
 
 #ifdef WATCH_MEM

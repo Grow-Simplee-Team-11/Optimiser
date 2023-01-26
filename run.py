@@ -5,9 +5,6 @@ from subprocess import Popen, PIPE
 import numpy as np
 import pygsheets
 
-ROUTING_ALGOS = ["TSP_OR", "TSP_LK"]
-CLUSTERING_ALGOS = ["CLARKE", "FESIF"]
-BINPACKING_ALGOS = ["EB_AFIT"]
 INPUT_DIRS = ["./VRP/A", "./VRP/B", "./VRP/E", "./VRP/F", "./VRP/G", "./VRP/M", "./VRP/P", "./VRP/V"] 
 
 client = pygsheets.authorize(service_file='growsimplee-374918-39a3d1fb0df3.json')
@@ -18,13 +15,12 @@ def run_each(index):
     global wks
     params = algo_combs[index]
     print("Starting process with params: {}",params)
-    s_proc = subprocess.Popen(["./main", params["input"], params["routing"], 
-                            params["clustering"], params["binpacking"]],
+    s_proc = subprocess.Popen(["./hgs", params["input"], "-seed 1 -t 30"],
                             stdout = PIPE, stderr = PIPE)
     stdout, stderr = s_proc.communicate()
-    metrics = [-1, -1, -1, -1, -1]
+    metrics = [-1, -1, -1]
     try:
-        metrics = [float(x) for x in stdout.decode("utf-8").split('\n')[-6:-1]]
+        metrics = [float(x) for x in stdout.decode("utf-8").split('\n')[-3:-1]]
 
     except: 
         print("Decoding error")
@@ -42,17 +38,11 @@ def create_algo_combs():
         filenames = os.listdir(data_dir)
         filenames = [x for x in filenames if "vrp" in x]
         for fname in filenames:
-            for routing_algo in ROUTING_ALGOS:
-                for clustering_algo in CLUSTERING_ALGOS:
-                    for binpacking_algo in BINPACKING_ALGOS:
-                        param = {
-                            "input": data_dir + "/" + fname,
-                            "routing": routing_algo,
-                            "clustering": clustering_algo,
-                            "binpacking": binpacking_algo
-                        }
-                        # print(param)
-                        params.append(param)
+            param = {
+                "input": data_dir + "/" + fname
+            }
+        print(param)
+        params.append(param)
     return params
 
 

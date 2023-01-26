@@ -30,7 +30,6 @@ void Optimizer::optimize(){
     int avg = 0;
     int maximum = -INT_MAX;
     for(auto& cluster: clusters){
-        
         if(verbose){
             cout<<"Printing information for cluster - "<<i<<endl;
         }
@@ -41,36 +40,54 @@ void Optimizer::optimize(){
         i++;
 
         // Planning routes
-        for(int i =0;i<cluster.size();i++){
-            cout<<cluster[i].coordinate.latitude<<" "<<cluster[i].coordinate.longitude<<endl;
-        }
-        routePlannerInterface->PlanRoute(cluster, warehouse);
-        clusterPaths.push_back(routePlannerInterface->GetPaths());
-        routePlannerInterface->CalculateCost();
-        routePlanningCost.push_back(routePlannerInterface->GetPathPlanningCost());
+        // for(int i =0;i<cluster.size();i++){
+        //     cout<<cluster[i].coordinate.latitude<<" "<<cluster[i].coordinate.longitude<<" "<<cluster[i].time<<endl;
+        // }
+        
+            routePlannerInterface->PlanRoute(cluster, warehouse);
+            clusterPaths.push_back(routePlannerInterface->GetPaths());
+            routePlannerInterface->CalculateCost();
+            routePlanningCost.push_back(routePlannerInterface->GetPathPlanningCost());
 
-        if(verbose){
-            routePlannerInterface->PrintRoutes();
-        }
-        if(logToFile){
-            routePlannerInterface->PrintRoutesToFile(logFileName);
-        }
-        // Computing bin packaging
-        binPackInterface->BinPack(cluster, bin);
-        clusterPackagings.push_back(binPackInterface->GetPackaging());
-        binPackInterface->CalculateCost();
-        packagingCost.push_back(binPackInterface->CalculateCost());
+            if(verbose){
+                routePlannerInterface->PrintRoutes();
+            }
+            if(logToFile){
+                routePlannerInterface->PrintRoutesToFile(logFileName);
+            }
+            // Computing bin packaging
+            binPackInterface->BinPack(cluster, bin);
+            clusterPackagings.push_back(binPackInterface->GetPackaging());
+            binPackInterface->CalculateCost();
+            packagingCost.push_back(binPackInterface->CalculateCost());
 
-        if(verbose){
-            binPackInterface->PrintPackedData();
-        }
-        if(logToFile){
-            binPackInterface->PrintPackedDataToFile(logFileName);
-        }
-        avg+= cluster.size();
-        maximum = max(maximum, (int)cluster.size());
+            if(verbose){
+                binPackInterface->PrintPackedData();
+            }
+            if(logToFile){
+                binPackInterface->PrintPackedDataToFile(logFileName);
+            }
+            avg+= cluster.size();
+            maximum = max(maximum, (int)cluster.size());
+
     }
-    cout<<"Metrics\n"<<avg/clusters.size()<<"\n"<<maximum<<"\n"<<clusters.size()<<"\n";
+    ofstream output;
+    output.open("./tests/cluster.txt");
+    output<<clusterPaths.size()<<"\n";
+    i=0;
+    for(auto& elt: clusterPaths)
+        {
+            output << i++ << "\n";
+            output << elt.size() +2<< "\n";
+            output << warehouse.latitude <<" "<< warehouse.longitude<<endl;
+            for(auto& it: elt)
+            {
+                output << it.coordinate.latitude << " " << it.coordinate.longitude << "\n";
+            }
+            output << warehouse.latitude <<" "<< warehouse.longitude<<endl;
+        }
+        output.close();
+    cout<<"Metrics\n"<<avg/clusters.size()<<"\n"<<maximum<<"\n"<<clusters.size()<<"\n"<<routePlannerInterface->drop_offs<<"\n";
     return;
 }
 
