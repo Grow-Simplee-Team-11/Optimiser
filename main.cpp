@@ -208,7 +208,7 @@ int main(int argc, char** argv){
 	bool logToFile = true;
 	string logFileName = "FESIF_TSP_LK.txt";
 
-	int numRiders = 9;
+	int numRiders = 5;
 	Optimizer optim(rp, cls, bp, dm.packages, dm.warehouse, numRiders, dm.bin, logFileName, verbose, logToFile);
 
 	optim.optimize();

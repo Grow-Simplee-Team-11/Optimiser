@@ -52,6 +52,8 @@ class item {
         int time;
         float weight;
         float volume;
+        int orig_rank;
+        
         item(){}
         item(float w, float h, float d, float lat, float lng)
         {
