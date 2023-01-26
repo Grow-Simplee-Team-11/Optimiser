@@ -2,7 +2,7 @@
 #include<vector>
 #include "./include/clustering/fesif/fesif.hpp"
 #include "./include/clustering/selfClustering/selfClustering.hpp"
-#include "./src/clustering/Clarke/clarke.hpp"
+#include "./include/clustering/Clarke/clarke.hpp"
 
 #include "./include/routeplan/TSP_OR.hpp"
 #include "./include/routeplan/TSP_LK.hpp"
@@ -70,6 +70,7 @@ DataModel ReadVRPs(string filename){
 	// customers are
 	// 		- i = 1, 2, ..., nbClients in the for-loop below, or
 	// 		- node_number = 2, 3, ..., nb_Clients in the .vrp file
+
 	int node_number;
 	int depot_lat,depot_lon;
 	inputFile >> node_number >> depot_lat>> depot_lon ;
@@ -117,7 +118,6 @@ DataModel ReadVRPs(string filename){
 	}
 	
 	return dm;
-	// input>>warehouse;
 }
 
 
@@ -182,38 +182,24 @@ int main(int argc, char** argv){
 		catch(string err){
 			cout << err;
 		}
-		// dm = ReadVRPs(s);
 	}
-	// string s;
-	// cin >> s;
-	// cout << s << endl;
-	// try{
-	// 	dm = ReadVRPs(s);
-	// }
-	// catch(string err){
-	// 	cout << err << endl;
-	// }
-	cout << "Capacity : " << dm.bin.capacity << " depoX :" << dm.warehouse.latitude <<" depoY : " << dm.warehouse.longitude << endl;
-	for(int i = 0;i < dm.packages.size();i++){
-		cout << i << " : x : " << dm.packages[i].coordinate.latitude << " y : " << dm.packages[i].coordinate.longitude << " weight : "<< dm.packages[i].weight << endl;
-	}
+
 	RoutePlanInterface* rp = NULL;
 	if (std::string(argv[2]) == "TSP_OR") rp = new TSP_OR;
 	else if (std::string(argv[2]) == "TSP_LK") rp = new TSP_LK;
+	else if (std::string(argv[2]) == "TSP_CK") rp = new TSP;
 
 	ClusteringInterface* cls = NULL;
 	if (std::string(argv[3]) == "CLARKE") cls = new Clarke;
 	else if (std::string(argv[3]) == "FESIF") cls = new FESIF;
+	else if (std::string(argv[3]) == "SELF") cls = new SELFCLUSTERING;
 	
 	BinPackInterface* bp = NULL;
 	if (std::string(argv[4]) == "EB_AFIT") bp = new EB_AFIT;
-	// RoutePlanInterface* rp = new TSP_LK;
-	// ClusteringInterface* cls = new Clarke;
-	// BinPackInterface* bp =  new EB_AFIT;
-
 	assert(rp!=NULL);
 	assert(cls!=NULL);
 	assert(bp!=NULL);
+
 
 	bool verbose = true;
 	bool logToFile = true;
@@ -238,12 +224,5 @@ int main(int argc, char** argv){
 		std::ofstream out(logFileName, std::ios_base::app);
 		out<<"\nTotal Cost for routing: "<<total_cost<<" km"<<std::endl;
 	}
-	// f.ComputeClusters(items, warehouse, 100, bin); //wrapperLMD(items, warehouse, 100, bin);
- 	// freeGlobalMemory();
- 	// f.localFree();
-	// f.PrintClustersToFile("clusters.txt");
- 	
-	// TSP_OR tsp;
-	// tsp.PlanRoute(f.GetClusters()[0], f.getWarehouse());
 	return 0;
 }

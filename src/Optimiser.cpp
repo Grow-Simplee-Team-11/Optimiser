@@ -41,6 +41,9 @@ void Optimizer::optimize(){
         i++;
 
         // Planning routes
+        for(int i =0;i<cluster.size();i++){
+            cout<<cluster[i].coordinate.latitude<<" "<<cluster[i].coordinate.longitude<<endl;
+        }
         routePlannerInterface->PlanRoute(cluster, warehouse);
         clusterPaths.push_back(routePlannerInterface->GetPaths());
         routePlannerInterface->CalculateCost();
