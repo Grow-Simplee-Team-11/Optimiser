@@ -42,9 +42,9 @@ void Optimizer::optimize(){
         avg += cluster.size();
         maximum = max(maximum, (int)cluster.size());
         // Planning routes
-        for(int i =0;i<cluster.size();i++){
-            cout<<cluster[i].coordinate.latitude<<" "<<cluster[i].coordinate.longitude<<endl;
-        }
+        // for(int i =0;i<cluster.size();i++){
+        //     cout<<cluster[i].coordinate.latitude<<" "<<cluster[i].coordinate.longitude<<endl;
+        // }
         routePlannerInterface->PlanRoute(cluster, warehouse);
         clusterPaths.push_back(routePlannerInterface->GetPaths());
         routePlannerInterface->CalculateCost();
@@ -87,6 +87,7 @@ void Optimizer::optimize(){
     output.close();
     cout<<"Avg ===> "<<avg/clusters.size()<<endl;
     cout<<"Max ===> "<<maximum<<endl;
+    cout<<"Drop Offs => "<<routePlannerInterface->drop_offs<<endl;
     return;
 }
 

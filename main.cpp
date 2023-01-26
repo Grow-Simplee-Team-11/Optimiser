@@ -6,6 +6,7 @@
 
 
 #include "./include/routeplan/TSP_OR.hpp"
+#include "./include/routeplan/TSP_OR_EDD.hpp"
 #include "./include/routeplan/TSP_LK.hpp"
 #include "./include/clustering/HGS/HGS.hpp"
 #include "./src/routeplan/tsp.h"
@@ -115,12 +116,15 @@ DataModel ReadVRPs(string filename){
 	dm.bin.size.width = 1e5;
 	dm.warehouse.latitude  = depot_lat;
 	dm.warehouse.longitude = depot_lon;
+	srand(time(0));
+	int lb = 9, ub = 13;
 	for(int i=0; i<nbClients; i++)
 	{
 		dm.packages[i].coordinate.latitude = x_coords[i];
 		dm.packages[i].coordinate.longitude = y_coords[i];
 		dm.packages[i].volume = 1;
 		dm.packages[i].weight = demands[i];
+		dm.packages[i].time = ((rand() % (ub - lb + 1)) + lb)*60 ;
 	}
 	
 	return dm;
@@ -203,7 +207,7 @@ int main(int argc, char** argv){
 	for(int i = 0;i < dm.packages.size();i++){
 		cout << i << " : x : " << dm.packages[i].coordinate.latitude << " y : " << dm.packages[i].coordinate.longitude << " weight : "<< dm.packages[i].weight << endl;
 	}
-	RoutePlanInterface* rp = new TSP_OR(EUCLIDEAN);
+	RoutePlanInterface* rp = new TSP_OR_EDD(EUCLIDEAN);
 	// RoutePlanInterface* rp = new TSP_LK;
 	// ClusteringInterface* cls = new FESIF;
 	// ClusteringInterface* cls = new Clarke(EUCLIDEAN);

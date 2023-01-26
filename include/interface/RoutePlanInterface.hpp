@@ -16,6 +16,7 @@ using namespace std;
 
 class RoutePlanInterface{
     public:
+    int drop_offs=0;
     const int SCALING_FACTOR=100; 
     bool method;
         RoutePlanInterface(bool method) {
@@ -103,6 +104,7 @@ class RoutePlanInterface{
 
 
     protected:
+        
         vector<item> plannedPath;
         float cost;
 

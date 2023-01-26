@@ -25,7 +25,13 @@ void TSP_OR::ComputeEuclideanDistanceMatrix(std::vector<item>& cluster)
 void TSP_OR::PlanRoute(vector<item> &cluster, Coordinate w){
     
     plannedPath.clear();
-
+    if(cluster.size() == 1){
+      plannedPath.push_back(cluster[0]);
+      cost = 2 * Dist(w, cluster[0].coordinate);
+      std::cout << "Route distance: " << cost<< "km";
+      std::cout << "  "<<endl;
+      return;
+    }
     RoutingIndexManager manager(cluster.size()+1, num_vehicles, depot);
     RoutingModel routing(manager);
     std::cout<<"Warehouse : "<<w.latitude<<" "<<w.longitude<<endl;
@@ -68,7 +74,8 @@ void TSP_OR::savePath(vector<item>&clusters ,const RoutingIndexManager& manager,
     // std::cout<<"Debugggggg \n";
     while (routing.IsEnd(index) == false) {
     // std::cout<<mod_cluster[manager.IndexToNode(index).value()].coordinate.latitude << " " << mod_cluster[manager.IndexToNode(index).value()].coordinate.longitude ;
-    plannedPath.push_back(mod_cluster[manager.IndexToNode(index).value()]) ;
+    if(manager.IndexToNode(index).value() !=0)
+      plannedPath.push_back(mod_cluster[manager.IndexToNode(index).value()]);
     int64_t previous_index = index;
     index = solution.Value(routing.NextVar(index));
     distance += routing.GetArcCostForVehicle(previous_index, index, int64_t{0});

@@ -54,6 +54,7 @@ class item {
         PolarCoordinate polarCoordinate;
         float weight;
         float volume;
+        int time;
         item(){}
         item(float w, float h, float d, float lat, float lng)
         {
