@@ -41,13 +41,12 @@ void Optimizer::optimize(){
 
         // Planning routes
         // for(int i =0;i<cluster.size();i++){
-        //     cout<<cluster[i].coordinate.latitude<<" "<<cluster[i].coordinate.longitude<<" "<<cluster[i].time<<endl;
+        //     cout<<cluster[i].coordinate.latitude<<" "<<cluster[i].coordinate.longitude<<endl;
         // }
-        
-            routePlannerInterface->PlanRoute(cluster, warehouse);
-            clusterPaths.push_back(routePlannerInterface->GetPaths());
-            routePlannerInterface->CalculateCost();
-            routePlanningCost.push_back(routePlannerInterface->GetPathPlanningCost());
+        routePlannerInterface->PlanRoute(cluster, warehouse);
+        clusterPaths.push_back(routePlannerInterface->GetPaths());
+        routePlannerInterface->CalculateCost();
+        routePlanningCost.push_back(routePlannerInterface->GetPathPlanningCost());
 
             if(verbose){
                 routePlannerInterface->PrintRoutes();
@@ -86,8 +85,12 @@ void Optimizer::optimize(){
             }
             output << warehouse.latitude <<" "<< warehouse.longitude<<endl;
         }
-        output.close();
-    cout<<"Metrics\n"<<avg/clusters.size()<<"\n"<<maximum<<"\n"<<clusters.size()<<"\n"<<routePlannerInterface->drop_offs<<"\n";
+        output << warehouse.latitude <<" "<< warehouse.longitude<<endl;
+    }
+    output.close();
+    cout<<"Avg ===> "<<avg/clusters.size()<<endl;
+    cout<<"Max ===> "<<maximum<<endl;
+    cout<<"Drop Offs => "<<routePlannerInterface->drop_offs<<endl;
     return;
 }
 

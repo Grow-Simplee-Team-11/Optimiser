@@ -9,7 +9,7 @@ HGS::HGS(bool method): ClusteringInterface(method){
 			pathSolution = "./tests/HGS_sol.txt";
 			ap = default_algorithm_parameters();
 			// ap.timeLimit = 30.0;
-			ap.nbIter = 25000;
+			ap.nbIter = 10000;
 }
 void HGS::ComputeClusters(vector<item> &packages, Coordinate warehouse, int numRiders, Bin b) {
 							

@@ -6,6 +6,7 @@
 
 
 #include "./include/routeplan/TSP_OR.hpp"
+#include "./include/routeplan/TSP_OR_EDD.hpp"
 #include "./include/routeplan/TSP_LK.hpp"
 #include "./include/clustering/HGS/HGS.hpp"
 #include "./src/routeplan/tsp.h"
@@ -231,7 +232,7 @@ int main(int argc, char** argv){
 	for(int i = 0;i < dm.packages.size();i++){
 		cout << i << " : x : " << dm.packages[i].coordinate.latitude << " y : " << dm.packages[i].coordinate.longitude << " weight : "<< dm.packages[i].weight << endl;
 	}
-	RoutePlanInterface* rp = new TSP_OR(EUCLIDEAN);
+	RoutePlanInterface* rp = new TSP_OR_EDD(EUCLIDEAN);
 	// RoutePlanInterface* rp = new TSP_LK;
 	// ClusteringInterface* cls = new FESIF;
 	// ClusteringInterface* cls = new Clarke(EUCLIDEAN);

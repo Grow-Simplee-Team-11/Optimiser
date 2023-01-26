@@ -31,7 +31,7 @@ class TSP_OR_EDD : public RoutePlanInterface{
         
         std::vector<std::vector<int64_t>> distances;
         const int num_vehicles=1;
-        const int speed = 100;
+        const int speed = 50;
         // for scaling the distances from float to integer type
         const int scale = 1000;
         Coordinate warehouse;
