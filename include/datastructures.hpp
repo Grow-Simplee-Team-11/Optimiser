@@ -62,6 +62,9 @@ class item {
         weight = 0;
         volume = w * h * d;
         orig_rank = -1;
+        position.x = -1;
+        position.y = -1;
+        position.z = -1;
     }
     void print() {
         cout << coordinate.longitude << " " << coordinate.latitude << "\n";
