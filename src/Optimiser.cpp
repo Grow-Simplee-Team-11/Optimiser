@@ -40,9 +40,9 @@ void Optimizer::optimize(){
         i++;
 
         // Planning routes
-        for(int i =0;i<cluster.size();i++){
-            cout<<cluster[i].coordinate.latitude<<" "<<cluster[i].coordinate.longitude<<" "<<cluster[i].time<<endl;
-        }
+        // for(int i =0;i<cluster.size();i++){
+        //     cout<<cluster[i].coordinate.latitude<<" "<<cluster[i].coordinate.longitude<<" "<<cluster[i].time<<endl;
+        // }
         
             routePlannerInterface->PlanRoute(cluster, warehouse);
             clusterPaths.push_back(routePlannerInterface->GetPaths());

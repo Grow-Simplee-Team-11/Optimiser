@@ -71,15 +71,15 @@ void TSP_OR::ComputeEuclideanDistanceMatrix(std::vector<item>& cluster)
   }
 }
 bool cmp(item a, item b){
-  return a.time<b.time;
+  return a.time>b.time;
 }
 void TSP_OR::PlanRoute(vector<item> &cluster, Coordinate w){
-    
+    if(cluster.size()==1)
+      return;
     plannedPath.clear();
 
     RoutingIndexManager manager(cluster.size()+1, num_vehicles, depot);
     RoutingModel routing(manager);
-    std::cout<<"Warehouse : "<<w.latitude<<" "<<w.longitude<<endl;
     warehouse = w;
     ComputeEuclideanDistanceMatrix(cluster);
     
@@ -112,17 +112,25 @@ void TSP_OR::PlanRoute(vector<item> &cluster, Coordinate w){
     for(int i =0;i<mod_cluster.size();i++){
       cout<<mod_cluster[i].coordinate.latitude<<" "<<mod_cluster[i].coordinate.longitude<<" "<<mod_cluster[i].time<<endl;
     }
-    cout<<"Warehouse : "<<w.latitude<<" "<<w.longitude<<endl;
+    // for(int i =0 ;i< distances.size(); i++){
+    //   for(int j = 0; j< distances.size(); j++){
+    //     cout<<distances[i][j]<<" ";
+    //   }
+    //   cout<<endl;
+    // }
+    cout<<"------------------------------------------------------------------------------------------------------------"<<endl;
     std::string time{"Time"};
     routing.AddDimension(transit_callback_index,  // transit callback index
                        int64_t{1440},             // allow waiting time
-                       int64_t{300+480},             // maximum time per vehicle
+                       int64_t{300},             // maximum time per vehicle
                        false,  // Don't force start cumul to zero
                        time);
+    
     const RoutingDimension& time_dimension = routing.GetDimensionOrDie(time);
     for (int i = 1; i < mod_cluster.size(); ++i) {
     int64_t index = manager.NodeToIndex(RoutingIndexManager::NodeIndex(i));
-    time_dimension.CumulVar(index)->SetRange(0, mod_cluster[i].time);
+    cout<<mod_cluster[i].time-480<<endl;
+    time_dimension.CumulVar(index)->SetRange(0, mod_cluster[i].time-480);
   }
   for (int i = 0; i < num_vehicles; ++i) {
     int64_t index = routing.Start(i);
@@ -137,16 +145,16 @@ void TSP_OR::PlanRoute(vector<item> &cluster, Coordinate w){
     RoutingSearchParameters search_parameters = DefaultRoutingSearchParameters();
     search_parameters.set_first_solution_strategy(
       FirstSolutionStrategy::PATH_CHEAPEST_ARC);
-    // search_parameters.set_local_search_metaheuristic(
-    //   LocalSearchMetaheuristic::GUIDED_LOCAL_SEARCH);
-    // search_parameters.mutable_time_limit()->set_seconds(5);
-
+    search_parameters.set_local_search_metaheuristic(
+      LocalSearchMetaheuristic::GUIDED_LOCAL_SEARCH);
+    search_parameters.mutable_time_limit()->set_seconds(5);
     const Assignment* solution = routing.SolveWithParameters(search_parameters);
     if(solution == NULL){
       sort(cluster.begin(),cluster.end(), cmp);
       cluster.pop_back();
-      PlanRoute(cluster, w);
       drop_offs++;
+      PlanRoute(cluster, w);
+      return;
     }
     savePath(cluster, manager, routing, solution);
 }
@@ -154,6 +162,12 @@ void TSP_OR::PlanRoute(vector<item> &cluster, Coordinate w){
 void TSP_OR::savePath(vector<item>&clusters ,const RoutingIndexManager& manager,
                    const RoutingModel& routing, const Assignment* solution)
 {
+  std::vector<item> mod_cluster;
+  mod_cluster.push_back(item(1, 1, 1, warehouse.latitude, warehouse.longitude));
+  for(auto x: clusters)
+  {
+      mod_cluster.push_back(x);
+  }
   const RoutingDimension& time_dimension = routing.GetDimensionOrDie("Time");
   int64_t total_time{0};
   for (int vehicle_id = 0; vehicle_id < num_vehicles; ++vehicle_id) {
@@ -161,6 +175,7 @@ void TSP_OR::savePath(vector<item>&clusters ,const RoutingIndexManager& manager,
     std::cout << "Route for vehicle " << vehicle_id << ":";
     std::ostringstream route;
     while (routing.IsEnd(index) == false) {
+      plannedPath.push_back(mod_cluster[manager.IndexToNode(index).value()]) ;
       auto time_var = time_dimension.CumulVar(index);
       route << manager.IndexToNode(index).value() <<" -> "
       << " Time("
@@ -173,32 +188,26 @@ void TSP_OR::savePath(vector<item>&clusters ,const RoutingIndexManager& manager,
     std::cout << route.str() << manager.IndexToNode(index).value() << " Time("
               << solution->Min(time_var) << ", " << solution->Max(time_var)
               << ")";
+    std::cout<<endl;
     std::cout << "Time of the route: " << solution->Min(time_var) << "min";
     total_time += solution->Min(time_var);
+    cost = total_time;
   }
-  std::cout << "Total time of all routes: " << total_time << "min";
-  std::cout << "";
-  std::cout << "Advanced usage:";
   std::cout << "Problem solved in " << routing.solver()->wall_time() << "ms";
 }
     // int64_t index = routing.Start(0);
     // int64_t distance{0};
-    // std::vector<item> mod_cluster;
-    // mod_cluster.push_back(item(1, 1, 1, warehouse.latitude, warehouse.longitude));
-    // for(auto x: clusters)
-    // {
-    //     mod_cluster.push_back(x);
-    // }
+    
     // std::cout<<"Debugggggg \n";
   //   while (routing.IsEnd(index) == false) {
     // std::cout<<mod_cluster[manager.IndexToNode(index).value()].coordinate.latitude << " " << mod_cluster[manager.IndexToNode(index).value()].coordinate.longitude ;
-    // plannedPath.push_back(mod_cluster[manager.IndexToNode(index).value()]) ;
+    
     // int64_t previous_index = index;
     // index = solution.Value(routing.NextVar(index));
     // distance += routing.GetArcCostForVehicle(previous_index, index, int64_t{0});
   // }
   // double tot_dist = (double)distance ;
-  // cost = tot_dist;
+ 
   // std::cout << "Route distance: " << tot_dist<< "km";
   // std::cout << "  ";
   // std::cout << "Problem solved in " << routing.solver()->wall_time() << "ms" << std::endl;

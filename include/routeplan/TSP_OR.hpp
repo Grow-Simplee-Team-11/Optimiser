@@ -40,7 +40,7 @@ class TSP_OR : public RoutePlanInterface{
         const int SCALING_FACTOR=100; 
         // for scaling the distances from float to integer type
         Coordinate warehouse;
-        const int speed=25;
+        const int speed=100;
         const RoutingIndexManager::NodeIndex depot{0};
 };
 
