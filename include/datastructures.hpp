@@ -52,7 +52,12 @@ class item {
     float weight;
     float volume;
     int orig_rank;
-    item() {}
+    item() {
+        orig_rank = -1;
+        position.x = -1;
+        position.y = -1;
+        position.z = -1;
+    }
     item(float w, float h, float d, float lat, float lng) {
         size.width = w;
         size.height = h;
