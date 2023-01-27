@@ -75,18 +75,18 @@ void Optimizer::optimize(){
     output<<clusterPaths.size()<<"\n";
     i=0;
     for(auto& elt: clusterPaths)
+    {
+        output << i++ << "\n";
+        output << elt.size() +2<< "\n";
+        output << warehouse.latitude <<" "<< warehouse.longitude<<endl;
+        for(auto& it: elt)
         {
-            output << i++ << "\n";
-            output << elt.size() +2<< "\n";
-            output << warehouse.latitude <<" "<< warehouse.longitude<<endl;
-            for(auto& it: elt)
-            {
-                output << it.coordinate.latitude << " " << it.coordinate.longitude << "\n";
-            }
-            output << warehouse.latitude <<" "<< warehouse.longitude<<endl;
+            output << it.coordinate.latitude << " " << it.coordinate.longitude << "\n";
         }
         output << warehouse.latitude <<" "<< warehouse.longitude<<endl;
     }
+    output << warehouse.latitude <<" "<< warehouse.longitude<<endl;
+    
     output.close();
     cout<<"Avg ===> "<<avg/clusters.size()<<endl;
     cout<<"Max ===> "<<maximum<<endl;

@@ -1,4 +1,4 @@
-#include "../../include/clustering/HGS/clarle.hpp"
+#include "../../include/clustering/Clarke/clarke.hpp"
 
 void Clarke::merge_sort(vector<pair<int,int>> final_points, int l , int r){
     if(r-l+1==1){

@@ -52,6 +52,7 @@ class item {
     PolarCoordinate polarCoordinate;
     float weight;
     float volume;
+    int time;
     int orig_rank;
     item() {
         orig_rank = -1;

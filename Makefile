@@ -20,8 +20,10 @@ FESIF_INCLUDE_DIR = $(CLUS_INC_DIR)/fesif
 CLUS_SRC_DIR = src/clustering
 FESIF_SRC_DIR = $(CLUS_SRC_DIR)/fesif
 
-CLARKE_INCLUDE_DIR = src/clustering/Clarke
-TSP_INCLUDE_DIR = src/routeplan
+CLARKE_INCLUDE_DIR = include/clustering/Clarke
+CLARKE_SRC_DIR = src/clustering/Clarke
+TSP_SRC_DIR = src/routeplan
+TSP_INCLUDE_DIR = include/routeplan
 OPT_INCLUDE_DIR = src
 OPT_HEADER_DIR = include
 HGS_INCLUDE_DIR = $(CLUS_INC_DIR)/HGS
@@ -32,7 +34,7 @@ RP_INC_DIR = include/routeplan
 RP_SRC_DIR = src/routeplan
 
 
-all: main 
+all: Integrate 
 #  Build FESIF Code 
 global.o: $(FESIF_SRC_DIR)/global.cpp
 	$(CXX) $(CFLAGS) -c $(FESIF_SRC_DIR)/global.cpp $(LIBS)
@@ -84,9 +86,9 @@ Split.o : $(HGS_SRC_DIR)/Split.cpp
 Genetic.o : $(HGS_SRC_DIR)/Genetic.cpp
 	$(CXX)  -fPIC -c $(HGS_SRC_DIR)/Genetic.cpp
 InstanceCVRPLIB.o : $(HGS_SRC_DIR)/InstanceCVRPLIB.cpp 
-	$(CXX) $(CFLAGS) -c $(HGS_SRC_DIR)/InstanceCVRPLIB.cpp $(LIBS)
-HGS.o: AlgorithmParameters.o C_Interface.o Params.o Individual.o LocalSearch.o Population.o Split.o Genetic.o InstanceCVRPLIB.o 
-	$(CXX) $(CFLAGS) -c $(HGS_SRC_DIR)/HGS.cpp
+	$(CXX) -fPIC $(CFLAGS) -c $(HGS_SRC_DIR)/InstanceCVRPLIB.cpp $(LIBS)
+HGS.o: $(HGS_SRC_DIR)/HGS.cpp
+	$(CXX) -fPIC $(CFLAGS) -c $(HGS_SRC_DIR)/HGS.cpp
 # SelfClustering Algorithm
 cluster.o : 
 	$(CXX) $(CFLAGS) -c src/clustering/selfClustering/cluster.cpp $(LIBS)
@@ -97,14 +99,11 @@ TSP_CK.o :
 clarke.o : 
 	$(CXX) $(CFLAGS) -c src/clustering/Clarke/clarke.cpp $(LIBS)
 
-	$(CXX)  -fPIC -c $(HGS_SRC_DIR)/InstanceCVRPLIB.cpp 
-HGS.o: $(HGS_SRC_DIR)/HGS.cpp
-	$(CXX) $(CFLAGS) -fPIC -c $(HGS_SRC_DIR)/HGS.cpp
 libHGS.so : AlgorithmParameters.o C_Interface.o Params.o Individual.o LocalSearch.o Population.o Split.o Genetic.o InstanceCVRPLIB.o HGS.o
 	$(CXX)  -shared -fPIC -o ./lib/libHGS.so AlgorithmParameters.o C_Interface.o Params.o Individual.o LocalSearch.o Population.o Split.o Genetic.o InstanceCVRPLIB.o HGS.o
 # Build the executable
-Integrate: main.cpp fesif.o TSP_OR.o EB-AFIT.o TSP_OR_EDD.o Optimiser.o $(CLARKE_INCLUDE_DIR)/clarke.cpp $(CLARKE_INCLUDE_DIR)/clarke.hpp $(TSP_INCLUDE_DIR)/TSP.cpp $(TSP_INCLUDE_DIR)/tsp.h $(TSP_INCLUDE_DIR)/TSP_LK.cpp $(RP_INC_DIR)/TSP_LK.hpp libHGS.so
-	/usr/bin/g++-11 --std=c++17 -W -Wall -Wno-sign-compare -O4 -pipe -mmmx -msse -msse2 -msse3 -g -Iinclude/ortools -Iinclude -I. global.o HST.o utils.o FESIF.o TSP_OR.o TSP_OR_EDD.o EB-AFIT.o Optimiser.o  main.cpp $(CLARKE_INCLUDE_DIR)/clarke.cpp $(TSP_INCLUDE_DIR)/TSP.cpp $(TSP_INCLUDE_DIR)/TSP_LK.cpp -o Integrate -Llib  -lortools -lHGS
+Integrate: main.cpp fesif.o TSP_OR.o EB-AFIT.o TSP_OR_EDD.o Optimiser.o $(CLARKE_INCLUDE_DIR)/clarke.hpp $(CLARKE_SRC_DIR)/clarke.cpp $(TSP_SRC_DIR)/TSP_CK.cpp $(TSP_INCLUDE_DIR)/TSP_CK.hpp $(TSP_SRC_DIR)/TSP_LK.cpp $(RP_INC_DIR)/TSP_LK.hpp libHGS.so
+	/usr/bin/g++-11 --std=c++17 -W -Wall -Wno-sign-compare -O4 -pipe -mmmx -msse -msse2 -msse3 -g -Iinclude/ortools -Iinclude -I. global.o HST.o utils.o FESIF.o TSP_OR.o TSP_OR_EDD.o EB-AFIT.o Optimiser.o  main.cpp $(CLARKE_SRC_DIR)/clarke.cpp $(TSP_SRC_DIR)/TSP_CK.cpp $(TSP_SRC_DIR)/TSP_LK.cpp -o Integrate -Llib  -lortools -lHGS
 
 
 .PHONY: clean

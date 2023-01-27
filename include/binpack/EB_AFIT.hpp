@@ -3,6 +3,7 @@
 #include "../interface/BinPackInterface.hpp"
 
 
+
 struct layerlist {
     long int layereval;
     short int layerdim;
@@ -74,7 +75,6 @@ class Binpacker{
     Binpacker(){
 
     }
-    
     static int complayerlist(const void* i, const void* j) {
         return *(long int*)i - *(long int*)j;
     }

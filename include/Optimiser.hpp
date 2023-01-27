@@ -4,7 +4,6 @@
 **/
 #ifndef __OPTIMIZER__
 #define __OPTIMIZER__
-
 #include<string>
 #include "interface/RoutePlanInterface.hpp"
 #include "interface/BinPackInterface.hpp"
