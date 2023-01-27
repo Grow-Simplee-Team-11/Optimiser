@@ -15,7 +15,7 @@ void Individual::evaluateCompleteCost(const Params & params)
 			for (int i = 1; i < (int)chromR[r].size(); i++)
 			{
 				distance += params.timeCost[chromR[r][i-1]][chromR[r][i]];
-				float timeReach = (distance + service)/params.averageSpeed; //Add starting time in this
+				float timeReach = (distance + service)/params.averageSpeed ; //Add starting time in this
 				double diff = timeReach-params.timeExpectation[chromR[r][i]];
 				countOfIncrease = (diff>0?diff:0);
 				load += params.cli[chromR[r][i]].demand;

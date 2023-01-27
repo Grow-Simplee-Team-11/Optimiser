@@ -16,10 +16,11 @@ void HGS::ComputeClusters(vector<item> &packages, Coordinate warehouse, int numR
 			int nbVeh = numRiders;
 			// InstanceCVRPLIB cvrp(pathInstance, isRoundingInteger);
 			int n = packages.size();
+			double time_to_deliver_in_km = 1.5; 
 			vector<double> x_coords(n+1);
 			vector<double> y_coords(n+1);
 			vector<double> demands(n+1,0.);
-			vector<double> service_time(n+1,0.);
+			vector<double> service_time(n+1,time_to_deliver_in_km);
 			x_coords[0] = warehouse.latitude;
 			y_coords[0] = warehouse.longitude;
 			std::vector < std::vector< double > > dist_mtx = std::vector < std::vector< double > >(n + 1, std::vector <double>(n + 1));
@@ -56,14 +57,14 @@ void HGS::ComputeClusters(vector<item> &packages, Coordinate warehouse, int numR
 			cout << endl;
 			std::vector<double> expectation(n); 
 			// TODO: add expectation in HGS
-			for(int i=0;i<n;i++) expectation[i] = packages[i].edd;
+			for(int i=0;i<n;i++) expectation[i] = packages[i].time;
 
-
+			int DurationLimit = 5;
 			// Params params(x_coords,y_coords,)
 			// Params params(cvrp.x_coords,cvrp.y_coords,cvrp.dist_mtx,cvrp.service_time,cvrp.demands,
 						// cvrp.vehicleCapacity,cvrp.durationLimit,nbVeh,cvrp.isDurationConstraint,verbose,ap);
 			Params params(x_coords,y_coords,dist_mtx,service_time,demands,
-						b.capacity,1.e30,numRiders,false,verbose, expectation,ap);
+						b.capacity,DurationLimit,numRiders,true,verbose, expectation,ap);
 			print_algorithm_parameters(ap);
 			// Running HGS
 			Genetic solver(params);
