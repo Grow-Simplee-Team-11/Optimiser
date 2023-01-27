@@ -59,7 +59,7 @@ double Clarke::depotDist(Coordinate &c){
     return Dist(c,warehouse);
 }
 double Clarke::compute_savings(item& item1,item& item2){
-    return depotDist(item1.coordinate) + depotDist(item2.coordinate) - Dist(item1.coordinate,item2.coordinate);
+    return depotDist(item1.coordinate) + depotDist(item2.coordinate) - Dist(item1.coordinate,item2.coordinate) + abs(item1.time -item2.time);
 }
 void Clarke::create_pq(){
     q = priority_queue<pair<double,pair<int,int>>> ();

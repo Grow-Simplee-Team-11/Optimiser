@@ -131,134 +131,105 @@ DataModel ReadVRPs(string filename){
 	// input>>warehouse;
 }
 
-// int main(int argc, char** argv) {
+int main(int argc, char** argv) {
     
-//  	// ifstream input;
-//  	// input.open("input.txt");
-//  	Coordinate warehouse;
-//  	cin>>warehouse.longitude>>warehouse.latitude;
-//  	Bin bin;
-//  	cin>>bin.size.length>>bin.size.width>>bin.size.height;
-//  	bin.capacity = 25;
-//  	int n;
-//  	cin>>n;
-//  	vector<item> items(n);
-//  	for(int i=0;i<n;i++) {
-//  		cin>>items[i].coordinate.longitude>>items[i].coordinate.latitude;
-//  		cin>>items[i].size.length>>items[i].size.width>>items[i].size.height;
-// 		items[i].volume = items[i].size.length * items[i].size.width * items[i].size.height;
-//  		items[i].weight = 1;
-//  	}
-// 	int numRiders = 5;
-// 	RoutePlanInterface* rp = new TSP_OR;
-// 	ClusteringInterface* cls = new Clarke;
-// 	BinPackInterface* bp =  new EB_AFIT;
-// 	Optimizer optim(rp, cls, bp, items, warehouse, numRiders, bin,"FESIF_TSP.txt", false, true);
-
-// 	optim.optimize();
-// 	vector<float> costs = optim.GetRoutingCost();
-// 	float total_cost = 0;
-// 	for(int i = 0 ; i< costs.size();i++)
-// 		total_cost+=costs[i];
-// 	cout<<"Total Cost of All Routes is ===> "<< total_cost<<endl;
-//  	// f.ComputeClusters(items, warehouse, 100, bin); //wrapperLMD(items, warehouse, 100, bin);
-//  	// freeGlobalMemory();
-//  	// f.localFree();
-// 	// f.PrintClustersToFile("clusters.txt");
- 	
-// 	// TSP_OR tsp;
-// 	// tsp.PlanRoute(f.GetClusters()[0], f.getWarehouse());
-// 	return 0;
-//  }
-
-int main(int argc, char** argv){
-	DataModel dm;
-	
-	if(argv[1] != NULL){
-		try{
-			dm = ReadVRPs(argv[1]);
-		}
-		catch(string err){
-			cout << err;
-		}
-		
-	}
-	else{
-		string s;
-		cin >> s;
-		try{
-			dm = ReadVRPs(s);
-		}
-		catch(string err){
-			cout << err;
-		}
-		// dm = ReadVRPs(s);
-	}
-	// string s;
-	// cin >> s;
-	// cout << s << endl;
-	// try{
-	// 	dm = ReadVRPs(s);
-	// }
-	// catch(string err){
-	// 	cout << err << endl;
-	// }
-	cout << "Capacity : " << dm.bin.capacity << " depoX :" << dm.warehouse.latitude <<" depoY : " << dm.warehouse.longitude << endl;
-	for(int i = 0;i < dm.packages.size();i++){
-		cout << i << " : x : " << dm.packages[i].coordinate.latitude << " y : " << dm.packages[i].coordinate.longitude << " weight : "<< dm.packages[i].weight << endl;
-	}
+ 	ifstream input;
+ 	input.open("tests/output.txt");
+ 	Coordinate warehouse;
+ 	cin>>warehouse.longitude>>warehouse.latitude;
+ 	Bin bin;
+ 	cin>>bin.size.length>>bin.size.width>>bin.size.height;
+ 	int n;
+ 	cin>>n;
+ 	vector<item> items(n);
+ 	for(int i=0;i<n;i++) {
+ 		cin>>items[i].coordinate.longitude>>items[i].coordinate.latitude;
+ 		cin>>items[i].size.length>>items[i].size.width>>items[i].size.height;
+		cin>>items[i].time; 
+		items[i].volume = items[i].size.length * items[i].size.width * items[i].size.height;
+ 		items[i].weight = 1;
+ 	}
+	int numRiders = 5;
 	RoutePlanInterface* rp = new TSP_OR_EDD(EUCLIDEAN);
-	// RoutePlanInterface* rp = new TSP_LK;
-	// ClusteringInterface* cls = new FESIF;
-	// ClusteringInterface* cls = new Clarke(EUCLIDEAN);
 	ClusteringInterface* cls = new Clarke(EUCLIDEAN);
 	BinPackInterface* bp =  new EB_AFIT;
-
-	bool verbose = true;
-	bool logToFile = true;
-	string logFileName = "FESIF_TSP_LK.txt";
-
-	// int numRiders = 5;
-	Optimizer optim(rp, cls, bp, dm.packages, dm.warehouse, dm.numRiders, dm.bin, logFileName, verbose, logToFile);
+	Optimizer optim(rp, cls, bp, items, warehouse, numRiders, bin,"FESIF_TSP.txt", false, true);
 
 	optim.optimize();
-	vector<float> rcosts = optim.GetRoutingCost();
+	vector<float> costs = optim.GetRoutingCost();
 	float total_cost = 0;
-	for(auto &x : rcosts)
-	{
-		total_cost+=x;
-	}	
-
-	if(verbose)
-		std::cout<<"\nTotal Cost for routing: "<<total_cost<<" km"<<std::endl;
- 	
-	if(logToFile)
-	{
-		std::ofstream out(logFileName, std::ios_base::app);
-		out<<"\nTotal Cost for routing: "<<total_cost<<" km"<<std::endl;
-	}
-
+	for(int i = 0 ; i< costs.size();i++)
+		total_cost+=costs[i];
+	cout<<"Total Cost of All Routes is ===> "<< total_cost<<endl;
 	return 0;
-}
+ }
 
-// int main(){
-// 	TSP_OR tsp(HAVERSINE);
-// 	// vector<item> fluster;
-// 	Coordinate w;
-// 	int n;
-// 	cin >> n;
-// 	vector<item> fluster(n);
-// 	cin >> w.latitude >> w.longitude;
-// 	for(int i = 0;i < n;i++){
-// 		cin >> fluster[i].coordinate.latitude >> fluster[i].coordinate.longitude;
-// 		fluster[i].id = i;
-// 	}		
-// 	tsp.PlanRoute(fluster,w);
-// 	vector<item> route = tsp.GetPaths();
-// 	cout << "Path Generated : \n";
-// 	for(auto item : route){
-// 		cout << item.id << ' ';
+// int main(int argc, char** argv){
+// 	DataModel dm;
+	
+// 	if(argv[1] != NULL){
+// 		try{
+// 			dm = ReadVRPs(argv[1]);
+// 		}
+// 		catch(string err){
+// 			cout << err;
+// 		}
+		
 // 	}
-// 	cout << endl;
+// 	else{
+// 		string s;
+// 		cin >> s;
+// 		try{
+// 			dm = ReadVRPs(s);
+// 		}
+// 		catch(string err){
+// 			cout << err;
+// 		}
+// 		// dm = ReadVRPs(s);
+// 	}
+// 	// string s;
+// 	// cin >> s;
+// 	// cout << s << endl;
+// 	// try{
+// 	// 	dm = ReadVRPs(s);
+// 	// }
+// 	// catch(string err){
+// 	// 	cout << err << endl;
+// 	// }
+// 	cout << "Capacity : " << dm.bin.capacity << " depoX :" << dm.warehouse.latitude <<" depoY : " << dm.warehouse.longitude << endl;
+// 	for(int i = 0;i < dm.packages.size();i++){
+// 		cout << i << " : x : " << dm.packages[i].coordinate.latitude << " y : " << dm.packages[i].coordinate.longitude << " weight : "<< dm.packages[i].weight << endl;
+// 	}
+// 	RoutePlanInterface* rp = new TSP_OR_EDD(EUCLIDEAN);
+// 	// RoutePlanInterface* rp = new TSP_LK;
+// 	// ClusteringInterface* cls = new FESIF;
+// 	// ClusteringInterface* cls = new Clarke(EUCLIDEAN);
+// 	ClusteringInterface* cls = new Clarke(EUCLIDEAN);
+// 	BinPackInterface* bp =  new EB_AFIT;
 
+// 	bool verbose = true;
+// 	bool logToFile = true;
+// 	string logFileName = "FESIF_TSP_LK.txt";
+
+// 	// int numRiders = 5;
+// 	Optimizer optim(rp, cls, bp, dm.packages, dm.warehouse, dm.numRiders, dm.bin, logFileName, verbose, logToFile);
+
+// 	optim.optimize();
+// 	vector<float> rcosts = optim.GetRoutingCost();
+// 	float total_cost = 0;
+// 	for(auto &x : rcosts)
+// 	{
+// 		total_cost+=x;
+// 	}	
+
+// 	if(verbose)
+// 		std::cout<<"\nTotal Cost for routing: "<<total_cost<<" km"<<std::endl;
+ 	
+// 	if(logToFile)
+// 	{
+// 		std::ofstream out(logFileName, std::ios_base::app);
+// 		out<<"\nTotal Cost for routing: "<<total_cost<<" km"<<std::endl;
+// 	}
+
+// 	return 0;
 // }
