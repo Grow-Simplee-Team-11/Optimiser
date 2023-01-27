@@ -1,6 +1,7 @@
 import numpy as np
 import random
-
+from datetime import datetime
+#day month year hour minute second  //12 feb 2020 13:05:06 --> 12 2 2020 13 5 6
 def generate_latlon(func):
     NUM_BOXES = 30
     BIN_LEN = 100
@@ -10,7 +11,7 @@ def generate_latlon(func):
     MEAN_BRE = 20
     MEAN_HEI = 10
     longi = random.randint(77469960, 77703250)/(1e6)
-    lat = random.randint(12873190, 13065670)/(1e6)  
+    lat = random.randint(12873190, 13065670)/(1e6)
     s=""
     s+=str(longi)
     s+=" "
@@ -43,10 +44,17 @@ def generate_latlon(func):
         s+=str(bre[i-1])
         s+=" "
         s+=str(hei[i-1])
+        day = random.randint(12, 15)
+        month = 10
+        year = 2022
+        hour = random.randint(10, 17)
+        minute = random.randint(0,59)
+        second = random.randint(0,59)
+        t = datetime(year, month, day, hour, minute, second)
+        s+=" "
+        s+=str(t.timestamp())
         s+="\n"
-
     return s
-
 func = np.random.default_rng().normal
 s = generate_latlon(func)
 f = open("output.txt", "w")
