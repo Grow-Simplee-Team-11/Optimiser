@@ -71,8 +71,8 @@ extern "C" Solution *solve_cvrp(
 					distance_matrix[i][j] = std::round(distance_matrix[i][j]);
 			}
 		}
-
-		Params params(x_coords,y_coords,distance_matrix,service_time,demands,vehicleCapacity,durationLimit,max_nbVeh,isDurationConstraint,verbose,*ap);
+		vector<double> expectation(n, 540);
+		Params params(x_coords,y_coords,distance_matrix,service_time,demands,vehicleCapacity,durationLimit,max_nbVeh,isDurationConstraint,verbose, expectation, *ap);
 
 		// Running HGS and returning the result
 		Genetic solver(params);
@@ -109,7 +109,7 @@ extern "C" Solution *solve_cvrp_dist_mtx(
 				distance_matrix[i][j] = dist_mtx[n * i + j];
 			}
 		}
-
+		vector<double> expectation(n, 540);
 		Params params(x_coords,y_coords,distance_matrix,service_time,demands,vehicleCapacity,durationLimit,max_nbVeh,isDurationConstraint,verbose,expectation, *ap);
 		
 		// Running HGS and returning the result

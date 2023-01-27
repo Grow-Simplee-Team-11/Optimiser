@@ -189,7 +189,7 @@ void Clarke::solve(){
 
     consolodate_further();
     cluster_list.clear();
-
+    set<int> s;
     for(int i = 0;i<numPackages;i++){
         s.insert(find_set(i));
         cluster_list[find_set(i)].push_back(packages[i]);

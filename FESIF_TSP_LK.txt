@@ -7561,3 +7561,470 @@ Printing the packing --
 
 
 Total Cost for routing: 5539.89 km
+Printing Cluster -- 0 
+7 13
+24 14
+10 5
+2 91
+3 93
+42 5
+5 98
+Printing Cluster -- 1 
+5 50
+30 58
+39 2
+59 61
+65 1
+32 19
+9 42
+15 23
+Printing Cluster -- 2 
+44 96
+8 49
+51 88
+97 9
+69 57
+Printing Cluster -- 3 
+89 29
+39 84
+82 3
+25 84
+93 50
+14 98
+62 61
+55 80
+70 20
+Printing Cluster -- 4 
+52 98
+60 85
+Printing information for cluster - 0
+The Routes for the cluster -- 
+Warehouse -> 76 82
+ -> 5 98
+ -> 3 93
+ -> 2 91
+ -> 7 13
+ -> 10 5
+ -> 24 14
+ -> 42 5
+ -> -> Warehouse
+Printing the packing -- 
+7 13
+
+24 14
+
+10 5
+
+2 91
+
+3 93
+
+42 5
+
+5 98
+
+
+Printing information for cluster - 1
+The Routes for the cluster -- 
+Warehouse -> 76 82
+ -> 59 61
+ -> 39 2
+ -> 65 1
+ -> 32 19
+ -> 5 50
+ -> 30 58
+ -> -> Warehouse
+Printing the packing -- 
+5 50
+
+30 58
+
+65 1
+
+32 19
+
+59 61
+
+39 2
+
+
+Printing information for cluster - 2
+The Routes for the cluster -- 
+Warehouse -> 76 82
+ -> 69 57
+ -> 97 9
+ -> 8 49
+ -> 44 96
+ -> 51 88
+ -> -> Warehouse
+Printing the packing -- 
+44 96
+
+8 49
+
+51 88
+
+97 9
+
+69 57
+
+
+Printing information for cluster - 3
+The Routes for the cluster -- 
+Warehouse -> 76 82
+ -> 93 50
+ -> 89 29
+ -> 82 3
+ -> 70 20
+ -> 62 61
+ -> 25 84
+ -> 14 98
+ -> 39 84
+ -> 55 80
+ -> -> Warehouse
+Printing the packing -- 
+89 29
+
+39 84
+
+82 3
+
+25 84
+
+93 50
+
+14 98
+
+62 61
+
+55 80
+
+70 20
+
+
+Printing information for cluster - 4
+The Routes for the cluster -- 
+Warehouse -> 76 82
+ -> 60 85
+ -> 52 98
+ -> -> Warehouse
+Printing the packing -- 
+52 98
+
+60 85
+
+
+
+Total Cost for routing: 686 km
+Printing Cluster -- 0 
+32 19
+24 14
+39 2
+42 5
+65 1
+70 20
+82 3
+97 9
+89 29
+93 50
+Printing Cluster -- 1 
+62 61
+69 57
+Printing Cluster -- 2 
+59 61
+15 23
+10 5
+7 13
+9 42
+5 50
+8 49
+30 58
+Printing Cluster -- 3 
+14 98
+5 98
+3 93
+2 91
+25 84
+39 84
+55 80
+Printing Cluster -- 4 
+60 85
+51 88
+44 96
+52 98
+Printing information for cluster - 0
+The Routes for the cluster -- 
+Warehouse -> 93 50
+ -> 89 29
+ -> 97 9
+ -> 82 3
+ -> 70 20
+ -> 65 1
+ -> 42 5
+ -> 39 2
+ -> 24 14
+ -> 32 19
+ -> -> Warehouse
+Printing the packing -- 
+32 19
+
+24 14
+
+39 2
+
+42 5
+
+65 1
+
+70 20
+
+82 3
+
+97 9
+
+89 29
+
+93 50
+
+
+Printing information for cluster - 1
+The Routes for the cluster -- 
+Warehouse -> 62 61
+ -> 69 57
+ -> -> Warehouse
+Printing the packing -- 
+62 61
+
+69 57
+
+
+Printing information for cluster - 2
+The Routes for the cluster -- 
+Warehouse -> 59 61
+ -> 15 23
+ -> 10 5
+ -> 7 13
+ -> 9 42
+ -> 5 50
+ -> 8 49
+ -> 30 58
+ -> -> Warehouse
+Printing the packing -- 
+59 61
+
+15 23
+
+10 5
+
+7 13
+
+9 42
+
+5 50
+
+8 49
+
+30 58
+
+
+Printing information for cluster - 3
+The Routes for the cluster -- 
+Warehouse -> 55 80
+ -> 39 84
+ -> 25 84
+ -> 2 91
+ -> 3 93
+ -> 5 98
+ -> 14 98
+ -> -> Warehouse
+Printing the packing -- 
+14 98
+
+5 98
+
+3 93
+
+2 91
+
+25 84
+
+39 84
+
+55 80
+
+
+Printing information for cluster - 4
+The Routes for the cluster -- 
+Warehouse -> 60 85
+ -> 51 88
+ -> 44 96
+ -> 52 98
+ -> -> Warehouse
+Printing the packing -- 
+60 85
+
+51 88
+
+44 96
+
+52 98
+
+
+
+Total Cost for routing: 787.065 km
+Printing Cluster -- 0 
+93 50
+89 29
+97 9
+82 3
+70 20
+65 1
+42 5
+39 2
+24 14
+32 19
+Printing Cluster -- 1 
+62 61
+69 57
+Printing Cluster -- 2 
+30 58
+8 49
+5 50
+9 42
+7 13
+10 5
+15 23
+59 61
+Printing Cluster -- 3 
+55 80
+39 84
+25 84
+2 91
+3 93
+5 98
+14 98
+Printing Cluster -- 4 
+52 98
+44 96
+51 88
+60 85
+Printing information for cluster - 0
+The Routes for the cluster -- 
+Warehouse -> 93 50
+ -> 89 29
+ -> 97 9
+ -> 82 3
+ -> 70 20
+ -> 65 1
+ -> 42 5
+ -> 39 2
+ -> 24 14
+ -> 32 19
+ -> -> Warehouse
+Printing the packing -- 
+93 50
+
+89 29
+
+97 9
+
+82 3
+
+70 20
+
+65 1
+
+42 5
+
+39 2
+
+24 14
+
+32 19
+
+
+Printing information for cluster - 1
+The Routes for the cluster -- 
+Warehouse -> 62 61
+ -> 69 57
+ -> -> Warehouse
+Printing the packing -- 
+62 61
+
+69 57
+
+
+Printing information for cluster - 2
+The Routes for the cluster -- 
+Warehouse -> 59 61
+ -> 15 23
+ -> 10 5
+ -> 7 13
+ -> 9 42
+ -> 5 50
+ -> 8 49
+ -> 30 58
+ -> -> Warehouse
+Printing the packing -- 
+30 58
+
+8 49
+
+5 50
+
+9 42
+
+7 13
+
+10 5
+
+15 23
+
+59 61
+
+
+Printing information for cluster - 3
+The Routes for the cluster -- 
+Warehouse -> 55 80
+ -> 39 84
+ -> 25 84
+ -> 2 91
+ -> 3 93
+ -> 5 98
+ -> 14 98
+ -> -> Warehouse
+Printing the packing -- 
+55 80
+
+39 84
+
+25 84
+
+2 91
+
+3 93
+
+5 98
+
+14 98
+
+
+Printing information for cluster - 4
+The Routes for the cluster -- 
+Warehouse -> 60 85
+ -> 51 88
+ -> 44 96
+ -> 52 98
+ -> -> Warehouse
+Printing the packing -- 
+52 98
+
+44 96
+
+51 88
+
+60 85
+
+
+
+Total Cost for routing: 787.065 km

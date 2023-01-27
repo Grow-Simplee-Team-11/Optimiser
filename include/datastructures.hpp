@@ -94,5 +94,38 @@ class item {
         // out<<"( Latitude - "<<coordinate.latitude<<" Longitude - "<<coordinate.longitude<<" Size - ("<<size.width<<", "<<size.length<<", "<<size.height<<") )";
         return;
     }
-}
+    float getVolume() {
+            return size.width * size.length * size.height;
+    }
+};
+class Bin{
+    public:
+    Dimension_ size;
+    float capacity;
+    Bin(){}
+    Bin(float w,float l, float h){
+        size.width = w;
+        size.length = l;
+        size.height = h;
+        capacity = 1000;
+    }
+
+    Bin(float w, float l, float h, float c){
+        size.width = w;
+        size.length = l;
+        size.height = h;
+        capacity = c;
+    }
+
+    float getCapacity(){
+        return capacity;
+    }
+
+    float getVolume(){
+        return size.width * size.length * size.height * 0.85;
+    }
+
+};
+
+#endif
 

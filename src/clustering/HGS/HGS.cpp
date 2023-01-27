@@ -59,17 +59,19 @@ void HGS::ComputeClusters(vector<item> &packages, Coordinate warehouse, int numR
 			// TODO: add expectation in HGS
 			for(int i=0;i<n;i++) expectation[i] = packages[i].time;
 
-			int DurationLimit = 5;
-			// Params params(x_coords,y_coords,)
-			// Params params(cvrp.x_coords,cvrp.y_coords,cvrp.dist_mtx,cvrp.service_time,cvrp.demands,
-						// cvrp.vehicleCapacity,cvrp.durationLimit,nbVeh,cvrp.isDurationConstraint,verbose,ap);
+			double DurationLimit = 30.0;
+			////////////Uncomment for duration limit//////////////////
 			Params params(x_coords,y_coords,dist_mtx,service_time,demands,
 						b.capacity,DurationLimit,numRiders,true,verbose, expectation,ap);
+			///////////////////////////////////////////////////////
+			// Params params(x_coords,y_coords,dist_mtx,service_time,demands,
+			// 			b.capacity,1.e30,numRiders,false,verbose, expectation,ap);
+			//////////////////////////////////////
 			print_algorithm_parameters(ap);
 			// Running HGS
 			Genetic solver(params);
 			solver.run();
-			
+			cout << "Solver Completed"<<endl;
 			// Exporting the best solution
 			const Individual indiv = *solver.population.getBestFound();
 			if (solver.population.getBestFound() != NULL)

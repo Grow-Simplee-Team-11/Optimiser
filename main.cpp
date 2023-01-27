@@ -153,7 +153,8 @@ DataModel ReadVRPs(string filename){
 		dm.packages[i].size.height = get_rand(min_dimensions[1],max_dimensions[1]);
 		dm.packages[i].size.length = get_rand(min_dimensions[2],max_dimensions[2]);
 		dm.packages[i].weight = demands[i];
-		dm.packages[i].time = ((rand() % (ub - lb + 1)) + lb)*60 ;
+		// dm.packages[i].time = ((rand() % (ub - lb + 1)) + lb)*60 ;
+		dm.packages[i].time = ((rand() % (ub - lb + 10)));
 	}
 	return dm;
 }
@@ -295,11 +296,10 @@ int main(int argc, char** argv){
 	for(int i = 0;i < dm.packages.size();i++){
 		cout << i << " : x : " << dm.packages[i].coordinate.latitude << " y : " << dm.packages[i].coordinate.longitude << " weight : "<< dm.packages[i].weight << endl;
 	}
-	RoutePlanInterface* rp = new TSP_OR_EDD(EUCLIDEAN);
-	// RoutePlanInterface* rp = new TSP_LK;
-	// ClusteringInterface* cls = new FESIF;
+	// RoutePlanInterface* rp = new TSP_OR_EDD(EUCLIDEAN);
+	RoutePlanInterface* rp = new TSP_OR(EUCLIDEAN);
 	// ClusteringInterface* cls = new Clarke(EUCLIDEAN);
-	ClusteringInterface* cls = new Clarke(EUCLIDEAN);
+	ClusteringInterface* cls = new HGS(EUCLIDEAN);
 	BinPackInterface* bp =  new EB_AFIT;
 
 	bool verbose = true;
