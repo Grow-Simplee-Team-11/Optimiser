@@ -180,6 +180,7 @@ int get_rand(int a,int b){
 //     // 2. 14, 104, 48, 2
 //     // 3. 40, 52, 36, 3
 //     srand(time(NULL));
+
 //     int CLUSTER_SIZE = 20;
 //     vector<int> min_dimensions(3),max_dimensions(3),bin_dimensions(3);
 //     min_dimensions = {3,3,3};
@@ -209,11 +210,13 @@ int get_rand(int a,int b){
 
 //     Bin b(bin_dimensions[0], bin_dimensions[1], bin_dimensions[2]);
 //     eba.BinPack(cluster, b);
+
     
 //     auto res = eba.GetPackaging();
 //     eba.CalculateCost();
 //     cout << eba.GetPackagingCost() << endl;
 //     cout << eba.getInversionCount(cluster) << endl;
+
 //     for (auto x : cluster) {
 //         // x.print();
 //         cout << x.orig_rank << "\n";

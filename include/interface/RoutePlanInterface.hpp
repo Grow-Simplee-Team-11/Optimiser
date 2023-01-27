@@ -54,11 +54,13 @@ class RoutePlanInterface{
         float GetPathPlanningCost(){
             return cost;
         }
-
+    int drop_offs=0;
     protected:
         vector<item> plannedPath;
         float cost;
+        
 
 };
+
 
 #endif 

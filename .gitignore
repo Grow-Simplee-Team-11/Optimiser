@@ -4,3 +4,11 @@ or-tools_*
 lib/
 FESIF_TSP.txt
 .idea
+VRP/
+*.o
+*.txt
+*.out
+bin/
+cmake/
+main
+server

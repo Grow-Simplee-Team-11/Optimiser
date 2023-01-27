@@ -63,6 +63,7 @@ DataModel ReadVRPs(string filename){
 	std::vector<double> demands = std::vector<double>(nbClients);
 	std::vector<double> service_time = std::vector<double>(nbClients);
 
+
 	// Reading node coordinates
 	// depot must be the first element
 	// 		- i = 0 in the for-loop below, or
@@ -109,14 +110,16 @@ DataModel ReadVRPs(string filename){
 	dm.bin.size.width = 1e5;
 	dm.warehouse.latitude  = depot_lat;
 	dm.warehouse.longitude = depot_lon;
+	int ub = 13 , lb = 9;
+	srand ( time(NULL) );
 	for(int i=0; i<nbClients; i++)
 	{
 		dm.packages[i].coordinate.latitude = x_coords[i];
 		dm.packages[i].coordinate.longitude = y_coords[i];
 		dm.packages[i].volume = 1;
 		dm.packages[i].weight = demands[i];
+		dm.packages[i].time = ((rand() % (ub - lb + 1)) + lb)*60 ;
 	}
-	
 	return dm;
 }
 
