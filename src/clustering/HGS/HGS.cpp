@@ -6,7 +6,7 @@ HGS::HGS(bool method): ClusteringInterface(method){
 			// pathSolution = solution_path_name;
 			isRoundingInteger = false;
 			verbose = true;
-			pathSolution = "./tests/HGS_sol.txt";
+			pathSolution = "../tests/HGS_sol.txt";
 			ap = default_algorithm_parameters();
 			// ap.timeLimit = 30.0;
 			ap.nbIter = 10000;

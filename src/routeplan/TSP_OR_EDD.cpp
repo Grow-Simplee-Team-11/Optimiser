@@ -74,9 +74,17 @@ bool cmp(item a, item b){
   return a.time>b.time;
 }
 void TSP_OR_EDD::PlanRoute(vector<item> &cluster, Coordinate w){
-    if(cluster.size()==1)
-      return;
+    
     plannedPath.clear();
+    
+    if(cluster.size() == 1){
+      plannedPath.push_back(cluster[0]);
+      cost = 2 * Dist(w, cluster[0].coordinate);
+      std::cout << "Route distance: " << cost<< "km";
+      std::cout << "  "<<endl;
+      return;
+    }
+    
 
     RoutingIndexManager manager(cluster.size()+1, num_vehicles, depot);
     RoutingModel routing(manager);

@@ -8028,3 +8028,10 @@ Printing the packing --
 
 
 Total Cost for routing: 787.065 km
+Printing Cluster -- 0 
+5 13
+10 10
+25 16
+-11 -40
+-10 -10
+Printing information for cluster - 0
