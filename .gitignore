@@ -3,3 +3,5 @@ or-tools_*
 /include/ortools/
 lib/
 FESIF_TSP.txt
+FESIF_TSP_LK.txt
+.gitignore
