@@ -169,10 +169,6 @@ float EB_AFIT::CalculateCost() {
     cost = 100 - binpacker.percentagepackedbox;
     return cost;
 }
-
-int get_rand(int a,int b){
-    return a + rand()%(b - a);
-}
 // int main() {
 //     EB_AFIT eba;
 //     //     104, 96, 84

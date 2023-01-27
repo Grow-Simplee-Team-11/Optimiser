@@ -20,6 +20,11 @@ class DataModel{
 	int optimal;
 };
 
+
+int get_rand(int a,int b){
+    return a + rand()%(b - a);
+}
+
 DataModel ReadVRPs(string filename){
 	DataModel dm;
 	ifstream inputFile;
@@ -105,18 +110,28 @@ DataModel ReadVRPs(string filename){
 	// add items to datamodel
 	dm.packages.resize(nbClients);
 	dm.bin.capacity = vehicleCapacity;
-	dm.bin.size.height = 1e5;
-	dm.bin.size.length = 1e5;
-	dm.bin.size.width = 1e5;
+	dm.bin.size.height = 100;
+	dm.bin.size.length = 80;
+	dm.bin.size.width = 80;
 	dm.warehouse.latitude  = depot_lat;
 	dm.warehouse.longitude = depot_lon;
 	int ub = 13 , lb = 9;
 	srand ( time(NULL) );
+
+    vector<int> min_dimensions(3),max_dimensions(3),bin_dimensions(3);
+    min_dimensions = {3,3,3};
+    max_dimensions = {40,20,40};
+    bin_dimensions = {80,100,80};
+
+
 	for(int i=0; i<nbClients; i++)
 	{
 		dm.packages[i].coordinate.latitude = x_coords[i];
 		dm.packages[i].coordinate.longitude = y_coords[i];
 		dm.packages[i].volume = 1;
+		dm.packages[i].size.width = get_rand(min_dimensions[0],max_dimensions[0]);
+		dm.packages[i].size.height = get_rand(min_dimensions[1],max_dimensions[1]);
+		dm.packages[i].size.length = get_rand(min_dimensions[2],max_dimensions[2]);
 		dm.packages[i].weight = demands[i];
 		dm.packages[i].time = ((rand() % (ub - lb + 1)) + lb)*60 ;
 	}
