@@ -13,4 +13,5 @@ cmake/
 main
 server
 FESIF_TSP_LK.txt
+build/*
 .gitignore

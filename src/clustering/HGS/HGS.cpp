@@ -61,11 +61,11 @@ void HGS::ComputeClusters(vector<item> &packages, Coordinate warehouse, int numR
 
 			double DurationLimit = 30.0;
 			////////////Uncomment for duration limit//////////////////
-			Params params(x_coords,y_coords,dist_mtx,service_time,demands,
-						b.capacity,DurationLimit,numRiders,true,verbose, expectation,ap);
-			///////////////////////////////////////////////////////
 			// Params params(x_coords,y_coords,dist_mtx,service_time,demands,
-			// 			b.capacity,1.e30,numRiders,false,verbose, expectation,ap);
+			// 			b.capacity,DurationLimit,numRiders,true,verbose, expectation,ap);
+			///////////////////////////////////////////////////////
+			Params params(x_coords,y_coords,dist_mtx,service_time,demands,
+						b.capacity,1.e30,numRiders,false,verbose, expectation,ap);
 			//////////////////////////////////////
 			print_algorithm_parameters(ap);
 			// Running HGS
