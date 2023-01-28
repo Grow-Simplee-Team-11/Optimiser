@@ -135,7 +135,7 @@ DataModel ReadVRPs(string filename){
 	dm.bin.size.width = 80;
 	dm.warehouse.latitude  = depot_lat;
 	dm.warehouse.longitude = depot_lon;
-	int ub = 13 , lb = 9;
+	int ub = 14 , lb = 9;
 	srand ( time(NULL) );
 
     vector<int> min_dimensions(3),max_dimensions(3),bin_dimensions(3);
@@ -154,7 +154,7 @@ DataModel ReadVRPs(string filename){
 		dm.packages[i].size.length = get_rand(min_dimensions[2],max_dimensions[2]);
 		dm.packages[i].weight = demands[i];
 		// dm.packages[i].time = ((rand() % (ub - lb + 1)) + lb)*60 ;
-		dm.packages[i].time = ((rand() % (ub - lb + 10)));
+		dm.packages[i].time = ((rand() % (ub - lb))+1);
 	}
 	return dm;
 }
@@ -200,67 +200,7 @@ DataModel ReadVRPs(string filename){
 // // 	return 0;
 // //  }
 
-// int main(int argc, char** argv){
-// 	DataModel dm;
-	
-// 	if(argv[1] != NULL){
-// 		try{
-// 			dm = ReadVRPs(argv[1]);
-// 		}
-// 		catch(string err){
-// 			cout << err;
-// 		}
-		
-// 	}
-// 	else{
-// 		string s;
-// 		cin >> s;
-// 		try{
-// 			dm = ReadVRPs(s);
-// 		}
-// 		catch(string err){
-// 			cout << err;
-// 		}
-// 	}
-// 	// string s;
-// 	// cin >> s;
-// 	// cout << s << endl;
-// 	// try{
-// 	// 	dm = ReadVRPs(s);
-// 	// }
-// 	// catch(string err){
-// 	// 	cout << err << endl;
-// 	// }
-// 	cout << "Capacity : " << dm.bin.capacity << " depoX :" << dm.warehouse.latitude <<" depoY : " << dm.warehouse.longitude << endl;
-// 	for(int i = 0;i < dm.packages.size();i++){
-// 		cout << i << " : x : " << dm.packages[i].coordinate.latitude << " y : " << dm.packages[i].coordinate.longitude << " weight : "<< dm.packages[i].weight << endl;
-// 	}
-// 	RoutePlanInterface* rp = new TSP_OR_EDD(EUCLIDEAN);
-// 	ClusteringInterface* cls = new Clarke(EUCLIDEAN);
-// 	BinPackInterface* bp =  new EB_AFIT;
-// 	Optimizer optim(rp, cls, bp, items, warehouse, numRiders, bin,"FESIF_TSP.txt", false, true);
-
-// 	optim.optimize();
-// 	vector<float> costs = optim.GetRoutingCost();
-// 	float total_cost = 0;
-// 	for(auto &x : rcosts)
-// 	{
-// 		total_cost+=x; 
-// 	}
-
-// 	if(verbose)
-// 		std::cout<<total_cost<<std::endl<<dm.optimal<<std::endl;
- 	
-// 	if(logToFile)
-// 	{
-// 		std::ofstream out(logFileName, std::ios_base::app);
-// 		out<<"\nTotal Cost for routing: "<<total_cost<<" km"<<std::endl;
-// 	}
-
-// 	return 0;
-//  }
-
-int32_t main(int argc, char** argv){
+int main(int argc, char** argv){
 	DataModel dm;
 	
 	if(argv[1] != NULL){
@@ -296,8 +236,8 @@ int32_t main(int argc, char** argv){
 	for(int i = 0;i < dm.packages.size();i++){
 		cout << i << " : x : " << dm.packages[i].coordinate.latitude << " y : " << dm.packages[i].coordinate.longitude << " weight : "<< dm.packages[i].weight << endl;
 	}
-	// RoutePlanInterface* rp = new TSP_OR_EDD(EUCLIDEAN);
-	RoutePlanInterface* rp = new TSP_OR(EUCLIDEAN);
+	RoutePlanInterface* rp = new TSP_OR_EDD(EUCLIDEAN);
+	// RoutePlanInterface* rp = new TSP_OR(EUCLIDEAN);
 	// ClusteringInterface* cls = new Clarke(EUCLIDEAN);
 	ClusteringInterface* cls = new HGS(EUCLIDEAN);
 	BinPackInterface* bp =  new EB_AFIT;

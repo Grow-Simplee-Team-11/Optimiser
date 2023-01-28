@@ -38,7 +38,8 @@ SOFTWARE.*/
 #include <algorithm>
 #include <unordered_set>
 #include <random>
-#define MY_EPSILON 0.00001 // Precision parameter, used to avoid numerical instabilities
+// #define MY_EPSILON 0.00001 // Precision parameter, used to avoid numerical instabilities
+#define MY_EPSILON 0.0001 // Precision parameter, used to avoid numerical instabilities
 #define PI 3.14159265359
 
 struct Client

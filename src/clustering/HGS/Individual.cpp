@@ -24,7 +24,7 @@ void Individual::evaluateCompleteCost(const Params & params)
 				distance += params.timeCost[chromR[r][i-1]][chromR[r][i]];
 				float timeReach = (distance + service)/params.averageSpeed ; //Add starting time in this
 				double diff = timeReach-params.timeExpectation[chromR[r][i]];
-				countOfIncrease = (diff>0?diff:0);
+				countOfIncrease += (diff>0?diff:0);
 				load += params.cli[chromR[r][i]].demand;
 				service += params.cli[chromR[r][i]].serviceDuration;
 				predecessors[chromR[r][i]] = chromR[r][i-1];
@@ -32,7 +32,7 @@ void Individual::evaluateCompleteCost(const Params & params)
 			}
 			successors[chromR[r][chromR[r].size()-1]] = 0;
 			distance += params.timeCost[chromR[r][chromR[r].size()-1]][0];
-			eval.distance += distance + countOfIncrease*params.averageSpeed*0.1;
+			eval.distance += distance + countOfIncrease*params.averageSpeed*2;
 			eval.nbRoutes++;
 			if (load > params.vehicleCapacity) eval.capacityExcess += load - params.vehicleCapacity;
 			if (distance + service > params.durationLimit) eval.durationExcess += distance + service - params.durationLimit;

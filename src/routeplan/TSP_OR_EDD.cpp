@@ -137,8 +137,8 @@ void TSP_OR_EDD::PlanRoute(vector<item> &cluster, Coordinate w){
     const RoutingDimension& time_dimension = routing.GetDimensionOrDie(time);
     for (int i = 1; i < mod_cluster.size(); ++i) {
     int64_t index = manager.NodeToIndex(RoutingIndexManager::NodeIndex(i));
-    cout<<mod_cluster[i].time-480<<endl;
-    time_dimension.CumulVar(index)->SetRange(0, mod_cluster[i].time-480);
+    cout<<mod_cluster[i].time<<endl;
+    time_dimension.CumulVar(index)->SetRange(0, mod_cluster[i].time*60);
   }
   for (int i = 0; i < num_vehicles; ++i) {
     int64_t index = routing.Start(i);

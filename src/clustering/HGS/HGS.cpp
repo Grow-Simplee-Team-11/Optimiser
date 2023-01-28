@@ -14,7 +14,7 @@ HGS::HGS(bool method): ClusteringInterface(method){
 			pathSolution = "../tests/HGS_sol.txt";
 			ap = default_algorithm_parameters();
 			// ap.timeLimit = 30.0;
-			ap.nbIter = 10000;
+			ap.nbIter = 25000;
 }
 
 /**
@@ -30,7 +30,8 @@ void HGS::ComputeClusters(vector<item> &packages, Coordinate warehouse, int numR
 			int nbVeh = numRiders;
 			// InstanceCVRPLIB cvrp(pathInstance, isRoundingInteger);
 			int n = packages.size();
-			double time_to_deliver_in_km = 1.5; 
+			// double time_to_deliver_in_km = 1.5; 
+			double time_to_deliver_in_km = 0; 
 			vector<double> x_coords(n+1);
 			vector<double> y_coords(n+1);
 			vector<double> demands(n+1,0.);
@@ -72,14 +73,15 @@ void HGS::ComputeClusters(vector<item> &packages, Coordinate warehouse, int numR
 			std::vector<double> expectation(n); 
 			// TODO: add expectation in HGS
 			for(int i=0;i<n;i++) expectation[i] = packages[i].time;
-
-			double DurationLimit = 30.0;
+			double avgspeed = 100.0;
+			double DurationLimit = avgspeed*5;//Duration Limit is given in kms
 			////////////Uncomment for duration limit//////////////////
-			// Params params(x_coords,y_coords,dist_mtx,service_time,demands,
-			// 			b.capacity,DurationLimit,numRiders,true,verbose, expectation,ap);
-			///////////////////////////////////////////////////////
 			Params params(x_coords,y_coords,dist_mtx,service_time,demands,
-						b.capacity,1.e30,numRiders,false,verbose, expectation,ap);
+						b.capacity,DurationLimit,numRiders,true,verbose, expectation,ap);
+			params.averageSpeed = avgspeed;
+			///////////////////////////////////////////////////////
+			// Params params(x_coords,y_coords,dist_mtx,service_time,demands,
+			// 			b.capacity,1.e30,numRiders,false,verbose, expectation,ap);
 			//////////////////////////////////////
 			print_algorithm_parameters(ap);
 			// Running HGS
