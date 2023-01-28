@@ -104,7 +104,7 @@ class RoutePlanInterface{
 
 
     protected:
-        
+        const int speed = 100;
         vector<item> plannedPath;
         float cost;
 

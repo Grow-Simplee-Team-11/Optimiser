@@ -21,6 +21,14 @@ class ClusteringInterface{
     public:
         const int SCALING_FACTOR=100; 
         bool method;
+        double Spatial_Factor = 2;
+        double Temporal_Factor = 0;
+        double best_Temporal_Factor = 0;
+        double best_Spatial_Factor = 0;
+        const double Spatial_Factor_Lower_Limit = 0;
+        const double Spatial_Factor_Upper_Limit = 10;
+        const double Temporal_Factor_Lower_Limit = 0;
+        const double Temporal_Factor_Upper_Limit = 1;
         ClusteringInterface(bool method) {
             this->method = method;
             cost = 0;
@@ -118,6 +126,7 @@ class ClusteringInterface{
 
         
     protected:
+        const int speed = 100;
         vector<vector<item>> clusters;
         float cost;
         Coordinate warehouse;

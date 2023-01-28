@@ -14,6 +14,41 @@ Optimizer::Optimizer(RoutePlanInterface* routePlannerInterface_, ClusteringInter
 }
 
 void Optimizer::optimize(){
+    int i = 0;
+    int maximum = -INT_MAX;
+    int avg = 0;
+    int dropoffs = INT_MAX;
+    vector<item> main_packages = packages;
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_real_distribution<double> Temporal_Factor_Gen(clusteringInterface->Temporal_Factor_Lower_Limit, clusteringInterface->Temporal_Factor_Upper_Limit);
+    std::uniform_real_distribution<double> Spactial_Factor_Gen(clusteringInterface->Spatial_Factor_Lower_Limit, clusteringInterface->Spatial_Factor_Upper_Limit);
+    for(int j = 0 ; j <= 10 ; j++){
+        clusteringInterface->Temporal_Factor = Temporal_Factor_Gen(gen);
+        clusteringInterface->Spatial_Factor = Spactial_Factor_Gen(gen);
+        cout<<"Now starting iteration with Temporal Factor ====> "<<clusteringInterface->Temporal_Factor<<endl;
+        cout<<"Now starting iteration with Spatial Factor ====> "<<clusteringInterface->Spatial_Factor<<endl;
+        clusteringInterface->ComputeClusters(main_packages, warehouse, numberRiders, bin);
+        clusteringInterface->CalculateCost();
+        clusters = clusteringInterface->GetClusters();
+        
+        for(auto& cluster: clusters){
+            routePlannerInterface->PlanRoute(cluster, warehouse);
+            routePlannerInterface->CalculateCost();
+        }
+        if(routePlannerInterface->drop_offs < dropoffs){
+            cout<<"New Best DropOffs ==> "<<routePlannerInterface->drop_offs<<endl;
+            cout<<"With Temporal Factor ===> "<<clusteringInterface->Temporal_Factor<<endl;
+            cout<<"With Spatial Factor ===> "<<clusteringInterface->Spatial_Factor<<endl;
+            dropoffs = routePlannerInterface->drop_offs;
+            clusteringInterface->best_Temporal_Factor = clusteringInterface->Temporal_Factor;
+            clusteringInterface->best_Spatial_Factor = clusteringInterface->Spatial_Factor;
+        }
+        main_packages = packages;
+        routePlannerInterface->drop_offs = 0;
+    }
+
+    clusteringInterface->Temporal_Factor = clusteringInterface->best_Temporal_Factor;
     clusteringInterface->ComputeClusters(packages, warehouse, numberRiders, bin);
     clusteringInterface->CalculateCost();
     clusteringCost = clusteringInterface->GetClusteringCost();
@@ -26,9 +61,7 @@ void Optimizer::optimize(){
         clusteringInterface->PrintClustersToFile(logFileName);
     }
 
-    int i = 0;
-    int maximum = -INT_MAX;
-    int avg = 0;
+    
     for(auto& cluster: clusters){
         
         if(verbose){

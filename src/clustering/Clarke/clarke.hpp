@@ -36,7 +36,7 @@ class Clarke: public ClusteringInterface{
     // void Clarke::setParams(vector<item> packages, Coordinate warehouse, int numRiders, Bin b);
     void solve();
     public:
-    void ComputeClusters(vector<item>& packages, Coordinate warehouse, int numRiders, Bin b);
+    void ComputeClusters(vector<item> &packages, Coordinate warehouse, int numRiders, Bin b);
     double compute_savings(item&,item&);
     void create_pq();
     void make_set(int);

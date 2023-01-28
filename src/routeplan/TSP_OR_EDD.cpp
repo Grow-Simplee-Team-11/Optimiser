@@ -103,7 +103,7 @@ void TSP_OR_EDD::PlanRoute(vector<item> &cluster, Coordinate w){
     vector<item> mod_cluster;
     item temp;
     temp.coordinate=w;
-    temp.time = 1440;
+    temp.time = 10000;
     mod_cluster.push_back(temp);
     for(auto x: cluster)
     {
@@ -121,7 +121,7 @@ void TSP_OR_EDD::PlanRoute(vector<item> &cluster, Coordinate w){
     cout<<"------------------------------------------------------------------------------------------------------------"<<endl;
     std::string time{"Time"};
     routing.AddDimension(transit_callback_index,  // transit callback index
-                       int64_t{1440},             // allow waiting time
+                       int64_t{10000},             // allow waiting time
                        int64_t{300},             // maximum time per vehicle
                        false,  // Don't force start cumul to zero
                        time);
@@ -134,7 +134,7 @@ void TSP_OR_EDD::PlanRoute(vector<item> &cluster, Coordinate w){
   }
   for (int i = 0; i < num_vehicles; ++i) {
     int64_t index = routing.Start(i);
-    time_dimension.CumulVar(index)->SetRange(0, 1440);
+    time_dimension.CumulVar(index)->SetRange(0, 10000);
   }
   for (int i = 0; i < num_vehicles; ++i) {
     routing.AddVariableMinimizedByFinalizer(

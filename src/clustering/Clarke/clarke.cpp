@@ -1,6 +1,9 @@
 #include "./clarke.hpp"
-
+double temportal_mean;
+double spacial_mean;
 void Clarke::merge_sort(vector<pair<int,int>> final_points, int l , int r){
+    if(final_points.size()==0)
+        return;
     if(r-l+1==1){
         return;
     }
@@ -41,7 +44,10 @@ Cluster::Cluster(){
         distance = 0;
 }
 void Clarke::ComputeClusters(vector<item> &packages, Coordinate warehouse, int numRiders, Bin b){
+    temportal_mean =0;
+    spacial_mean = 0;
     clusters.clear();
+    
     this->packages = packages;
     this->warehouse = warehouse;
     this->numPackages = packages.size();
@@ -59,7 +65,15 @@ double Clarke::depotDist(Coordinate &c){
     return Dist(c,warehouse);
 }
 double Clarke::compute_savings(item& item1,item& item2){
-    return depotDist(item1.coordinate) + depotDist(item2.coordinate) - Dist(item1.coordinate,item2.coordinate) + abs(item1.time -item2.time);
+   
+    double spacial_saving = depotDist(item1.coordinate) + depotDist(item2.coordinate) - Dist(item1.coordinate,item2.coordinate);
+    double temporal_saving = abs(item1.time-item2.time)*speed/60;
+    temportal_mean+=Temporal_Factor*temporal_saving;
+    spacial_mean+=Spatial_Factor*spacial_saving;
+    // cout<<"Spacial Savings ===> "<< (double)(Spatial_Factor*spacial_saving)<<endl;
+    // cout<<"Temporal Saving ===> "<< (double)(Temporal_Factor*temporal_saving)<<endl;
+    // cout<<"---------------------------------------------"<<endl;
+    return Spatial_Factor*(spacial_saving)- Temporal_Factor*(temporal_saving);
 }
 void Clarke::create_pq(){
     q = priority_queue<pair<double,pair<int,int>>> ();
@@ -149,7 +163,7 @@ int Clarke::union_sets(int a,int b, bool constraints){
 }
 void Clarke::consolodate_further(){
     vector<pair<int,int>> final_points;
-
+    final_Clusters.clear();
     for(int i = 0 ;i < final_Clusters.size(); i++){
         for(int j = 0; j < final_Clusters.size(); j++){
             final_points.push_back({final_Clusters[i].p1,final_Clusters[j].p1});
@@ -162,7 +176,7 @@ void Clarke::consolodate_further(){
     merge_sort(final_points, 0, final_points.size()-1);
     int numCluster = final_Clusters.size();
     // cout<<"numCluster ======>"<<numCluster<<" numRiders =======>"<<numRiders<<endl;
-    while(numCluster != numRiders){
+    while(numCluster >= numRiders){
         numCluster -= union_sets(final_points[final_points.size()-1].first,final_points[final_points.size()-1].second,0);
         final_points.pop_back();
         merge_sort(final_points, 0, final_points.size()-1);
@@ -170,6 +184,7 @@ void Clarke::consolodate_further(){
     return;
 }
 void Clarke::solve(){
+
     map<int,vector<item>> cluster_list;
     create_pq();
     for(int i = 0;i < numPackages;i++)
@@ -203,6 +218,8 @@ void Clarke::solve(){
     //     }
     //     cout<<endl;
     // }
+    cout<<"Average Temporal ==> "<<temportal_mean/(numPackages*(numPackages))<<endl;
+    cout<<"Average Spacial ==> "<<spacial_mean/(numPackages*(numPackages))<<endl;
     
 }
 void Clarke::CalculateCost(){
