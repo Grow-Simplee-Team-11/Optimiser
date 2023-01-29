@@ -50,13 +50,13 @@ class DataModel{
 DataModel getData(const OptimizerRequest *request){
     DataModel dm;
     dm.numRiders = request->riders();
-    dm.warehouse.latitude = request->warehouse().latitude();
-    dm.warehouse.longitude = request->warehouse().longitude();
+    dm.warehouse.latitude = request->warehouse().latitude()/1e6;
+    dm.warehouse.longitude = request->warehouse().longitude()/1e6;
     for(Package package : request->packages()){
         item i;
         i.id = package.id();
-        i.coordinate.latitude = package.coordinates().latitude();
-        i.coordinate.longitude = package.coordinates().longitude();
+        i.coordinate.latitude = package.coordinates().latitude()/1e6;
+        i.coordinate.longitude = package.coordinates().longitude()/1e6;
         i.weight = package.weight();
         i.size.height = package.size().height();
         i.size.width = package.size().width();
@@ -101,10 +101,11 @@ class OptimizerServiceImpl final : public optimizer::optimizer::Service
     {
         std::cout << "Received request" << std::endl;
         (*reply) = OptimizerResponse();
-        RoutePlanInterface* rp = new TSP_OR(EUCLIDEAN);
+        // RoutePlanInterface* rp = new TSP_OR(EUCLIDEAN);
+        RoutePlanInterface* rp = new TSP_LK(EUCLIDEAN);
     	ClusteringInterface* cls = new HGS(EUCLIDEAN);
 	    BinPackInterface* bp =  new EB_AFIT;
-
+        cout << "I am here" << endl;
         DataModel dm = getData(request);
 
         bool verbose = true;
@@ -140,13 +141,13 @@ void RunServer(const std::string &port)
 
     ServerBuilder builder;
     builder.AddListeningPort(server_address, grpc::InsecureServerCredentials());
-    builder.RegisterService(&service);
+    builder.RegisterService(&service); 
     std::unique_ptr<Server> server(builder.BuildAndStart());
     std::cout << "Server listening on " << server_address << std::endl;
     server->Wait();
 }
 
-int main(int argc, char **argv)
+int32_t main(int argc, char **argv)
 {
     RunServer("50051");
     return 0;

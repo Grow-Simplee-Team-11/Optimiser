@@ -7,6 +7,7 @@
 #include <iostream>
 
 using namespace std;
+// #define int long long
 
 struct Dimension_ {
     float length, width, height;

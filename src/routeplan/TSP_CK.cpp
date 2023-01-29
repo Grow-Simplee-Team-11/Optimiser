@@ -285,14 +285,14 @@ void TSP::printPath(){
   cout << endl;
   int letsee=0;
   for (vector<int>::iterator it = circuit.begin(); it != circuit.end()-1; ++it) {
-    cout << *it << " to " << *(it+1) << " ";
-    cout << (double)graph[*it][*(it+1)]/MULT << endl;
+    // cout << *it << " to " << *(it+1) << " ";
+    // cout << (double)graph[*it][*(it+1)]/MULT << endl;
     letsee += graph[*it][*(it+1)];
   }
-  cout << *(circuit.end()-1) << " to " << circuit.front()<< " ";
-  cout << (double)graph[*(circuit.end()-1)][circuit.front()]/MULT << endl;
+  // cout << *(circuit.end()-1) << " to " << circuit.front()<< " ";
+  // cout << (double)graph[*(circuit.end()-1)][circuit.front()]/MULT << endl;
   letsee+= graph[*(circuit.end()-1)][circuit.front()];
-  cout << "\nLength: " << (double)letsee/MULT << endl << endl;
+  // cout << "\nLength: " << (double)letsee/MULT << endl << endl;
   cost = (double)letsee/MULT;
 };
 
@@ -341,12 +341,12 @@ void TSP::PlanRoute(vector<item> &cluster, Coordinate warehouse){
         
 		int tsp_size =this->get_size();
 		fillMatrix();
-    // for(int i =0 ;i<n;i++){
-    //   for(int j =0 ;j<n;j++){
-    //     cout<<graph[i][j]<<" ";
-    //   }
-    //   cout<<endl;
-    // }
+    for(int i =0 ;i<n;i++){
+      for(int j =0 ;j<n;j++){
+        cout<<graph[i][j]<<" ";
+      }
+      cout<<endl;
+    }
 		// Find a MST T in graph G
 		findMST();
 		cout << "MST created" << endl;

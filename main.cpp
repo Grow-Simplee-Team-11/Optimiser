@@ -260,7 +260,7 @@ DataModel ReadVRPs(string filename){
 // 	return 0;
 //  }
 
-int main(int argc, char** argv){
+int32_t main(int argc, char** argv){
 	DataModel dm;
 	
 	if(argv[1] != NULL){

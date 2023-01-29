@@ -1,7 +1,7 @@
 #include "../../include/clustering/Clarke/clarke.hpp"
 
 void Clarke::merge_sort(vector<pair<int,int>> final_points, int l , int r){
-    if(r-l+1==1){
+    if(r<=l){
         return;
     }
     merge_sort(final_points, l, (l+r)/2);
@@ -149,7 +149,6 @@ int Clarke::union_sets(int a,int b, bool constraints){
 }
 void Clarke::consolodate_further(){
     vector<pair<int,int>> final_points;
-
     for(int i = 0 ;i < final_Clusters.size(); i++){
         for(int j = 0; j < final_Clusters.size(); j++){
             final_points.push_back({final_Clusters[i].p1,final_Clusters[j].p1});
@@ -157,12 +156,13 @@ void Clarke::consolodate_further(){
             final_points.push_back({final_Clusters[i].p2,final_Clusters[j].p1});
             final_points.push_back({final_Clusters[i].p2,final_Clusters[j].p2});
         }
-    }
-
+    }  
+    if(final_points.size() <= 0)
+        return;
     merge_sort(final_points, 0, final_points.size()-1);
     int numCluster = final_Clusters.size();
     // cout<<"numCluster ======>"<<numCluster<<" numRiders =======>"<<numRiders<<endl;
-    while(numCluster != numRiders){
+    while(numCluster > numRiders){
         numCluster -= union_sets(final_points[final_points.size()-1].first,final_points[final_points.size()-1].second,0);
         final_points.pop_back();
         merge_sort(final_points, 0, final_points.size()-1);
@@ -172,6 +172,7 @@ void Clarke::consolodate_further(){
 void Clarke::solve(){
     map<int,vector<item>> cluster_list;
     create_pq();
+    final_Clusters.clear();
     for(int i = 0;i < numPackages;i++)
         make_set(i);
     while(!q.empty()){
@@ -186,7 +187,9 @@ void Clarke::solve(){
             final_Clusters.push_back(Clusters[find_set(i)]);
         cluster_list[find_set(i)].push_back(packages[i]);
     }
-
+    // for(int i= 0 ;i < final_Clusters.size();i++){
+    //     cout<<final_Clusters[i].p1<<" "<<final_Clusters[i].p2<<endl;
+    // }
     consolodate_further();
     cluster_list.clear();
     set<int> s;
