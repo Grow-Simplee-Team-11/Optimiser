@@ -15,7 +15,8 @@
 
 #include "./include/binpack/EB_AFIT.hpp"
 
-#include "./include/Optimiser.hpp"
+#include "./include/Ensembler.hpp"
+
 
 class DataModel{
 	public:
@@ -265,4 +266,52 @@ int main(int argc, char** argv) {
 // 	}
 
 // 	return 0;
-// }
+//  }
+
+int32_t main(int argc, char** argv){
+	DataModel dm;
+	
+	if(argv[1] != NULL){
+		try{
+			dm = ReadVRPs(argv[1]);
+		}
+		catch(string err){
+			cout << err;
+		}
+	}
+	else{
+		string s;
+		cin >> s;
+		try{
+			dm = ReadVRPs(s);
+		}
+		catch(string err){
+			cout << err;
+		}
+		// dm = ReadVRPs(s);
+	}
+	// string s;
+	// cin >> s;
+	// cout << s << endl;
+	// try{
+	// 	dm = ReadVRPs(s);
+	// }
+	// catch(string err){
+	// 	cout << err << endl;
+	// }
+	cout << "Capacity : " << dm.bin.capacity << " depoX :" << dm.warehouse.latitude <<" depoY : " << dm.warehouse.longitude << endl;
+	for(int i = 0;i < dm.packages.size();i++){
+		cout << i << " : x : " << dm.packages[i].coordinate.latitude << " y : " << dm.packages[i].coordinate.longitude << " weight : "<< dm.packages[i].weight << endl;
+	}
+
+	vector<string> routingAlgorithms = {"TSP_OR", "TSP_LK", "TSP_CK"};
+	vector<string> binPackingAlgorithms = {"EB_AFIT"};
+	vector<string> clusteringAlgorithms = {"CLARKE", "SELF"};
+
+	Ensembler* ens = new Ensembler(routingAlgorithms, binPackingAlgorithms, clusteringAlgorithms, dm.packages, dm.warehouse, dm.numRiders, dm.bin); 
+
+	ens->EnsembleRun();
+	ens->Report();
+
+	return 0;
+}

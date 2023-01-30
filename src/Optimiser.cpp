@@ -3,7 +3,8 @@
 #include "routeplan/TSP_OR_EDD.hpp"
 #include "binpack/EB_AFIT.hpp"
 
-Optimizer::Optimizer(RoutePlanInterface* routePlannerInterface_, ClusteringInterface* clusteringInterface_, BinPackInterface* binPackInterface_, vector<item>& packages_, Coordinate& warehouse_, int numberRiders_, Bin& bin_, string logFileName_, bool verbose_, bool logToFile_) {
+
+Optimizer::Optimizer(RoutePlanInterface* routePlannerInterface_, ClusteringInterface* clusteringInterface_, BinPackInterface* binPackInterface_, vector<item>& packages_, Coordinate& warehouse_, int numberRiders_, Bin& bin_, string logFileName_, bool verbose_, bool logToFile_, pthread_mutex_t* clusterLock_, pthread_mutex_t* binPackLock_, pthread_mutex_t* routePlanningLock_) {
     routePlannerInterface = routePlannerInterface_;
     clusteringInterface = clusteringInterface_;
     binPackInterface = binPackInterface_;
@@ -14,6 +15,9 @@ Optimizer::Optimizer(RoutePlanInterface* routePlannerInterface_, ClusteringInter
     logFileName = logFileName_;
     verbose = verbose_;
     logToFile = logToFile_;
+    clusterLock = clusterLock_;
+    binPackLock = binPackLock_;
+    routingLock = routePlanningLock_;
 }
 void Optimizer::check_data(){
     if(warehouse.latitude <= 0 || warehouse.longitude <= 0){
@@ -121,6 +125,10 @@ void Optimizer::optimize(){
     output.close();
     } **/
     
+    if(clusterLock!=NULL){
+        cout<<"Locking - Cluster Lock"<<" "<<clusterLock<<endl;
+        pthread_mutex_lock(clusterLock);
+    }
     clusteringInterface->ComputeClusters(packages, warehouse, numberRiders, bin);
     if(clusteringInterface->GetClusters().size() == 0){
         throw "Clustering Algorithm Could Not found a solution";
@@ -134,6 +142,11 @@ void Optimizer::optimize(){
     }
     if(logToFile){
         clusteringInterface->PrintClustersToFile(logFileName);
+    }
+
+    if(clusterLock!=NULL){
+        cout<<"Unlocked Cluster Lock - "<<clusterLock<<endl;
+        pthread_mutex_unlock(clusterLock);
     }
 
     int i = 0;
@@ -158,25 +171,36 @@ void Optimizer::optimize(){
         // for(int i =0;i<cluster.size();i++){
         //     cout<<cluster[i].coordinate.latitude<<" "<<cluster[i].coordinate.longitude<<endl;
         // }
+        if(routingLock!=NULL)
+            pthread_mutex_lock(routingLock);
         routePlannerInterface->PlanRoute(cluster, warehouse);
         vector<item> rps = routePlannerInterface->GetPaths();
         clusterPaths.push_back(rps);
         routePlannerInterface->CalculateCost();
         routePlanningCost.push_back(routePlannerInterface->GetPathPlanningCost());
 
-            if(verbose){
-                routePlannerInterface->PrintRoutes();
-            }
-            if(logToFile){
-                routePlannerInterface->PrintRoutesToFile(logFileName);
-            }
-            // Computing bin packaging
-            binPackInterface->BinPack(rps, bin);
-            
-            clusterPackagings.push_back(binPackInterface->GetPackaging());
-            binPackInterface->CalculateCost();
-            packagingCost.push_back(binPackInterface->CalculateCost());
-            first = true;
+        if(verbose){
+            routePlannerInterface->PrintRoutes();
+        }
+        if(logToFile){
+            routePlannerInterface->PrintRoutesToFile(logFileName);
+        }
+
+        if(routingLock!=NULL){
+            cout<<"Unlocked Routing Lock"<<endl;
+            pthread_mutex_unlock(routingLock);
+        }
+
+        // Computing bin packaging
+
+        if(binPackLock!=NULL)
+            pthread_mutex_lock(binPackLock);
+
+        binPackInterface->BinPack(cluster, bin);
+        clusterPackagings.push_back(binPackInterface->GetPackaging());
+        binPackInterface->CalculateCost();
+        packagingCost.push_back(binPackInterface->CalculateCost());
+        first = true;
 
             output.open("./cuboids_to_render.xml");
             output<<"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\" ?>"<<endl;
@@ -210,27 +234,36 @@ void Optimizer::optimize(){
             avg+= cluster.size();
             maximum = max(maximum, (int)cluster.size());
 
-    }
-    output.open("./tests/cluster.txt");
-    output<<clusterPaths.size()<<"\n";
-    i=0;
-    for(auto& elt: clusterPaths)
-    {
-        output << i++ << "\n";
-        output << elt.size() +2<< "\n";
-        output << warehouse.latitude <<" "<< warehouse.longitude<<endl;
-        for(auto& it: elt)
-        {
-            output << it.coordinate.latitude << " " << it.coordinate.longitude << "\n";
+        if(binPackLock!=NULL){
+            cout<<"Unlocked BinPacking Lock"<<endl;
+            pthread_mutex_unlock(binPackLock);
         }
-        output << warehouse.latitude <<" "<< warehouse.longitude<<endl;
+
+        avg+= cluster.size();
+        maximum = max(maximum, (int)cluster.size());
+
     }
-    output << warehouse.latitude <<" "<< warehouse.longitude<<endl;
+    // ofstream output;
+    // output.open("./tests/cluster.txt");
+    // output<<clusterPaths.size()<<"\n";
+    // i=0;
+    // for(auto& elt: clusterPaths)
+    // {
+    //     output << i++ << "\n";
+    //     output << elt.size() +2<< "\n";
+    //     output << warehouse.latitude <<" "<< warehouse.longitude<<endl;
+    //     for(auto& it: elt)
+    //     {
+    //         output << it.coordinate.latitude << " " << it.coordinate.longitude << "\n";
+    //     }
+    //     output << warehouse.latitude <<" "<< warehouse.longitude<<endl;
+    // }
+    // output << warehouse.latitude <<" "<< warehouse.longitude<<endl;
     
-    output.close();
-    cout<<"Avg ===> "<<avg/clusters.size()<<endl;
-    cout<<"Max ===> "<<maximum<<endl;
-    cout<<"Drop Offs => "<<routePlannerInterface->drop_offs<<endl;
+    // output.close();
+    // cout<<"Avg ===> "<<avg/clusters.size()<<endl;
+    // cout<<"Max ===> "<<maximum<<endl;
+    // cout<<"Drop Offs => "<<routePlannerInterface->drop_offs<<endl;
     return;
 }
 
