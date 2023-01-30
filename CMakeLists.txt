@@ -2,34 +2,13 @@ cmake_minimum_required(VERSION 3.18)
 
 project(Optimizer C CXX)
 
-# FETCH GRPC AND OR-TOOLS #
-include(FetchContent)
-set(FETCHCONTENT_QUIET OFF)
+include(./cmake/common.cmake)
 
-set(BUILD_DEPS ON)
-FetchContent_Declare(
-  or-tools
-  GIT_REPOSITORY https://github.com/google/or-tools.git
-  GIT_TAG        main
-)
-message("Fetching and building or-tools")
-FetchContent_MakeAvailable(or-tools)
-message("Built or-tools")
-
-FetchContent_Declare(
-	gRPC	
-	GIT_REPOSITORY https://github.com/grpc/grpc
-	GIT_TAG        v1.28.0
-)
-
-message("Fetching and building gRPC")
-FetchContent_MakeAvailable(gRPC)
-message("Built gRPC")
-
-set(BUILD_DEPS OFF)
-set(FETCHCONTENT_QUIET ON)
-
+find_package(Protobuf REQUIRED)
+find_package(gRPC CONFIG REQUIRED)
+find_package(or-tools CONFIG REQUIRED)
 find_package(CURL REQUIRED)
+
 
 get_filename_component(dp_proto "./proto/main.proto" ABSOLUTE)
 get_filename_component(dp_proto_path "${dp_proto}" PATH)
@@ -91,8 +70,9 @@ add_library(dp_grpc_proto
     ${dp_proto_hdrs})    
 
     target_link_libraries(dp_grpc_proto
-    grpc++
-    )
+    ${_REFLECTION}
+    ${_GRPC_GRPCPP}
+    ${_PROTOBUF_LIBPROTOBUF})
 
 file (GLOB_RECURSE ALL_SRCS
 "${CMAKE_SOURCE_DIR}/include/*.hpp"
@@ -105,5 +85,5 @@ target_link_libraries(server
     dp_grpc_proto
 	  grpc++
     ${CURL_LIBRARIES}
-	  # ortools::ortools
+	  ortools::ortools
 )
