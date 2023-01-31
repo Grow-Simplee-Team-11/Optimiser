@@ -80,7 +80,7 @@ file (GLOB_RECURSE ALL_SRCS
 "${CMAKE_SOURCE_DIR}/src/*.c"
 )
 
-add_executable(server server.cpp ${ALL_SRCS} )
+add_executable(server main.cpp ${ALL_SRCS} )
 target_link_libraries(server
     dp_grpc_proto
     grpc++

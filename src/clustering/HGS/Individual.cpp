@@ -10,17 +10,19 @@
 void Individual::evaluateCompleteCost(const Params & params)
 {
 	eval = EvalIndiv();
+	int more_than_25 = 0;
 	for (int r = 0; r < params.nbVehicles; r++)
 	{
 		if (!chromR[r].empty())
-		{
+		{	
+			more_than_25 += std::max(0,(int)chromR[r].size()-25);
 			double distance = params.timeCost[0][chromR[r][0]];
 			double load = params.cli[chromR[r][0]].demand;
 			double service = params.cli[chromR[r][0]].serviceDuration;
 			predecessors[chromR[r][0]] = 0;
 			int countOfIncrease = 0;
 			for (int i = 1; i < (int)chromR[r].size(); i++)
-			{
+			{	
 				distance += params.timeCost[chromR[r][i-1]][chromR[r][i]];
 				float timeReach = (distance + service)/params.averageSpeed ; //Add starting time in this
 				double diff = timeReach-params.timeExpectation[chromR[r][i]];
@@ -40,9 +42,18 @@ void Individual::evaluateCompleteCost(const Params & params)
 	}
 
 	// Add to final cost.
-	eval.penalizedCost = eval.distance + eval.capacityExcess*params.penaltyCapacity + eval.durationExcess*params.penaltyDuration;
+	eval.penalizedCost = eval.distance + eval.capacityExcess*params.penaltyCapacity + eval.durationExcess*params.penaltyDuration + more_than_25*params.penaltyMoreThan25;
 	// Check for feasibility
-	eval.isFeasible = (eval.capacityExcess < MY_EPSILON && eval.durationExcess < MY_EPSILON);
+	eval.isFeasible = (eval.capacityExcess < MY_EPSILON && eval.durationExcess < MY_EPSILON) ;
+	// if(eval.capacityExcess < MY_EPSILON){
+	// 	std::cout << "INFEASIABLE CAPACITY" << std::endl;
+	// }
+	// else if(eval.durationExcess < MY_EPSILON){
+	// 	std::cout << "INFEASIABLE DURATION" << std::endl;
+	// }
+	// else if(pkg_more_than_25){
+	// 	std::cout << "INFEASIABLE PKG MORE THAN 25" << std::endl;
+	// }
 }
 
 /**

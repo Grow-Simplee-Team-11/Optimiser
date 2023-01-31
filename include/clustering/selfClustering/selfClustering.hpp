@@ -15,7 +15,7 @@ class SELFCLUSTERING : public ClusteringInterface {
 
     public:
         const static int angularCutMetric = 3;
-        SELFCLUSTERING(bool method) : ClusteringInterface(method){
+        SELFCLUSTERING(DistanceType method) : ClusteringInterface(method){
             // delta = rho;
         }
         void ComputeClusters(vector<item>& packages, Coordinate warehouse, int numRiders, Bin b) {
