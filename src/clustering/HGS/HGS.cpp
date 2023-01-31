@@ -44,6 +44,7 @@ void HGS::ComputeClusters(vector<item> &packages, Coordinate warehouse, int numR
 		x_coords[i] = packages[i-1].coordinate.latitude;
 		y_coords[i] = packages[i-1].coordinate.longitude;
 		demands[i] = packages[i-1].getVolume();
+		// demands[i] = packages[i-1].weight;
 	}
 	for (int i = 0; i <= n; i++){
 		for (int j = 0; j <= n; j++){
@@ -60,24 +61,34 @@ void HGS::ComputeClusters(vector<item> &packages, Coordinate warehouse, int numR
 	}
 	cout << "X : ";
 	for(int i = 0;i < x_coords.size();i++){
-		cout << x_coords[i]<< ' ';
+		cout << x_coords[i]<< ' ' << i << ' ';
 	}
 	cout << "\nY : ";
 	for(int i = 0;i < y_coords.size();i++){
 		cout << y_coords[i]<< ' ';
 	}
 	cout<<"\nD : ";
+	double total_demand = 0;
 	for(int i = 0;i < demands.size();i++){
 		cout << demands[i]<< ' ';
+		total_demand += demands[i];
 	}
+	cout << "\n\nBin Capacity : " << b.capacity << endl;
+	cout << "\n\nBin Volume : " << b.getVolume() << endl;
+	cout << "Total Demand : " << total_demand << endl;
+	cout << "Number of Riders : " << numRiders << endl;
+	cout << "Number of Packages : " << n << endl;
+	cout << "Average Volume per cluster : " << total_demand / numRiders << endl << endl;
 	cout << endl;
-	std::vector<double> expectation(n); 
+	std::vector<double> expectation(n,1e30); 
 	// TODO: add expectation in HGS
 	for(int i=0;i<n;i++) expectation[i] = packages[i].time;
 	double avgspeed = 100.0;
+	
 	double DurationLimit = avgspeed*5;//Duration Limit is given in kms
 	
 	if(this->EDD){
+		cout << "With EDD " << endl;
 		Params params = Params(x_coords,y_coords,dist_mtx,service_time,demands,
 				b.capacity,DurationLimit,numRiders,true,verbose, expectation,ap);
 		params.averageSpeed = avgspeed;
@@ -107,8 +118,11 @@ void HGS::ComputeClusters(vector<item> &packages, Coordinate warehouse, int numR
 		}
 	}
 	else{
+		expectation = std::vector<double>(n+1,1e30); 
 		Params params(x_coords,y_coords,dist_mtx,service_time,demands,
 				b.capacity,1.e30,numRiders,false,verbose, expectation,ap);
+		params.averageSpeed = avgspeed;
+		params.penaltyMoreThan25 = avgspeed / 4;
 		print_algorithm_parameters(ap);
 		Genetic solver(params);
 		solver.run();

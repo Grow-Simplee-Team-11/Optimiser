@@ -9,7 +9,7 @@
 //     lat_2_rad = lat_2_deg * (PI / 180);
 //     lon_2_rad = lon_2_deg * (PI / 180);
 //     double delta_lat, delta_lon;
-//     delta_lat = lat_1_rad - lat_2_rad;
+// TSP    delta_lat = lat_1_rad - lat_2_rad;
 //     delta_lon = lon_1_rad - lon_2_rad;
 
 //     // Calculate sin^2 (delta / 2) for both lat and long
