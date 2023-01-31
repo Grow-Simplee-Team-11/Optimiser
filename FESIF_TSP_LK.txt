@@ -10966,6 +10966,7 @@ Printing the packing --
 60 -11
 
 
+<<<<<<< HEAD
 Printing information for cluster - 21
 The Routes for the cluster -- 
 Warehouse -> 33 -33
@@ -12411,3 +12412,9 @@ Printing the packing --
 
 Total Cost for routing: 794 km
 >>>>>>> ae1f2ec (Integrated Bing Maps API for calculating real world distance and refactored code to support enum DistanceType)
+<<<<<<< HEAD
+=======
+=======
+Total Cost for routing: 1.3591 km
+>>>>>>> 7566b01 (Altered hyperparameters to test Vrp-All Dataset)
+>>>>>>> 1c74cc3 (Tested on 100 packages 10 riders)

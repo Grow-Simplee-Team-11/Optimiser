@@ -43,7 +43,7 @@ void HGS::ComputeClusters(vector<item> &packages, Coordinate warehouse, int numR
 	for(int i = 1;i <= n;i++){
 		x_coords[i] = packages[i-1].coordinate.latitude;
 		y_coords[i] = packages[i-1].coordinate.longitude;
-		demands[i] = packages[i-1].weight;
+		demands[i] = packages[i-1].getVolume();
 	}
 	for (int i = 0; i <= n; i++){
 		for (int j = 0; j <= n; j++){
