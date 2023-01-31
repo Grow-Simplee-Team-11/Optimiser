@@ -21,6 +21,7 @@ class ClusteringInterface{
     public:
         const int SCALING_FACTOR=100; 
         bool method;
+        bool clustering_method=0;
         double Spatial_Factor = 2;
         double Temporal_Factor = 0;
         double best_Temporal_Factor = 0;

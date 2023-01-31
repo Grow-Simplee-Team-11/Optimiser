@@ -79,7 +79,7 @@ void Clarke::create_pq(){
     q = priority_queue<pair<double,pair<int,int>>> ();
     for(int i = 0;i < numPackages;i++){
         for(int j = 0; j < numPackages;j++){
-            double savings = compute_savings(packages[i],packages[j]);
+            double savings = compute_savings(packages[i],packages[j]);  
             q.push({savings,{i,j}});
         }
     }

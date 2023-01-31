@@ -20,6 +20,8 @@ class Optimizer{
 
         // Function to perform optimization for set of packages
         void optimize();
+        // void multithreading();
+        void operator ()();
         vector<vector<item>> GetClusters();
 
         vector<item> GetPathForCluster(int seqNumberOfCluster);
@@ -31,7 +33,8 @@ class Optimizer{
 
         vector<float> GetRoutingCost();
 
-    private:
+    public:
+        int dropoffs = INT_MAX;
         RoutePlanInterface* routePlannerInterface;
         ClusteringInterface* clusteringInterface;
         BinPackInterface* binPackInterface;

@@ -1,4 +1,16 @@
 #include "../include/Optimiser.hpp"
+#include "./../include/clustering/fesif/fesif.hpp"
+#include "./../include/clustering/HGS/HGS.hpp"
+#include "./../src/clustering/Clarke/clarke.hpp"
+
+
+#include "./../include/routeplan/TSP_OR.hpp"
+#include "./../include/routeplan/TSP_OR_EDD.hpp"
+#include "./../include/routeplan/TSP_LK.hpp"
+#include "./../include/clustering/HGS/HGS.hpp"
+#include "./../src/routeplan/tsp.h"
+
+#include "./../include/binpack/EB_AFIT.hpp"
 
 Optimizer::Optimizer(RoutePlanInterface* routePlannerInterface_, ClusteringInterface* clusteringInterface_, BinPackInterface* binPackInterface_, vector<item>& packages_, Coordinate& warehouse_, int numberRiders_, Bin& bin_, string logFileName_, bool verbose_, bool logToFile_) {
     routePlannerInterface = routePlannerInterface_;
@@ -13,41 +25,111 @@ Optimizer::Optimizer(RoutePlanInterface* routePlannerInterface_, ClusteringInter
     logToFile = logToFile_;
 }
 
+void multithreading(Optimizer * opt, Optimizer * temp, int thread_number){
+    if(opt->clusteringInterface->clustering_method){
+        vector<item> main_packages = opt->packages;
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_real_distribution<double> Temporal_Factor_Gen(opt->clusteringInterface->Temporal_Factor_Lower_Limit, opt->clusteringInterface->Temporal_Factor_Upper_Limit);
+        std::uniform_real_distribution<double> Spactial_Factor_Gen(opt->clusteringInterface->Spatial_Factor_Lower_Limit, opt->clusteringInterface->Spatial_Factor_Upper_Limit);
+        opt->clusteringInterface->Temporal_Factor = ((1 - (1.0/(opt->dropoffs*10L + 1)))*Temporal_Factor_Gen(gen) +  ((1.0/(opt->dropoffs*10L + 1))*opt->clusteringInterface->best_Temporal_Factor));
+        opt->clusteringInterface->Spatial_Factor = ((1 - (1.0/(opt->dropoffs*10L + 1)))*Spactial_Factor_Gen(gen) + ((1.0/(opt->dropoffs*10L + 1))*opt->clusteringInterface->best_Spatial_Factor));
+        std::cout<<"Now starting iteration with Temporal Factor ====> "<<opt->clusteringInterface->Temporal_Factor<<endl;
+        std::cout<<"Now starting iteration with Spatial Factor ====> "<<opt->clusteringInterface->Spatial_Factor<<endl;        
+        assert(opt->routePlannerInterface!=NULL);
+        assert(opt != NULL);
+        cout<<"This is ThreadNumber " << thread_number<<endl;
+        opt->routePlannerInterface->drop_offs = 0;
+
+
+        opt->clusteringInterface->ComputeClusters(main_packages, opt->warehouse, opt->numberRiders, opt->bin);
+        opt->clusteringInterface->CalculateCost();
+        opt->clusters = opt->clusteringInterface->GetClusters();
+        
+        for(auto& cluster: opt->clusters){
+            opt->routePlannerInterface->PlanRoute(cluster, opt->warehouse);
+            opt->routePlannerInterface->CalculateCost();
+        }
+    }
+    
+}
+
+
 void Optimizer::optimize(){
     int i = 0;
     int maximum = -INT_MAX;
     int avg = 0;
     int dropoffs = INT_MAX;
-    vector<item> main_packages = packages;
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_real_distribution<double> Temporal_Factor_Gen(clusteringInterface->Temporal_Factor_Lower_Limit, clusteringInterface->Temporal_Factor_Upper_Limit);
-    std::uniform_real_distribution<double> Spactial_Factor_Gen(clusteringInterface->Spatial_Factor_Lower_Limit, clusteringInterface->Spatial_Factor_Upper_Limit);
-    for(int j = 0 ; j <= 10 ; j++){
-        clusteringInterface->Temporal_Factor = Temporal_Factor_Gen(gen);
-        clusteringInterface->Spatial_Factor = Spactial_Factor_Gen(gen);
-        cout<<"Now starting iteration with Temporal Factor ====> "<<clusteringInterface->Temporal_Factor<<endl;
-        cout<<"Now starting iteration with Spatial Factor ====> "<<clusteringInterface->Spatial_Factor<<endl;
-        clusteringInterface->ComputeClusters(main_packages, warehouse, numberRiders, bin);
-        clusteringInterface->CalculateCost();
-        clusters = clusteringInterface->GetClusters();
-        
-        for(auto& cluster: clusters){
-            routePlannerInterface->PlanRoute(cluster, warehouse);
-            routePlannerInterface->CalculateCost();
-        }
-        if(routePlannerInterface->drop_offs < dropoffs){
-            cout<<"New Best DropOffs ==> "<<routePlannerInterface->drop_offs<<endl;
-            cout<<"With Temporal Factor ===> "<<clusteringInterface->Temporal_Factor<<endl;
-            cout<<"With Spatial Factor ===> "<<clusteringInterface->Spatial_Factor<<endl;
-            dropoffs = routePlannerInterface->drop_offs;
-            clusteringInterface->best_Temporal_Factor = clusteringInterface->Temporal_Factor;
-            clusteringInterface->best_Spatial_Factor = clusteringInterface->Spatial_Factor;
-        }
-        main_packages = packages;
-        routePlannerInterface->drop_offs = 0;
-    }
+    ofstream output;
+    output.open("./output.txt");
+    for(int k = 0 ; k < 2; k ++){
+        output << "Starting Iteration "<< k <<endl;
+        vector<thread> threads;
+        vector<Optimizer*> optimizers;
+        for(int j = 0 ; j < 10 ; j ++ ){
+            RoutePlanInterface* rp = new TSP_OR_EDD(EUCLIDEAN);
+            ClusteringInterface* cls = new Clarke(EUCLIDEAN);
+            BinPackInterface* bp =  new EB_AFIT;
 
+            assert(rp != NULL);
+            assert(cls != NULL);
+            assert(bp != NULL);
+
+            Optimizer* tempOpt = new Optimizer(rp, cls, bp, this->packages, this->warehouse, this->numberRiders, this->bin, this->logFileName, this->verbose, this->logToFile);
+
+            optimizers.push_back(tempOpt);
+            optimizers[j]->routePlannerInterface->drop_offs = 0;
+            optimizers[j]->clusteringInterface->best_Spatial_Factor = this->clusteringInterface->best_Spatial_Factor;
+            optimizers[j]->clusteringInterface->best_Temporal_Factor = this->clusteringInterface->best_Temporal_Factor;
+            threads.push_back(thread(multithreading,optimizers[j], this , j+1));
+        }
+        for(auto &th : threads){
+            th.join();
+        }
+        for(int j = 0 ; j< optimizers.size(); j++){
+            if(this->dropoffs > optimizers[j]->routePlannerInterface->drop_offs){
+                this->dropoffs = optimizers[j]->routePlannerInterface->drop_offs;
+                this->clusteringInterface->best_Spatial_Factor = optimizers[j]->clusteringInterface->best_Spatial_Factor;
+                this->clusteringInterface->best_Temporal_Factor = optimizers[j]->clusteringInterface->best_Temporal_Factor;
+            }
+            delete optimizers[j];
+        }
+
+    }
+    output.close();
+    
+    // if(clusteringInterface->clustering_method){
+    //     vector<item> main_packages = packages;
+    //     std::random_device rd;
+    //     std::mt19937 gen(rd());
+    //     std::uniform_real_distribution<double> Temporal_Factor_Gen(clusteringInterface->Temporal_Factor_Lower_Limit, clusteringInterface->Temporal_Factor_Upper_Limit);
+    //     std::uniform_real_distribution<double> Spactial_Factor_Gen(clusteringInterface->Spatial_Factor_Lower_Limit, clusteringInterface->Spatial_Factor_Upper_Limit);
+    //     for(int j = 0 ; j < 10 ; j++){
+    //         clusteringInterface->Temporal_Factor = (j==0) ? (Temporal_Factor_Gen(gen)) :  ((1 - (1/(dropoffs*10 + 1)))*Temporal_Factor_Gen(gen) +  ((1/(dropoffs*10 + 1))*clusteringInterface->best_Temporal_Factor));
+    //         clusteringInterface->Spatial_Factor = (j == 0) ? (Spactial_Factor_Gen(gen)) : ((1 - (1/(dropoffs*10 + 1)))*Spactial_Factor_Gen(gen) + ((1/(dropoffs*10 + 1))*clusteringInterface->best_Spatial_Factor));
+    //         cout<<"Now starting iteration with Temporal Factor ====> "<<clusteringInterface->Temporal_Factor<<endl;
+    //         cout<<"Now starting iteration with Spatial Factor ====> "<<clusteringInterface->Spatial_Factor<<endl;
+    //         routePlannerInterface->drop_offs = 0;
+    //         clusteringInterface->ComputeClusters(main_packages, warehouse, numberRiders, bin);
+    //         clusteringInterface->CalculateCost();
+    //         clusters = clusteringInterface->GetClusters();
+            
+    //         for(auto& cluster: clusters){
+    //             routePlannerInterface->PlanRoute(cluster, warehouse);
+    //             routePlannerInterface->CalculateCost();
+    //         }
+    //         if(routePlannerInterface->drop_offs < dropoffs){
+    //             cout<<"New Best DropOffs ==> "<<routePlannerInterface->drop_offs<<endl;
+    //             cout<<"With Temporal Factor ===> "<<clusteringInterface->Temporal_Factor<<endl;
+    //             cout<<"With Spatial Factor ===> "<<clusteringInterface->Spatial_Factor<<endl;
+    //             dropoffs = routePlannerInterface->drop_offs;
+    //             clusteringInterface->best_Temporal_Factor = clusteringInterface->Temporal_Factor;
+    //             clusteringInterface->best_Spatial_Factor = clusteringInterface->Spatial_Factor;
+    //         }
+    //         main_packages = packages;
+            
+    //     }
+    // }
     clusteringInterface->Temporal_Factor = clusteringInterface->best_Temporal_Factor;
     clusteringInterface->ComputeClusters(packages, warehouse, numberRiders, bin);
     clusteringInterface->CalculateCost();
@@ -102,7 +184,7 @@ void Optimizer::optimize(){
             binPackInterface->PrintPackedDataToFile(logFileName);
         }
     }
-    ofstream output;
+    
     output.open("./tests/clusters.txt");
     output << clusterPaths.size() << "\n";
     i=0;
@@ -121,6 +203,9 @@ void Optimizer::optimize(){
     cout<<"Avg ===> "<<avg/clusters.size()<<endl;
     cout<<"Max ===> "<<maximum<<endl;
     cout<<"Drop Offs => "<<routePlannerInterface->drop_offs<<endl;
+    cout<<"With Params as ==> "<<endl;
+    cout<<"     Spatial  = "<<clusteringInterface->best_Spatial_Factor<<endl;
+    cout<<"     Temporal = "<<clusteringInterface->best_Temporal_Factor<<endl;
     return;
 }
 
