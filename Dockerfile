@@ -7,7 +7,7 @@ RUN apt install -y cmake
 
 # install protobuf first, then grpc
 RUN git clone -b main https://github.com/google/or-tools && \
-    cmake -DCMAKE_CXX_STANDARD=17 -S. -Bbuild -DBUILD_DEPS:BOOL=ON && \
+    cd or-tools && cmake -DCMAKE_CXX_STANDARD=17 -S. -Bbuild -DBUILD_DEPS:BOOL=ON && \
     cd build && make -j$(nproc) && make install && \
     echo "--- installed or-tools ---" && \
     apt-get clean  
