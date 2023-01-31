@@ -6,7 +6,7 @@ include(./cmake/common.cmake)
 
 find_package(Protobuf REQUIRED)
 find_package(gRPC CONFIG REQUIRED)
-find_package(or-tools CONFIG REQUIRED)
+find_package(ortools CONFIG REQUIRED)
 find_package(CURL REQUIRED)
 
 
@@ -83,7 +83,7 @@ file (GLOB_RECURSE ALL_SRCS
 add_executable(server server.cpp ${ALL_SRCS} )
 target_link_libraries(server
     dp_grpc_proto
-	  grpc++
+    grpc++
     ${CURL_LIBRARIES}
-	  ortools::ortools
+    ortools::ortools
 )

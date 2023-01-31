@@ -35,3 +35,4 @@ COPY . .
 RUN mkdir -p ./build && cd ./build && cmake .. && make -j$(nproc)                                               
 EXPOSE 50051                                            
 CMD ["./bin/server"]
+
