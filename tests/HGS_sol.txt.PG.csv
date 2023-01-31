@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 ;0;1.22438;0.038343
 ;0;1.13713;0.062923
 ;0;1.11787;0.239652
@@ -57,3 +58,12 @@
 ;0;5540.47;231.25
 ;0;5540;269.731
 >>>>>>> d46e5d0 (Altered hyperparameters to test Vrp-All Dataset)
+=======
+;0;3631.17;0.005041
+;0;3246.02;0.006818
+;0;3141.84;0.053383
+;0;2967.45;0.064482
+;0;2826.02;0.12762
+;0;2791.02;0.269889
+;0;2776.46;0.378492
+>>>>>>> ae1f2ec (Integrated Bing Maps API for calculating real world distance and refactored code to support enum DistanceType)

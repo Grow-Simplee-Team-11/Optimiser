@@ -26,7 +26,7 @@ class Cluster{
 
 class Clarke: public ClusteringInterface{
     public:
-    Clarke(bool method) : ClusteringInterface(method){}
+    Clarke(DistanceType method) : ClusteringInterface(method){}
     vector<item> packages; Coordinate warehouse; int numPackages;int numRiders; Bin b;double distThresh;
     vector<Cluster> Clusters;
     vector<Cluster> final_Clusters;

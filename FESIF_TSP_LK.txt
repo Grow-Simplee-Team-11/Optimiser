@@ -12258,4 +12258,156 @@ Printing the packing --
 
 
 Total Cost for routing: 3161 km
+<<<<<<< HEAD
 >>>>>>> d46e5d0 (Altered hyperparameters to test Vrp-All Dataset)
+=======
+Printing Cluster -- 0 
+93 50
+89 29
+97 9
+82 3
+65 1
+39 2
+42 5
+70 20
+Printing Cluster -- 1 
+69 57
+62 61
+59 61
+30 58
+Printing Cluster -- 2 
+32 19
+24 14
+10 5
+7 13
+15 23
+9 42
+5 50
+8 49
+Printing Cluster -- 3 
+55 80
+39 84
+25 84
+2 91
+3 93
+5 98
+14 98
+Printing Cluster -- 4 
+52 98
+44 96
+51 88
+60 85
+Printing information for cluster - 0
+The Routes for the cluster -- 
+Warehouse -> 76 82
+ -> 42 5
+ -> 39 2
+ -> 82 3
+ -> 97 9
+ -> 89 29
+ -> 93 50
+ -> -> Warehouse
+Printing the packing -- 
+93 50
+
+89 29
+
+97 9
+
+82 3
+
+39 2
+
+42 5
+
+
+Printing information for cluster - 1
+The Routes for the cluster -- 
+Warehouse -> 76 82
+ -> 69 57
+ -> 62 61
+ -> 59 61
+ -> 30 58
+ -> -> Warehouse
+Printing the packing -- 
+69 57
+
+62 61
+
+59 61
+
+30 58
+
+
+Printing information for cluster - 2
+The Routes for the cluster -- 
+Warehouse -> 76 82
+ -> 32 19
+ -> 10 5
+ -> 7 13
+ -> 15 23
+ -> 9 42
+ -> 5 50
+ -> 8 49
+ -> -> Warehouse
+Printing the packing -- 
+32 19
+
+7 13
+
+9 42
+
+5 50
+
+8 49
+
+15 23
+
+10 5
+
+
+Printing information for cluster - 3
+The Routes for the cluster -- 
+Warehouse -> 76 82
+ -> 55 80
+ -> 39 84
+ -> 25 84
+ -> 2 91
+ -> 5 98
+ -> 14 98
+ -> -> Warehouse
+Printing the packing -- 
+2 91
+
+5 98
+
+55 80
+
+39 84
+
+14 98
+
+25 84
+
+
+Printing information for cluster - 4
+The Routes for the cluster -- 
+Warehouse -> 76 82
+ -> 60 85
+ -> 51 88
+ -> 44 96
+ -> 52 98
+ -> -> Warehouse
+Printing the packing -- 
+52 98
+
+44 96
+
+51 88
+
+60 85
+
+
+
+Total Cost for routing: 794 km
+>>>>>>> ae1f2ec (Integrated Bing Maps API for calculating real world distance and refactored code to support enum DistanceType)

@@ -8,11 +8,10 @@
 #include "LocalSearch.h"
 #include "Split.h"
 #include "InstanceCVRPLIB.h"
-
 #include <iostream>
 #include <string>
 #include <climits>
-
+#define edd true
 
 using namespace std;
 
@@ -21,8 +20,8 @@ class HGS : public ClusteringInterface
 	public:
 
 		const int SCALING_FACTOR=100; 
-		
-		HGS(bool method);
+		bool EDD;
+		HGS(DistanceType method,bool EDD = false);
 		// double Dist(struct Coordinate c1,struct Coordinate c2){
         //     if(method == EUCLIDEAN)
         //         return euclidean(c1,c2);
