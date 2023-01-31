@@ -102,7 +102,7 @@ class OptimizerServiceImpl final : public optimizer::optimizer::Service
         std::cout << "Received request" << std::endl;
         (*reply) = OptimizerResponse();
         // RoutePlanInterface* rp = new TSP_OR(EUCLIDEAN);
-        RoutePlanInterface* rp = new TSP_LK(EUCLIDEAN);
+        RoutePlanInterface* rp = new TSP_OR(EUCLIDEAN);
     	ClusteringInterface* cls = new HGS(EUCLIDEAN);
 	    BinPackInterface* bp =  new EB_AFIT;
         cout << "I am here" << endl;

@@ -1,11 +1,12 @@
-cmake_minimum_required(VERSION 3.5.1)
+cmake_minimum_required(VERSION 3.18)
 
 project(Optimizer C CXX)
 
 include(./cmake/common.cmake)
+
 find_package(Protobuf REQUIRED)
 find_package(gRPC CONFIG REQUIRED)
-# find package for libcurl
+find_package(ortools CONFIG REQUIRED)
 find_package(CURL REQUIRED)
 
 
@@ -37,7 +38,7 @@ MACRO(HEADER_DIRECTORIES return_list)
           SET(dir_list ${dir_list} ${dir_path})
       ENDFOREACH()
       LIST(REMOVE_DUPLICATES dir_list)
-      SET(${return_list} "${dir_list};${CMAKE_SOURCE_DIR}/include/ortools/")
+      SET(${return_list} "${dir_list}")
 ENDMACRO()  
 
 MACRO(SRC_DIRECTORIES return_list)
@@ -75,29 +76,14 @@ add_library(dp_grpc_proto
 
 file (GLOB_RECURSE ALL_SRCS
 "${CMAKE_SOURCE_DIR}/include/*.hpp"
-"${CMAKE_SOURCE_DIR}/include/ortools/*.h"
 "${CMAKE_SOURCE_DIR}/src/*.cpp"
 "${CMAKE_SOURCE_DIR}/src/*.c"
 )
 
-file (GLOB_RECURSE ALL_LIBS
-"${CMAKE_SOURCE_DIR}/lib/*.so.*"
-)
-
-link_libraries(
-    ${CMAKE_SOURCE_DIR}/lib/libortools.so
-    ${CMAKE_SOURCE_DIR}/lib/libortools.so.9 
-    "${ALL_LIBS}"    
-)
-link_directories(
-   ${CMAKE_SOURCE_DIR}/lib)
 add_executable(server server.cpp ${ALL_SRCS} )
 target_link_libraries(server
     dp_grpc_proto
-    ${_REFLECTION}
-    ${_GRPC_GRPCPP}
-    ${_PROTOBUF_LIBPROTOBUF}
+    grpc++
     ${CURL_LIBRARIES}
-    -L./lib
-    
+    ortools::ortools
 )
