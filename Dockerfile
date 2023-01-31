@@ -5,10 +5,10 @@ RUN apt-get update && apt-get install -y \
   && apt-get clean                                                                                                                                                       
 RUN apt install -y cmake                                                                                                                                                 
 
-# install protobuf first, then grpc                                                 
-RUN git clone -b main https://github.com/google/or-tools && \                                                   
-  cd or-tools && cmake -DCMAKE_CXX_STANDARD=17 -S. -Bbuild -DBUILD_DEPS:BOOL=ON && \                                                                                                                                           
-  cd build && make -j$(nproc) && make install && \                                                            
+# install or-tools first, then grpc                                                 
+RUN git clone -b main https://github.com/google/or-tools
+                                                   
+RUN cd or-tools && cmake -DCMAKE_CXX_STANDARD=17 -S. -Bbuild -DBUILD_DEPS:BOOL=ON && \                                                                  cd build && make -j$(nproc) && make install && \                                                            
   echo "--- installed or-tools ---" && \                                                                      
   apt-get clean                                                                   
 
