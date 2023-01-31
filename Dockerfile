@@ -6,17 +6,19 @@ RUN apt-get update && apt-get install -y \
 RUN apt install -y cmake
 
 # install protobuf first, then grpc
-RUN git clone -b main https://github.com/google/or-tools && \
-    cd or-tools && cmake -DCMAKE_CXX_STANDARD=17 -S. -Bbuild -DBUILD_DEPS:BOOL=ON && \
-    cd build && make -j$(nproc) && make install && \
-    echo "--- installed or-tools ---" && \
-    apt-get clean  
+RUN git clone -b main https://github.com/google/or-tools
+
+RUN cd or-tools && cmake -DCMAKE_CXX_STANDARD=17 -S. -Bbuild -DBUILD_DEPS:BOOL=ON && \
+  cd build && make -j$(nproc) && make install && \
+  echo "--- installed or-tools ---" && \
+  apt-get clean  
 
 RUN git clone --recurse-submodules -b v1.50.0 \
-  --depth 1 --shallow-submodules https://github.com/grpc/grpc && \
-  cd grpc && mkdir -p cmake/build && cd cmake/build && \
+  --depth 1 --shallow-submodules https://github.com/grpc/grpc
+
+RUN cd grpc && mkdir -p cmake/build && cd cmake/build && \
   cmake -DCMAKE_CXX_STANDARD=17 -DCMAKE_INSTALL_PREFIX=/usr/local \
-  -DCMAKE_POSITION_INDEPENDENT_CODE=TRUE -DABSL_PROPAGATE_CXX_STD=TRUE .. \
+  -DCMAKE_POSITION_INDEPENDENT_CODE=TRUE -DABSL_PROPAGATE_CXX_STD=TRUE ../.. \
   -DgRPC_INSTALL=ON \
   -DCMAKE_BUILD_TYPE=Release       \
   -DgRPC_ABSL_PROVIDER=package     \
