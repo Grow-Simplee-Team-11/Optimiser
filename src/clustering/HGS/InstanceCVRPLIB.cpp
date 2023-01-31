@@ -1,11 +1,13 @@
-//
-// Created by chkwon on 3/22/22.
-//
-
 #include <fstream>
 #include <cmath>
 #include "../../../include/clustering/HGS/InstanceCVRPLIB.h"
 
+/**
+ * @brief Construct a new InstanceCVRPLIB:: InstanceCVRPLIB object
+ * 
+ * @param pathToInstance location of the input file
+ * @param isRoundingInteger whether to round distances in the distance matrix to integers
+ */
 InstanceCVRPLIB::InstanceCVRPLIB(std::string pathToInstance, bool isRoundingInteger = true)
 {
 	std::string content, content2, content3;

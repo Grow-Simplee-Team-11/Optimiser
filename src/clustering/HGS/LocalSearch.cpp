@@ -1,5 +1,12 @@
 #include "../../../include/clustering/HGS/LocalSearch.h" 
 
+/**
+ * @brief implement local search using Route Improvement and SWAP* techniques
+ * 
+ * @param indiv the individual solution around which local search is performed
+ * @param penaltyCapacityLS weight of the capacity constraint term in the biased fitness function
+ * @param penaltyDurationLS weight of the duration constraint term in the biased fitness function
+ */
 void LocalSearch::run(Individual & indiv, double penaltyCapacityLS, double penaltyDurationLS)
 {
 	this->penaltyCapacityLS = penaltyCapacityLS;
@@ -95,6 +102,10 @@ void LocalSearch::run(Individual & indiv, double penaltyCapacityLS, double penal
 	exportIndividual(indiv);
 }
 
+/**
+ * @brief set Local Variables for Route U (first route where Route Improvement is to be applied)
+ * 
+ */
 void LocalSearch::setLocalVariablesRouteU()
 {
 	routeU = nodeU->route;
@@ -109,6 +120,10 @@ void LocalSearch::setLocalVariablesRouteU()
 	serviceX = params.cli[nodeXIndex].serviceDuration;
 }
 
+/**
+ * @brief set Local Variables for Route V (second route where Route Improvement is to be applied)
+ * 
+ */
 void LocalSearch::setLocalVariablesRouteV()
 {
 	routeV = nodeV->route;
@@ -124,6 +139,14 @@ void LocalSearch::setLocalVariablesRouteV()
 	intraRouteMove = (routeU == routeV);
 }
 
+/**
+ * @brief 1st Route Improvement (RI) Strategy: insertion
+ * Let v be a neighbor of u, and x and y the successors of u in RouteU and v in
+	RouteV. If u is a customer visit, remove u and place it after v
+ * 
+ * @return true if above RI strategy has incorporated data from another route in a given route
+ * @return false otherwise
+ */
 bool LocalSearch::move1()
 {
 	double costSuppU = params.timeCost[nodeUPrevIndex][nodeXIndex] - params.timeCost[nodeUPrevIndex][nodeUIndex] - params.timeCost[nodeUIndex][nodeXIndex];
@@ -153,7 +176,15 @@ bool LocalSearch::move1()
 	if (!intraRouteMove) updateRouteData(routeV);
 	return true;
 }
-
+/**
+ * @brief 2nd Route Improvement (RI) Strategy: insertion
+ * Let v be a neighbor of u, and x and y the successors of u in RouteU and v in
+	RouteV. If u and x are customer visits, remove them, then place u and x after v
+ * 
+ * 
+ * @return true  if above RI strategy has incorporated data from another route in a given route
+ * @return false otherwise
+ */
 bool LocalSearch::move2()
 {
 	double costSuppU = params.timeCost[nodeUPrevIndex][nodeXNextIndex] - params.timeCost[nodeUPrevIndex][nodeUIndex] - params.timeCost[nodeXIndex][nodeXNextIndex];
@@ -184,7 +215,15 @@ bool LocalSearch::move2()
 	if (!intraRouteMove) updateRouteData(routeV);
 	return true;
 }
-
+/**
+ * @brief 3rd Route Improvement (RI) Strategy: insertion
+ * Let v be a neighbor of u, and x and y the successors of u in RouteU and v in
+	RouteV. If u and x are customer visits, remove them, then place x and u after v
+ * 
+ * 
+ * @return true if above RI strategy has been implemented successfully/ incorporated data from another route in a given route
+ * @return false otherwise
+ */
 bool LocalSearch::move3()
 {
 	double costSuppU = params.timeCost[nodeUPrevIndex][nodeXNextIndex] - params.timeCost[nodeUPrevIndex][nodeUIndex] - params.timeCost[nodeUIndex][nodeXIndex] - params.timeCost[nodeXIndex][nodeXNextIndex];
@@ -216,6 +255,15 @@ bool LocalSearch::move3()
 	return true;
 }
 
+/**
+ * @brief 4th Route Improvement (RI) Strategy: swap
+ * Let v be a neighbor of u, and x and y the successors of u in RouteU and v in
+	RouteV. If u and v are customer visits, swap u and v
+ * 
+ * 
+ * @return true if above RI strategy has been implemented successfully/ incorporated data from another route in a given route
+ * @return false otherwise
+ */
 bool LocalSearch::move4()
 {
 	double costSuppU = params.timeCost[nodeUPrevIndex][nodeVIndex] + params.timeCost[nodeVIndex][nodeXIndex] - params.timeCost[nodeUPrevIndex][nodeUIndex] - params.timeCost[nodeUIndex][nodeXIndex];
@@ -246,6 +294,15 @@ bool LocalSearch::move4()
 	return true;
 }
 
+/**
+ * @brief 5th Route Improvement (RI) Strategy: swap
+ * Let v be a neighbor of u, and x and y the successors of u in RouteU and v in
+	RouteV. If u, x, and v are customer visits, swap u and x with v
+ * 
+ * 
+ * @return true if above RI strategy has been implemented successfully/ incorporated data from another route in a given route
+ * @return false otherwise
+ */
 bool LocalSearch::move5()
 {
 	double costSuppU = params.timeCost[nodeUPrevIndex][nodeVIndex] + params.timeCost[nodeVIndex][nodeXNextIndex] - params.timeCost[nodeUPrevIndex][nodeUIndex] - params.timeCost[nodeXIndex][nodeXNextIndex];
@@ -277,6 +334,15 @@ bool LocalSearch::move5()
 	return true;
 }
 
+/**
+ * @brief 6th Route Improvement (RI) Strategy: swap
+ * Let v be a neighbor of u, and x and y the successors of u in RouteU and v in
+	RouteV. If u, x, v, and y are customer visits, swap u and x with v and y;
+ * 
+ * 
+ * @return true if above RI strategy has been implemented successfully/ incorporated data from another route in a given route
+ * @return false otherwise
+ */
 bool LocalSearch::move6()
 {
 	double costSuppU = params.timeCost[nodeUPrevIndex][nodeVIndex] + params.timeCost[nodeYIndex][nodeXNextIndex] - params.timeCost[nodeUPrevIndex][nodeUIndex] - params.timeCost[nodeXIndex][nodeXNextIndex];
@@ -308,6 +374,15 @@ bool LocalSearch::move6()
 	return true;
 }
 
+/**
+ * @brief 7th Route Improvement (RI) Strategy:  2-opt intra-route move
+ * Let v be a neighbor of u, and x and y the successors of u in RouteU and v in
+	RouteV. If r(u) = r(v), replace (u, x) and (v, y) by (u, v) and (x, y)
+ * 
+ * 
+ * @return true if above RI strategy has been implemented successfully
+ * @return false otherwise
+ */
 bool LocalSearch::move7()
 {
 	if (nodeU->position > nodeV->position) return false;
@@ -340,6 +415,15 @@ bool LocalSearch::move7()
 	return true;
 }
 
+/**
+ * @brief 8th Route Improvement (RI) Strategy: 2-opt* inter-route move
+ * Let v be a neighbor of u, and x and y the successors of u in RouteU and v in
+	RouteV.  If r(u) 6= r(v), replace (u, x) and (v, y) by (u, v) and (x, y);
+ * 
+ * 
+ * @return true if above RI strategy has been implemented successfully
+ * @return false otherwise
+ */
 bool LocalSearch::move8()
 {
 	double cost = params.timeCost[nodeUIndex][nodeVIndex] + params.timeCost[nodeXIndex][nodeYIndex] - params.timeCost[nodeUIndex][nodeXIndex] - params.timeCost[nodeVIndex][nodeYIndex]
@@ -420,6 +504,15 @@ bool LocalSearch::move8()
 	return true;
 }
 
+/**
+ * @brief 9th Route Improvement (RI) Strategy: 2-opt* inter-route move
+ * Let v be a neighbor of u, and x and y the successors of u in RouteU and v in
+	RouteV.   If r(u) != r(v), replace (u, x) and (v, y) by (u, y) and (x, v)
+ * 
+ * 
+ * @return true if above RI strategy has been implemented successfully
+ * @return false otherwise
+ */
 bool LocalSearch::move9()
 {
 	double cost = params.timeCost[nodeUIndex][nodeYIndex] + params.timeCost[nodeVIndex][nodeXIndex] - params.timeCost[nodeUIndex][nodeXIndex] - params.timeCost[nodeVIndex][nodeYIndex]
@@ -482,6 +575,13 @@ bool LocalSearch::move9()
 	return true;
 }
 
+/**
+ * @brief implement SWAP*: interchange a pair of nodes in 2 different clusters 
+ * if clusters (or the polar sector with the depot as the center) overlap
+ * 
+ * @return true if above RI strategy has been implemented successfully
+ * @return false otherwise
+ */
 bool LocalSearch::swapStar()
 {
 	SwapStarElement myBestSwapStar;
@@ -571,6 +671,14 @@ bool LocalSearch::swapStar()
 	return true;
 }
 
+/**
+ * @brief identify the best position to insert a swapped node in a cluster in SWAP*
+ * 
+ * @param U swapped node 1
+ * @param V swapped node 2
+ * @param bestPosition position where inserting results in lowest cost
+ * @return double cost of inserting swapped node
+ */
 double LocalSearch::getCheapestInsertSimultRemoval(Node * U, Node * V, Node *& bestPosition)
 {
 	ThreeBestInsert * myBestInsert = &bestInsertClient[V->route->cour][U->cour];
@@ -603,7 +711,10 @@ double LocalSearch::getCheapestInsertSimultRemoval(Node * U, Node * V, Node *& b
 
 	return bestCost;
 }
-
+/**
+ * @brief preprocess swapped nodes before inserting into another cluster
+ * 
+ */
 void LocalSearch::preprocessInsertions(Route * R1, Route * R2)
 {
 	for (Node * U = R1->depot->next; !U->isDepot; U = U->next)
@@ -625,6 +736,12 @@ void LocalSearch::preprocessInsertions(Route * R1, Route * R2)
 	}
 }
 
+/**
+ * @brief insert a node in a route
+ * 
+ * @param U node to be inserted
+ * @param V position of insertion
+ */
 void LocalSearch::insertNode(Node * U, Node * V)
 {
 	U->prev->next = U->next;
@@ -635,7 +752,12 @@ void LocalSearch::insertNode(Node * U, Node * V)
 	V->next = U;
 	U->route = V->route;
 }
-
+/**
+ * @brief swap 2 nodes
+ * 
+ * @param U node 1 to be swapped
+ * @param V node 2 to be swapped
+ */
 void LocalSearch::swapNode(Node * U, Node * V)
 {
 	Node * myVPred = V->prev;
@@ -658,7 +780,11 @@ void LocalSearch::swapNode(Node * U, Node * V)
 	U->route = myRouteV;
 	V->route = myRouteU;
 }
-
+/**
+ * @brief update route parameters
+ * 
+ * @param myRoute route to be updated
+ */
 void LocalSearch::updateRouteData(Route * myRoute)
 {
 	int myplace = 0;
@@ -715,7 +841,11 @@ void LocalSearch::updateRouteData(Route * myRoute)
 		emptyRoutes.erase(myRoute->cour);
 	}
 }
-
+/**
+ * @brief load a solution
+ * 
+ * @param indiv solution of class Individual
+ */
 void LocalSearch::loadIndividual(const Individual & indiv)
 {
 	emptyRoutes.clear();
@@ -758,7 +888,11 @@ void LocalSearch::loadIndividual(const Individual & indiv)
 	for (int i = 1; i <= params.nbClients; i++) // Initializing memory structures
 		clients[i].whenLastTestedRI = -1;
 }
-
+/**
+ * @brief export a solution
+ * 
+ * @param indiv solution of class Individual
+ */
 void LocalSearch::exportIndividual(Individual & indiv)
 {
 	std::vector < std::pair <double, int> > routePolarAngles ;
@@ -783,6 +917,11 @@ void LocalSearch::exportIndividual(Individual & indiv)
 	indiv.evaluateCompleteCost(params);
 }
 
+/**
+ * @brief Construct a new Local Search:: Local Search object
+ * 
+ * @param params problem-specific data including location coordinates and penalty weights
+ */
 LocalSearch::LocalSearch(Params & params) : params (params)
 {
 	clients = std::vector < Node >(params.nbClients + 1);

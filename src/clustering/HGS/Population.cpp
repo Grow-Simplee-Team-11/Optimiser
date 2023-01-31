@@ -1,5 +1,10 @@
 #include "../../../include/clustering/HGS/Population.h"
-
+/**
+ * @brief generate a random initial population, where each solution is in the form of 1 giant tour 
+ * starting and ending at the depot. split this solution into multiple smaller tours (corresponding to each
+ * rider). perform local search, evaluate penalty and check feasibility of solutions
+ * 
+ */
 void Population::generatePopulation()
 {
 	if (params.verbose) std::cout << "----- BUILDING INITIAL POPULATION" << std::endl;
@@ -16,7 +21,14 @@ void Population::generatePopulation()
 		}
 	}
 }
-
+/**
+ * @brief add an individual (a complete assignment of routes to all riders) to the population
+ * 
+ * @param indiv individual to be added
+ * @param updateFeasible whether the new individual is feasible
+ * @return true if new individual is feasible and its cost is within an acceptable limit
+ * @return false otherwise
+ */
 bool Population::addIndividual(const Individual & indiv, bool updateFeasible)
 {
 	if (updateFeasible)
@@ -63,7 +75,11 @@ bool Population::addIndividual(const Individual & indiv, bool updateFeasible)
 	else
 		return false;
 }
-
+/**
+ * @brief update the fitness function
+ * 
+ * @param pop subpopulation whose individuals' fitness is to be updated
+ */
 void Population::updateBiasedFitnesses(SubPopulation & pop)
 {
 	// Ranking the individuals based on their diversity contribution (decreasing order of distance)
@@ -88,7 +104,11 @@ void Population::updateBiasedFitnesses(SubPopulation & pop)
 		}
 	}
 }
-
+/**
+ * @brief remove individual with the worst fitness value
+ * 
+ * @param pop subpopulation in which to remove the worst fitness value
+ */
 void Population::removeWorstBiasedFitness(SubPopulation & pop)
 {
 	updateBiasedFitnesses(pop);
@@ -124,7 +144,10 @@ void Population::removeWorstBiasedFitness(SubPopulation & pop)
 	// Freeing memory
 	delete worstIndividual; 
 }
-
+/**
+ * @brief restart HGS by generating a new population
+ * 
+ */
 void Population::restart()
 {
 	if (params.verbose) std::cout << "----- RESET: CREATING A NEW POPULATION -----" << std::endl;
@@ -136,6 +159,10 @@ void Population::restart()
 	generatePopulation();
 }
 
+/**
+ * @brief ensure that all penalty weights are within bounds
+ * 
+ */
 void Population::managePenalties()
 {
 	// Setting some bounds [0.1,100000] to the penalty values for safety
@@ -172,7 +199,11 @@ void Population::managePenalties()
 		}
 	}
 }
-
+/**
+ * @brief implement tournament selection for parent selection
+ * 
+ * @return const Individual& parent selected from the population
+ */
 const Individual & Population::getBinaryTournament ()
 {
 	// Picking two individuals with uniform distribution over the union of the feasible and infeasible subpopulations
@@ -188,25 +219,42 @@ const Individual & Population::getBinaryTournament ()
 	if (indiv1->biasedFitness < indiv2->biasedFitness) return *indiv1 ;
 	else return *indiv2 ;		
 }
-
+/**
+ * @brief get the best feasible solution (solution with maximum fitness value)
+ * 
+ * @return const Individual* the best feasible solution
+ */
 const Individual * Population::getBestFeasible ()
 {
 	if (!feasibleSubpop.empty()) return feasibleSubpop[0] ;
 	else return NULL ;
 }
-
+/**
+ * @brief get the best infeasible solution (solution with maximum fitness value)
+ * 
+ * @return const Individual* the best infeasible solution
+ */
 const Individual * Population::getBestInfeasible ()
 {
 	if (!infeasibleSubpop.empty()) return infeasibleSubpop[0] ;
 	else return NULL ;
 }
-
+/**
+ * @brief get the overall best solution (solution with maximum fitness value)
+ * 
+ * @return const Individual* the overall best solution
+ */
 const Individual * Population::getBestFound()
 {
 	if (bestSolutionOverall.eval.penalizedCost < 1.e29) return &bestSolutionOverall;
 	else return NULL;
 }
-
+/**
+ * @brief print the current state of HGS implementation
+ * 
+ * @param nbIter number of iterations completed
+ * @param nbIterNoImprovement number of iterations without any improvement in fitness value
+ */
 void Population::printState(int nbIter, int nbIterNoImprovement)
 {
 	if (params.verbose)
@@ -225,7 +273,13 @@ void Population::printState(int nbIter, int nbIterNoImprovement)
 		std::cout << std::endl;
 	}
 }
-
+/**
+ * @brief measure the proportion of arc similarities between two solutions
+ * 
+ * @param indiv1 solution 1
+ * @param indiv2 solution 2
+ * @return double proportion of arc similarities between two solutions
+ */
 double Population::brokenPairsDistance(const Individual & indiv1, const Individual & indiv2)
 {
 	int differences = 0;
@@ -236,7 +290,14 @@ double Population::brokenPairsDistance(const Individual & indiv1, const Individu
 	}
 	return (double)differences / (double)params.nbClients;
 }
-
+/**
+ * @brief  average broken-pairs distance  of an individual to its nClosest most similar solutions 
+ * in the population gives the diversity contribution of a solution
+ * 
+ * @param indiv solution whose diversity contribution is evaluated
+ * @param nbClosest number of closest similar solutions in the population
+ * @return double average broken-pairs distance to its nClosest most similar solutions in the population
+ */
 double Population::averageBrokenPairsDistanceClosest(const Individual & indiv, int nbClosest)
 {
 	double result = 0.;
@@ -249,7 +310,13 @@ double Population::averageBrokenPairsDistanceClosest(const Individual & indiv, i
 	}
 	return result / (double)maxSize;
 }
-
+/**
+ * @brief evaluate diversity: average of the average broken-pairs distance of an individual to 
+ * its nClosest most similar solutions in the population
+ * 
+ * @param pop subpopulation for which this is to be evaluated
+ * @return double diversity
+ */
 double Population::getDiversity(const SubPopulation & pop)
 {
 	double average = 0.;
@@ -258,7 +325,12 @@ double Population::getDiversity(const SubPopulation & pop)
 	if (size > 0) return average / (double)size;
 	else return -1.0;
 }
-
+/**
+ * @brief get average of penalized costs
+ * 
+ * @param pop subpopulation for which average is to be calculated
+ * @return double average cost
+ */
 double Population::getAverageCost(const SubPopulation & pop)
 {
 	double average = 0.;
@@ -267,14 +339,24 @@ double Population::getAverageCost(const SubPopulation & pop)
 	if (size > 0) return average / (double)size;
 	else return -1.0;
 }
-
+/**
+ * @brief export Search algorithm Progress
+ * 
+ * @param fileName file location to which progress is to be updated
+ * @param instanceName name of the file
+ */
 void Population::exportSearchProgress(std::string fileName, std::string instanceName)
 {
 	std::ofstream myfile(fileName);
 	for (std::pair<clock_t, double> state : searchProgress)
 		myfile << instanceName << ";" << params.ap.seed << ";" << state.second << ";" << (double)state.first / (double)CLOCKS_PER_SEC << std::endl;
 }
-
+/**
+ * @brief export final routing output in .sol format
+ * 
+ * @param indiv solution that is to be written to the file
+ * @param fileName name of the file where final routing output is to be written
+ */
 void Population::exportCVRPLibFormat(const Individual & indiv, std::string fileName)
 {
 	std::ofstream myfile(fileName);
@@ -293,13 +375,22 @@ void Population::exportCVRPLibFormat(const Individual & indiv, std::string fileN
 	}
 	else std::cout << "----- IMPOSSIBLE TO OPEN: " << fileName << std::endl;
 }
-
+/**
+ * @brief Construct a new Population:: Population object
+ * 
+ * @param params problem-specific data including location coordinates and penalty weights
+ * @param split output split algorithm
+ * @param localSearch improved solution after Route Improvement and SWAP*
+ */
 Population::Population(Params & params, Split & split, LocalSearch & localSearch) : params(params), split(split), localSearch(localSearch), bestSolutionRestart(params), bestSolutionOverall(params)
 {
 	listFeasibilityLoad = std::list<bool>(params.ap.nbIterPenaltyManagement, true);
 	listFeasibilityDuration = std::list<bool>(params.ap.nbIterPenaltyManagement, true);
 }
-
+/**
+ * @brief Destroy the Population:: Population object
+ * 
+ */
 Population::~Population()
 {
 	for (int i = 0; i < (int)feasibleSubpop.size(); i++) delete feasibleSubpop[i];

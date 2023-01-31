@@ -1,5 +1,12 @@
 #include "../../../include/clustering/HGS/Individual.h" 
 
+/**
+ * @brief evaluate cost of the solution using a penalty function, with terms for exceeding distance, 
+ * duration and capacity constraints
+ * 
+ * 
+ * @param params problem-specific data including location coordinates and penalty weights
+ */
 void Individual::evaluateCompleteCost(const Params & params)
 {
 	eval = EvalIndiv();
@@ -38,6 +45,14 @@ void Individual::evaluateCompleteCost(const Params & params)
 	eval.isFeasible = (eval.capacityExcess < MY_EPSILON && eval.durationExcess < MY_EPSILON);
 }
 
+/**
+ * @brief Construct a new Individual:: Individual object
+ * chromR: in actual solution format - with a vector of vectors, each corresponding to one rider;
+ * 			the nested vectors contain route to be travelled by each rider
+ * chromT: assigns an index to all the clients
+ * 
+ * @param params problem-specific data including location coordinates and penalty weights
+ */
 Individual::Individual(Params & params)
 {
 	successors = std::vector <int>(params.nbClients + 1);
@@ -50,6 +65,12 @@ Individual::Individual(Params & params)
 	eval.penalizedCost = 1.e30;	
 }
 
+/**
+ * @brief Construct a new Individual:: Individual object
+ * 
+ * @param params problem-specific data including location coordinates and penalty weights
+ * @param fileName input file containing coordinates, demands of all clients, and vehicle capacity, distance & service time constraints
+ */
 Individual::Individual(Params & params, std::string fileName) : Individual(params)
 {
 	double readCost;

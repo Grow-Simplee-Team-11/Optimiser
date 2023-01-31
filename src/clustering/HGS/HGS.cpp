@@ -1,6 +1,11 @@
-// Hybrid Genetic Search-CVRP Algorithm computes optimal clusters and routes simultaneously
+// Hybrid Genetic Search-CVRP (HGS) Algorithm computes optimal clusters and routes simultaneously
 #include "../../../include/clustering/HGS/HGS.hpp"
 
+/**
+ * @brief Construct a new HGS::HGS object 
+ * 
+ * @param method 
+ */
 HGS::HGS(bool method): ClusteringInterface(method){
 			// pathInstance = instance_path_name;
 			// pathSolution = solution_path_name;
@@ -11,6 +16,15 @@ HGS::HGS(bool method): ClusteringInterface(method){
 			// ap.timeLimit = 30.0;
 			ap.nbIter = 10000;
 }
+
+/**
+ * @brief evaluate and output details of location cluster that each rider is assigned to
+ * 
+ * @param packages details of packages to be delivered
+ * @param warehouse depot/ warehouse information
+ * @param numRiders number of riders
+ * @param b details of bin/ rider bag
+ */
 void HGS::ComputeClusters(vector<item> &packages, Coordinate warehouse, int numRiders, Bin b) {
 							
 			int nbVeh = numRiders;
