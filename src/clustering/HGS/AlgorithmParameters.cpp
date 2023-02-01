@@ -1,6 +1,3 @@
-//
-// Created by chkwon on 3/23/22.
-//
 
 #include "../../../include/clustering/HGS/AlgorithmParameters.h"
 #include <iostream>
@@ -29,6 +26,11 @@ struct AlgorithmParameters default_algorithm_parameters() {
 	return ap;
 }
 
+/**
+ * @brief print input parameters to the algorithm
+ * 
+ * @param ap input parameters in the format of AlgorithmParameters structure
+ */
 void print_algorithm_parameters(const AlgorithmParameters & ap)
 {
 	std::cout << "=========== Algorithm Parameters =================" << std::endl;

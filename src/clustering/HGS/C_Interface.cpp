@@ -1,6 +1,3 @@
-//
-// Created by chkwon on 3/23/22.
-
 #include "../../../include/clustering/HGS/C_Interface.h"
 #include "../../../include/clustering/HGS/Population.h"
 #include "../../../include/clustering/HGS/Params.h"
@@ -11,7 +8,13 @@
 #include <vector>
 #include <cmath>
 
-
+/**
+ * @brief identifies the best solution from a given population and evaluates its cost. Also stores information of each rider tour.
+ * 
+ * @param population set of individual chromosomes (feasible and infeasible solutions)
+ * @param params problem-specific data including location coordinates and penalty weights
+ * @return Solution* a complete best solution identified from a given population
+ */
 Solution *prepare_solution(Population &population, Params &params)
 {
 	// Preparing the best solution
@@ -47,7 +50,10 @@ Solution *prepare_solution(Population &population, Params &params)
 	return sol;
 }
 
-
+/**
+ * @brief initializes parameters to input values and calls the main genetic algorithm optimizer code 
+ * 
+ */
 extern "C" Solution *solve_cvrp(
 	int n, double *x, double *y, double *serv_time, double *dem,
 	double vehicleCapacity, double durationLimit, char isRoundingInteger, char isDurationConstraint,
@@ -85,6 +91,10 @@ extern "C" Solution *solve_cvrp(
 	return result;
 }
 
+/**
+ * @brief evaluates the distance matrix, given the delivery location coordinates
+ * 
+ */
 extern "C" Solution *solve_cvrp_dist_mtx(
 	int n, double *x, double *y, double *dist_mtx, double *serv_time, double *dem,
 	double vehicleCapacity, double durationLimit, char isDurationConstraint,
@@ -122,7 +132,10 @@ extern "C" Solution *solve_cvrp_dist_mtx(
 
 	return result;
 }
-
+/**
+ * @brief deletes an entire solution chromosome 
+ * 
+ */
 extern "C" void delete_solution(Solution *sol)
 {
 	for (int i = 0; i < sol->n_routes; ++i)

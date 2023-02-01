@@ -3,6 +3,22 @@
 // The universal constructor for both executable and shared library
 // When the executable is run from the commandline,
 // it will first generate an CVRPLIB instance from .vrp file, then supply necessary information.
+/**
+ * @brief Construct a new Params:: Params object
+ * 
+ * @param x_coords vector of x coordinates of all delivery locations
+ * @param y_coords vector of y coordinates of all delivery locations
+ * @param dist_mtx distance matrix of warehouse and all delivery locations
+ * @param service_time vector of service times at each delivery location (time to deliver the package, different from travel time)
+ * @param demands demand, in terms of volume of package at each delivery location
+ * @param vehicleCapacity maximum volume limit of each rider bag
+ * @param durationLimit maximum allowed duration (travel + service time) for each rider tour
+ * @param nbVeh number of riders
+ * @param isDurationConstraint boolean variable indicating whether there is a duration constraint
+ * @param verbose whether parameter values are to be printed to the screen
+ * @param expectation expected delivery time at each delivery location
+ * @param ap object of type AlgorithmParameters structure
+ */
 Params::Params(
 	const std::vector<double>& x_coords,
 	const std::vector<double>& y_coords,

@@ -1,5 +1,11 @@
 #include "../../../include/clustering/HGS/Split.h" 
-
+/**
+ * @brief split the input giant tour chromosome, whose route starts and ends at the depot into 
+ * multiple smaller tours (1 corresponding to each rider)
+ * 
+ * @param indiv the giant tour chromosome
+ * @param nbMaxVehicles allowed maximum number of vehicles
+ */
 void Split::generalSplit(Individual & indiv, int nbMaxVehicles)
 {
 	// Do not apply Split with fewer vehicles than the trivial (LP) bin packing bound
@@ -27,7 +33,12 @@ void Split::generalSplit(Individual & indiv, int nbMaxVehicles)
 	// Build up the rest of the Individual structure
 	indiv.evaluateCompleteCost(params);
 }
-
+/**
+ * @brief simple linear-time split algorithm
+ * 
+ * @param indiv solution that is to be split
+ * @return int = 1 if split is completed successfully
+ */
 int Split::splitSimple(Individual & indiv)
 {
 	// Reinitialize the potential structures
@@ -107,7 +118,12 @@ int Split::splitSimple(Individual & indiv)
 	// Return OK in case the Split algorithm reached the beginning of the routes
 	return (end == 0);
 }
-
+/**
+ * @brief split implementation given a limited vehicle fleet size
+ * 
+ * @param indiv solution that is to be split
+ * @return int = 1 if split is completed successfully
+ */
 // Split for problems with limited fleet
 int Split::splitLF(Individual & indiv)
 {
@@ -208,7 +224,11 @@ int Split::splitLF(Individual & indiv)
 	// Return OK in case the Split algorithm reached the beginning of the routes
 	return (end == 0);
 }
-
+/**
+ * @brief Construct a new Split:: Split object
+ * 
+ * @param params problem-specific data including location coordinates and penalty weights
+ */
 Split::Split(const Params & params): params(params)
 {
 	// Structures of the linear Split

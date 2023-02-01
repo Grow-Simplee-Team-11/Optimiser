@@ -1,5 +1,9 @@
 #include "../../../include/clustering/HGS/Genetic.h"
-
+/**
+ * @brief initializes random population of individuals; implements parent selection, crossover, neighbourhood search.
+ * Evaluates penalties and prints the updated current best solution regularly.
+ * 
+ */
 void Genetic::run()
 {	
 	/* INITIAL POPULATION */
@@ -40,6 +44,13 @@ void Genetic::run()
 	if (params.verbose) std::cout << "----- GENETIC ALGORITHM FINISHED AFTER " << nbIter << " ITERATIONS. TIME SPENT: " << (double)(clock() - params.startTime) / (double)CLOCKS_PER_SEC << std::endl;
 }
 
+/**
+ * @brief implements ordered crossover of the two input parents
+ * 
+ * @param result chromosome to receive crossover output
+ * @param parent1 parent 1 that undergoes crossover
+ * @param parent2 parent 2 that undergoes crossover
+ */
 void Genetic::crossoverOX(Individual & result, const Individual & parent1, const Individual & parent2)
 {
 	// Frequency table to track the customers which have been already inserted
@@ -77,6 +88,11 @@ void Genetic::crossoverOX(Individual & result, const Individual & parent1, const
 	split.generalSplit(result, parent1.eval.nbRoutes);
 }
 
+/**
+ * @brief Construct a new Genetic:: Genetic object
+ * 
+ * @param params problem-specific data including location coordinates and penalty weights
+ */
 Genetic::Genetic(Params & params) : 
 	params(params), 
 	split(params),
