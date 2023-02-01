@@ -114,6 +114,7 @@ class OptimizerServiceImpl final : public optimizer::optimizer::Service
         Optimizer optim(rp, cls, bp, dm.packages, dm.warehouse, dm.numRiders, dm.bin, logFileName, verbose, logToFile);
         optim.optimize();
 
+        
         vector<float> rcosts = optim.GetRoutingCost();
         float total_cost = 0;
         for(auto &x : rcosts)
