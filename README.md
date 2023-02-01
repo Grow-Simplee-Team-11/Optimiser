@@ -1,33 +1,283 @@
-# OR Tools Setup 
-## Binary Installation
-First, download the binary version corresponding to your distro, commands for that are as follows :
+# Route Optimisation and Planning for Last Mile Delivery
+
+## About The Project
+
+'''
+Add Image for the application, may be a running image. 
+'''
+
+In this part of our solution we have tackled the problem of Route Planning and Bin Packing for the rider, in which we aim to improve the current system by applying state-of-the-art algorithms to reduce the complexity of work for the Delivery Hub as well as the Riders while making a delivery.
+
+We receive the data about the items to be delivered from our database which consist some basic information about the item and it's delivery location. From this we first try to cluster the items based on their location, through which each cluster will be assigned to a single driver for delivery. After clustering the delivery locations together, we try to find the most optimised path among the points taking into consideration the Estimated Delivery Times, Weather and Traffic so as to improve customer experience with on time deliveries. To make it easy for the delivery rider as well, we provide a efficient bag packing for the delivery bag so as to save time and effort for the driver to search for package at the time of delivery. 
+
+All the algorithms used in our solution are then ensembled together to get the best result among all the possible combinations. Metrics are calculated among the combinations to get the maximum score. The best is then used for final execution. This data is then sent to the front-end to show it to the user.
+
+In addition to all this, we also provide a service for dynamic addition of pickup points in the routes of a particular rider, leading into re-routing of the pre-determined path.
+## Getting Started
+### Quick Install
+
+Execute the following commands to build and run the docker image `lastmiledelivery/optimizer-server`.
+
+To pull image directly from docker-hub :
 ```bash
-curl -LJO "<or-tools package link for your distro>"
-tar -xf <name of tar file downloaded>;
+sudo docker pull lastmiledelivery/optimizer-server:latest
 ```
-Link to the binary versions can be found [here](https://github.com/google/or-tools/releases/) , look for the binary corresponding to your distro and use that link to run the above command
-For Ubuntu 22.04 it looks like the follwing:
+To run the docker image
 ```bash
-curl -LJO "https://github.com/google/or-tools/releases/download/v9.5/or-tools_amd64_ubuntu-22.04_cpp_v9.5.2237.tar.gz"
-tar -xf or-tools_amd64_ubuntu-22.04_cpp_v9.5.2237.tar.gz;
+sudo docker run -dp 5000:50051 optimizer-server:latest
 ```
-## Folder Structure
-After downloading the binary version on your system do the following -
-1. Copy the entire `lib` folder present inside the downloaded package and place it in the root directory of this folder
-2. Copy all the files present in `include` directory of ortools package and place it inside a folder called `include/ortools`
-The Folder Structure would finally look as follows
-![Folder Structure](folder_structure.png)
-3. To make sure g++ looks for linking libraries in the created lib folder, run this command once at the root of this folder - 
+To run the server - 
 ```bash
-export LD_LIBRARY_PATH=./lib:/usr/lib:/usr/local/lib
+sudo docker logs -f <CONTAINER-ID>
 ```
-## Execution
-Run the following commands at the root of this folder to make and run the executable - 
+The server is now ready to recieve requests at port number `5000` on your local system.
+
+The api request format for the enpoint is given in the `quick installation` section below.
+#### Note
+
+The Docker Image uses an Ensemble of all implemented algorithms mentioned above to output the best possible results for the given data. To test the algorithms individually, please install the codebase locally.
+
+Details of the implemented algorithms is available under the `Documentation` section.
+
+
+
+
+## Build From Scratch
+
+We specify detailed instructions on the required libraries and Dependencies needed to build and run the code. We recommend to use a Ubuntu 22.04 machine for all purposes.
+
+### Pre-requisites
 ```bash
-make
-./main
+$ sudo apt-get update
+$ sudo apt-get install build-essential autoconf git pkg-config automake libtool curl make g++ unzip libcurl4-openssl-dev cmake
 ```
-Additionally, to remove unnecessary files - 
+
+### Dependencies
+This repository depends on mainly two external repositories: 
+- OR-tools
+- gRPC
+
+#### Note
+We install all libraries of OR-Tools and gRPC system-wide. Therefor both of them can be cloned and built anywhere in the system using the instructions given below.
+
+### OR-Tools
+To compile and install OR-Tools, we build it from source and install the generated libraries system-wide. Refer to [https://github.com/google/or-tools/blob/stable/cmake/README.md]. We used the following commands to fetch and build the repository
 ```bash
-make clean
+$ git clone -b main https://github.com/google/or-tools
+$ cd or-tools
+$ cmake -DCMAKE_CXX_STANDARD=17 -S. -Bbuild -DBUILD_DEPS:BOOL=ON 
+$ cd build
+$ make -j 4
+$ sudo make install
 ```
+
+### gRPC
+gRPC is a modern open source high performance Remote Procedure Call (RPC) framework to connect different services. Refer to [https://github.com/grpc/grpc/blob/master/BUILDING.md]  To clone and build the gRPC repository (v1.50.0), Use the following command:
+
+```bash
+$ git clone --recurse-submodules -b v1.50.0 \
+  --depth 1 --shallow-submodules https://github.com/grpc/grpc
+$ cd grpc
+$ mkdir -p cmake/build
+$ cd ./cmake/build 
+$ cmake -DCMAKE_CXX_STANDARD=17 -DCMAKE_INSTALL_PREFIX=/usr/local \
+  -DCMAKE_POSITION_INDEPENDENT_CODE=TRUE -DABSL_PROPAGATE_CXX_STD=TRUE ../.. \
+  -DgRPC_INSTALL=ON \                                   
+  -DCMAKE_BUILD_TYPE=Release       \                                                
+  -DgRPC_ABSL_PROVIDER=package     \                                                
+  -DgRPC_CARES_PROVIDER=module   \                                                  
+  -DgRPC_PROTOBUF_PROVIDER=package \
+  -DgRPC_RE2_PROVIDER=package      \
+  -DgRPC_SSL_PROVIDER=module      \ 
+  -DgRPC_ZLIB_PROVIDER=package
+$ make -j 4
+$ sudo make install
+```
+
+## Installation
+
+In order to setup a local copy of the project, you can follow the one of the 2 methods listed below. Once the local copy is setup, the steps listed in [Usage](#usage) can be used to interact with the system.
+
+1. `Clone` the repo
+   ```sh
+   $ git clone https://github.com/Grow-Simplee-KGP/Optimiser
+   ```
+2. Alternatively, Download a ZIP of the source code from github. `unzip` file to unpack all the files included with the project.
+   ```sh
+   $ unzip Optimiser-main.zip
+   ```
+3. Change directory to the `Optimiser` directory
+   ```sh
+   $ cd Optimiser 
+   ```
+4. Create a build folder inside the `Optimiser` directory and run cmake to generate the makefile. After running the make command, the executable is created in the 
+  ```sh
+  $ mkdir -p cmake/build
+  $ cd cmake/build
+  $ cmake ../..
+  $ make -j 4
+  ```
+
+5. To run the built binary, run the following command from the `Optimiser` directory:
+  ```sh
+  $ ./bin/server
+  ```
+<!-- USAGE EXAMPLES -->
+
+## Usage
+
+Once the local copy of the project has been setup, follow these steps to interact with the system and run tests on the system
+
+### User interaction with the system
+
+_To interact with the system from the console, do the following steps\:_
+
+1.  Open terminal from the main project directory
+2.  Run the main go file (Ensure that `DEBUG` is set to `0` in `raft/raft.go` file)
+    ```sh
+    go run main.go
+    ```
+3.  You will be presented with a menu with necessary commands to create raft cluster, send commands, etc.
+
+> **NOTE:** While using the features like set value, get value etc., that should pass through the leader node, you can user the 9th menu and find the leader and then send the request to leader node. Sending a such a request to a non leader node will lead to failure. This implementation is in accordance with the official Raft Implementation from the paper.
+
+
+Archisman
+## Project Details
+
+Following are the details of the file structure of this project:
+
+```
+.
+├── bin
+│   └── server
+├── include
+│   ├── binpack
+│   │   └── EB_AFIT.hpp
+│   ├── clustering
+│   │   ├── Clarke
+│   │   ├── fesif
+│   │   ├── HGS
+│   │   ├── selfClustering
+│   │   └── TimeWindow
+│   ├── datastructures.hpp
+│   ├── DistMatrix.hpp
+│   ├── interface
+│   │   ├── BinPackInterface.hpp
+│   │   ├── ClusteringInterface.hpp
+│   │   └── RoutePlanInterface.hpp
+│   ├── routeplan
+│   │   ├── TSP_CK.hpp
+│   │   ├── TSP_LK.hpp
+│   │   ├── TSP_OR_EDD.hpp
+│   │   └── TSP_OR.hpp
+│   └── Optimiser.hpp
+├── lib
+├── main.cpp
+├── README.md
+├── server.cpp
+├── src
+│   ├── binpack
+│   │   └── EB-AFIT.cpp
+│   ├── clustering
+│   │   ├── Clarke
+│   │   ├── fesif
+│   │   ├── HGS
+│   │   ├── selfClustering
+│   │   └── TimeWindow
+│   ├── DistMatrix.cpp
+│   ├── Optimiser.cpp
+│   └── routeplan
+│       ├── TSP_CK.cpp
+│       ├── TSP_DP.cpp
+│       ├── TSP_LK.cpp
+│       ├── TSP_OR.cpp
+│       └── TSP_OR_EDD.cpp
+├── tests
+│   ├── data_gen.py
+│   └── visualise_cluster.py
+├── CMakeLists.txt
+└── Dockerfile
+
+```
+
+Following are the details of the file structure and their functionalities that are present in this code base.
+
+- **Optimiser/bin** - _This folder contains all the necessary binaries for running servers for all the GRPC calls._
+  - `Server` binary - Starts the server through which the backend will interact with this code.
+- **Optimiser/include/binpack** - This folder contains all the header files used in the Optimiser code for bag packing.
+  - `EB_AFIT.hpp` - Header file for the EB_AFIT algorithm implemented. It consist of all the functions required to run the algorithm in the Optimiser parallely.
+- **Optimiser/include/clustering** - This folder contains all the header files used in the Optimiser code for clustering of the location points. 
+  - `Clarke` - This folder contains all the header files required to implement the Enhanced Clarke-Wright Algorithm. More about the algorithm is present along with the cpp files of the same.
+  - `fesif` - This folder contains all the header files required to implement our fast FESI algorithm to get the clusters for further route planning. 
+  - `HGS` - This folder contains all the header files reqiured to implement the Genetic algorithm we are using for clustering and path planning simultaneously. In this folder complete support for our HGS is present with tuned hyper-parameters for the best performance.
+  - `selfClustering` - The petal cut header files are present in this folder.
+  - `TimeWindow` - This folder contains header files for calculating thread metric and time window of each delivery, which is used to increase the percentage of on time deliveries.
+ - **Optimiser/include/datastructures.hpp** - _This folder contains all the data structure definions used in our code. This is done so as to formalise the data structure across all the algorithm, making it easier to ensemble the algorithm and minimise overhead to start each algorithm._
+- **Optimiser/include/DistMatrix.hpp** - _The methods distance matrix calculation among different locations are present in this header file. The functions are made modular so as to provide easy access for extensions and in current work._
+- **Optimiser/include/interface** - _This folder contains all the interfaces used in the optimiser, this made us to make a clean structure of code so as the code is easily maintainable and extensible. Each of the interface in this folder takes care of one important step of optimisation._
+  - `ClusteringInterface.hpp` - All the clustering algorithms classes are extensions of this interface, a common function ComputeClusters is implemented in each of them to provide the clusters from the given location points.
+  - `RoutePlanInterface.hpp` - All the route planning algorithms are extensions of this interface, we take the benefit of different Object Oriented Principles in creating such a structure.
+  - `BinPackInterface.hpp` - This interface takes care of the Bag Packing part of our solution, all the algorithms implemented for the packing have used this interface. 
+- **Optimiser/include/routeplan** - _This folder contains header files for all the route planning algorithms. Here all the algorithms are trying to solve the Travelling Salesman Problem(TSP), as after clustering of locations our problem reduced to a basic TSP with addition constraints of EDD and capacity._
+  - `TSP_CK.hpp` - This file consist of all the methods used in the modified Christofides algorithm for solving the TSP. 
+  - `TSP_LK.hpp` - TSP solver using Lin-Kernighan has been implemented using this header file. This algorithm has been modified to incorporate the traffic data to get precise results for path planning and good approximation for achieving maximum EDDs
+  - `TSP_OR_EDD.hpp` - This header file uses the Google OR tools to get the path in each cluster, in addition to the basic OR tools solution we have also added metric to handle the constraints given in the problem statement to get the required results.
+- **Optimiser/include/Optimiser.hpp** - This header file is the heart of our solution. This handles the creation of ensemble among all the above algorithms and then provide the best results among all the combinations. Parallelism is used in this through threading to increase the speed among the algorithms.
+
+- **Optimiser/lib** - This folder consist of all the third party libraries such as Google OR tools and the GRPC header files to get the routing and connect backend with our algorithms respectively. These libraries are natively built so as to provide flexibility among the systems it is compiled on.
+
+- **Optimiser/main.cpp** - This file is the spine of our solution. This handles all the data inputs and the parallel running of the Optimiser class to get the best result among all. This file can be changed to test different algorithms and visulaise the results as well. This file will be similar to server.cpp
+
+- **Optimiser/src/binpack** - The older structure of the src folder is similar to what was in the header file, but this contains implementation of all the methods discussed above. `./binpack` folder consist of the binpacking algorithms implementation.
+  - `EB-AFIT.cpp` - The implementation of our modified Bin Packing algorithm which is based on the EB-AFIT algorithm[Bin Packing 2] is done in this file. In this we have added constraints to get the package at top at their respective delivery location.
+- **Optimiser/src/clustering** - All the clustering algorithms are implemented in this folder.
+    - `Clarke` - As discussed in the include folder, this contains the implementation of our Clarke algorithm which is similar to [Clustering Algorithms 1].  Our algorithm is inspired by Kruskal’s algorithm of finding the Minimum Spanning Tree, in which we first select the most profitable locations, profit being the cost reduced in traveling, and join them if they satisfy the condition of endpoints, i.e. the locations need to be the endpoints of their respective group. 
+    - `fesif` - 
+    - `selfClustering` - 
+    - `HGS` - 
+    - `TimeWindow` - 
+- **Optimiser/src/DistMatrix.cpp** - 
+- **Optimiser/src/Optimser.cpp** - 
+- **Optimiser/src/routeplan** - 
+  - `TSP_CK.cpp` - 
+  - `TSP_LK.cpp` - 
+  - `TSP_OR_EDD.cpp` -
+- **Optimser/tests** - 
+  - `data_gen.py` - 
+  - `visualise_cluster.py` - 
+
+
+Things missing, 
+ - test files and inputs.
+ - visulaise test
+ - metric decider
+
+## Roadmap
+
+- Additional browser support
+
+- Add more integrations
+
+
+Rohit
+
+## Acknowledgements
+​
+We list below any external resource we came across to help us build the entire codebase -
+### Clustering Algorithms
+  1.  [Clarke Wright Algorithm](https://oaji.net/articles/2014/818-1399311943.pdf) - Improved upon the classical clarke wright algorithm to also handle `Estimated Time of Delivery` and added a consolidation function.
+  2.  [HGS - Hybrid Genetic Search](https://w1.cirrelt.ca/~vidalt/papers/HGS-CIRRELT-2011.pdf) -A Genetic Algorithm for the CVRP . Added `time expectation` to get a better performing heuristic.
+3.  [fESI - Fast Embedding Sorting and Insertion](https://www.vldb.org/pvldb/vol13/p320-zeng.pdf) - A `6ρ Approximation Algorithm` implemented using a binary search strategy. A Hierarchical Search Tree is used as spatial index to embed the cost metric.
+​
+### Route Planning Algorithms
+1. [Christofides Algorithm](https://github.com/sth144/christofides-algorithm-cpp/tree/176e61b2d9ba94344fc6c13a57dc3fee7bf0654d) Industry Standard Approximation Algorithm for Travelling Salesman Problem.
+2. [Google OR-Tools](https://developers.google.com/optimization) - Linear Programming Optimization library developed by Google with ensemble of randomization and approximation algorithm for CVRP.
+​
+### Bin Packing Algorithms
+1. [Online 3D Bin Packing Using Algorithm](https://openreview.net/forum?id=bfuGjlCwAq) - Trained RL agent for bin backing which maintains package ordering while packing.
+2. [EB-AFIT](https://scholar.afit.edu/cgi/viewcontent.cgi?article=5567&context=etd) - Algorithm for 3D Binpacking with an improved setup to maintain package ordering while having high bin packing efficiency.
+### Miscellaneous
+1. [Google gRPC](https://grpc.io/docs/what-is-grpc/introduction/)-  RPC server handler for handling client side requests by Google.
+2. [Bing MAPS API](https://www.microsoft.com/en-us/maps/choose-your-bing-maps-api) Accessable Microsoft API for computing real world distance matrices.
+3. [redis GEOSEARCH](https://redis.io/commands/geosearch/) Efficently finds the closest points using geohashing methods to identify candidtate points for dynamic pickup.
