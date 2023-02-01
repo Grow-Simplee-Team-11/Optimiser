@@ -61,42 +61,45 @@ void Optimizer::optimize(){
     int avg = 0;
     int dropoffs = INT_MAX;
     ofstream output;
-    output.open("./output.txt");
-    for(int k = 0 ; k < 2; k ++){
-        output << "Starting Iteration "<< k <<endl;
-        vector<thread> threads;
-        vector<Optimizer*> optimizers;
-        for(int j = 0 ; j < 10 ; j ++ ){
-            RoutePlanInterface* rp = new TSP_OR_EDD(EUCLIDEAN);
-            ClusteringInterface* cls = new Clarke(EUCLIDEAN);
-            BinPackInterface* bp =  new EB_AFIT;
+    if(this->clusteringInterface->clustering_method){
+       
+        output.open("./output.txt");
+        for(int k = 0 ; k < 2; k ++){
+            output << "Starting Iteration "<< k <<endl;
+            vector<thread> threads;
+            vector<Optimizer*> optimizers;
+            for(int j = 0 ; j < 10 ; j ++ ){
+                RoutePlanInterface* rp = new TSP_OR_EDD(EUCLIDEAN);
+                ClusteringInterface* cls = new Clarke(EUCLIDEAN);
+                BinPackInterface* bp =  new EB_AFIT;
 
-            assert(rp != NULL);
-            assert(cls != NULL);
-            assert(bp != NULL);
+                assert(rp != NULL);
+                assert(cls != NULL);
+                assert(bp != NULL);
 
-            Optimizer* tempOpt = new Optimizer(rp, cls, bp, this->packages, this->warehouse, this->numberRiders, this->bin, this->logFileName, this->verbose, this->logToFile);
+                Optimizer* tempOpt = new Optimizer(rp, cls, bp, this->packages, this->warehouse, this->numberRiders, this->bin, this->logFileName, this->verbose, this->logToFile);
 
-            optimizers.push_back(tempOpt);
-            optimizers[j]->routePlannerInterface->drop_offs = 0;
-            optimizers[j]->clusteringInterface->best_Spatial_Factor = this->clusteringInterface->best_Spatial_Factor;
-            optimizers[j]->clusteringInterface->best_Temporal_Factor = this->clusteringInterface->best_Temporal_Factor;
-            threads.push_back(thread(multithreading,optimizers[j], this , j+1));
-        }
-        for(auto &th : threads){
-            th.join();
-        }
-        for(int j = 0 ; j< optimizers.size(); j++){
-            if(this->dropoffs > optimizers[j]->routePlannerInterface->drop_offs){
-                this->dropoffs = optimizers[j]->routePlannerInterface->drop_offs;
-                this->clusteringInterface->best_Spatial_Factor = optimizers[j]->clusteringInterface->best_Spatial_Factor;
-                this->clusteringInterface->best_Temporal_Factor = optimizers[j]->clusteringInterface->best_Temporal_Factor;
+                optimizers.push_back(tempOpt);
+                optimizers[j]->routePlannerInterface->drop_offs = 0;
+                optimizers[j]->clusteringInterface->best_Spatial_Factor = this->clusteringInterface->best_Spatial_Factor;
+                optimizers[j]->clusteringInterface->best_Temporal_Factor = this->clusteringInterface->best_Temporal_Factor;
+                threads.push_back(thread(multithreading,optimizers[j], this , j+1));
             }
-            delete optimizers[j];
-        }
+            for(auto &th : threads){
+                th.join();
+            }
+            for(int j = 0 ; j< optimizers.size(); j++){
+                if(this->dropoffs > optimizers[j]->routePlannerInterface->drop_offs){
+                    this->dropoffs = optimizers[j]->routePlannerInterface->drop_offs;
+                    this->clusteringInterface->best_Spatial_Factor = optimizers[j]->clusteringInterface->best_Spatial_Factor;
+                    this->clusteringInterface->best_Temporal_Factor = optimizers[j]->clusteringInterface->best_Temporal_Factor;
+                }
+                delete optimizers[j];
+            }
 
-    }
+        }
     output.close();
+    }
     
     // if(clusteringInterface->clustering_method){
     //     vector<item> main_packages = packages;

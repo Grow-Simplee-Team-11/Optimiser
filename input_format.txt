@@ -1,0 +1,5 @@
+<warehouse_latitude> <warehouse_longitude>
+<bin length> <bin width> <bin height> <bin capacity>
+<num riders>
+<num packages>
+<package latitude> <package longitude> <package length> <package width> <package height> <package weight> <package time>

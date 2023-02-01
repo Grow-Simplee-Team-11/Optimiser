@@ -1,0 +1,2 @@
+/usr/bin/ar qc libdp_grpc_proto.a CMakeFiles/dp_grpc_proto.dir/main.grpc.pb.cc.o CMakeFiles/dp_grpc_proto.dir/main.pb.cc.o
+/usr/bin/ranlib libdp_grpc_proto.a
