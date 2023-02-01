@@ -4,7 +4,7 @@
 
 class TSP_LK : public RoutePlanInterface{
     public : 
-        TSP_LK(bool method): RoutePlanInterface(method){}
+        TSP_LK(DistanceType method): RoutePlanInterface(method){}
         void PlanRoute(vector<item>& cluster, Coordinate warehouse);
         void CalculateCost();
 

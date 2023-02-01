@@ -10,10 +10,13 @@
 void Individual::evaluateCompleteCost(const Params & params)
 {
 	eval = EvalIndiv();
+	bool pkg_more_than_25 = false;
 	for (int r = 0; r < params.nbVehicles; r++)
 	{
 		if (!chromR[r].empty())
-		{
+		{	
+			if(chromR[r].size() > 25)
+				pkg_more_than_25 = true;
 			double distance = params.timeCost[0][chromR[r][0]];
 			double load = params.cli[chromR[r][0]].demand;
 			double service = params.cli[chromR[r][0]].serviceDuration;
@@ -24,7 +27,7 @@ void Individual::evaluateCompleteCost(const Params & params)
 				distance += params.timeCost[chromR[r][i-1]][chromR[r][i]];
 				float timeReach = (distance + service)/params.averageSpeed ; //Add starting time in this
 				double diff = timeReach-params.timeExpectation[chromR[r][i]];
-				countOfIncrease = (diff>0?diff:0);
+				countOfIncrease += (diff>0?diff:0);
 				load += params.cli[chromR[r][i]].demand;
 				service += params.cli[chromR[r][i]].serviceDuration;
 				predecessors[chromR[r][i]] = chromR[r][i-1];
@@ -32,7 +35,7 @@ void Individual::evaluateCompleteCost(const Params & params)
 			}
 			successors[chromR[r][chromR[r].size()-1]] = 0;
 			distance += params.timeCost[chromR[r][chromR[r].size()-1]][0];
-			eval.distance += distance + countOfIncrease*params.averageSpeed*0.1;
+			eval.distance += distance + countOfIncrease*params.averageSpeed*2;
 			eval.nbRoutes++;
 			if (load > params.vehicleCapacity) eval.capacityExcess += load - params.vehicleCapacity;
 			if (distance + service > params.durationLimit) eval.durationExcess += distance + service - params.durationLimit;
@@ -42,7 +45,7 @@ void Individual::evaluateCompleteCost(const Params & params)
 	// Add to final cost.
 	eval.penalizedCost = eval.distance + eval.capacityExcess*params.penaltyCapacity + eval.durationExcess*params.penaltyDuration;
 	// Check for feasibility
-	eval.isFeasible = (eval.capacityExcess < MY_EPSILON && eval.durationExcess < MY_EPSILON);
+	eval.isFeasible = (eval.capacityExcess < MY_EPSILON && eval.durationExcess < MY_EPSILON) && !pkg_more_than_25;
 }
 
 /**

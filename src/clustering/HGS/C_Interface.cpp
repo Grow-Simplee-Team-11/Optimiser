@@ -72,7 +72,7 @@ extern "C" Solution *solve_cvrp(
 		{
 			for (int j = 0; j < n; j++)
 			{
-				distance_matrix[i][j] = ClusteringInterface::haversine(Coordinate(x_coords[i], y_coords[i]), Coordinate(x_coords[j], y_coords[j]));
+				distance_matrix[i][j] = getDist(Coordinate(x_coords[i], y_coords[i]), Coordinate(x_coords[j], y_coords[j]),HAVERSINE);
 				if (isRoundingInteger)
 					distance_matrix[i][j] = std::round(distance_matrix[i][j]);
 			}

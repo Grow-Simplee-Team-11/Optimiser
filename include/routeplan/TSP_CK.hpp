@@ -44,7 +44,7 @@ protected:
 
 
 public:
-	TSP(bool method):RoutePlanInterface(method){
+	TSP(DistanceType method):RoutePlanInterface(method){
 		
 	}
 	// Number of cities

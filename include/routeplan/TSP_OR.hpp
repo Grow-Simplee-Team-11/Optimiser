@@ -12,8 +12,9 @@ using namespace operations_research;
 class TSP_OR : public RoutePlanInterface{
 
     public : 
-        TSP_OR(bool method) : RoutePlanInterface(method){}
+        TSP_OR(DistanceType method) : RoutePlanInterface(method){}
         void PlanRoute(vector<item>& cluster, Coordinate warehouse);
+        // void PlanRoute(vector<item>& cluster, Coordinate warehouse);
         void CalculateCost();
         // convert longitude to X
 

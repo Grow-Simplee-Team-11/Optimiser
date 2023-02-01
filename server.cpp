@@ -6,6 +6,7 @@
 
 
 #include "./include/routeplan/TSP_OR.hpp"
+#include "./include/routeplan/TSP_OR_EDD.hpp"
 #include "./include/routeplan/TSP_LK.hpp"
 #include "./include/clustering/HGS/HGS.hpp"
 #include "./include/routeplan/TSP_CK.hpp"
@@ -103,7 +104,7 @@ class OptimizerServiceImpl final : public optimizer::optimizer::Service
         (*reply) = OptimizerResponse();
         // RoutePlanInterface* rp = new TSP_OR(EUCLIDEAN);
         RoutePlanInterface* rp = new TSP_OR(HAVERSINE);
-    	ClusteringInterface* cls = new Clarke(HAVERSINE);
+    	ClusteringInterface* cls = new HGS(REAL);
 	    BinPackInterface* bp =  new EB_AFIT;
         cout << "I am here" << endl;
         DataModel dm = getData(request);
@@ -119,12 +120,8 @@ class OptimizerServiceImpl final : public optimizer::optimizer::Service
         float total_cost = 0;
         for(auto &x : rcosts)
         {
-            total_cost+=x;
-        }	
-
-        if(verbose)
             std::cout<<"\nTotal Cost for routing: "<<total_cost<<" km"<<std::endl;
-        
+        }
         if(logToFile)
         {
             std::ofstream out(logFileName, std::ios_base::app);

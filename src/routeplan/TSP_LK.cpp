@@ -85,6 +85,7 @@ void TSP_LK::lin_kernighan()
 
 void TSP_LK::PlanRoute(vector<item>& cluster, Coordinate warehouse)
 {
+    ComputeDistMatrix(cluster, warehouse);
     vector<item> mod_cluster;
     mod_cluster.push_back(item(10, 10, 10, warehouse.latitude, warehouse.longitude));
     for(auto x: cluster)
@@ -96,8 +97,9 @@ void TSP_LK::PlanRoute(vector<item>& cluster, Coordinate warehouse)
     {
         for(int j=0;j<num;j++)
         {
-            dist[i][j] = static_cast<int>(
-          Dist(mod_cluster[i].coordinate, mod_cluster[j].coordinate));
+        //     dist[i][j] = static_cast<int>(
+        //   Dist(mod_cluster[i].coordinate, mod_cluster[j].coordinate));
+            dist[i][j] = static_cast<int>(this->DistMatrix[i][j]);
         }
     }
 

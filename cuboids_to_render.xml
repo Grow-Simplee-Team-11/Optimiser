@@ -2,6 +2,7 @@
 <!DOCTYPE boost_serialization>
 <boost_serialization signature="serialization::archive" version="10">
 <cuboid class_id="0" tracking_level="0" version="0">
+<<<<<<< HEAD
 <width>21</width>
 <height>8</height>
 <depth>29</depth>
@@ -167,10 +168,34 @@
 <depth>3</depth>
 <x>76</x>
 <y>18</y>
+=======
+<width>38</width>
+<height>18</height>
+<depth>40</depth>
+<x>0</x>
+<y>19</y>
+<z>37</z>
+</cuboid>
+<cuboid>
+<width>30</width>
+<height>18</height>
+<depth>46</depth>
+<x>40</x>
+<y>19</y>
+<z>45</z>
+</cuboid>
+<cuboid>
+<width>31</width>
+<height>20</height>
+<depth>37</depth>
+<x>0</x>
+<y>38</y>
+>>>>>>> 1c74cc3 (Tested on 100 packages 10 riders)
 <z>0</z>
 </cuboid>
 <cuboid>
 <width>25</width>
+<<<<<<< HEAD
 <height>11</height>
 <depth>5</depth>
 <x>50</x>
@@ -535,10 +560,57 @@
 <depth>15</depth>
 <x>56</x>
 <y>41</y>
+=======
+<height>22</height>
+<depth>30</depth>
+<x>0</x>
+<y>38</y>
+<z>33</z>
+</cuboid>
+<cuboid>
+<width>37</width>
+<height>19</height>
+<depth>40</depth>
+<x>0</x>
+<y>19</y>
+<z>0</z>
+</cuboid>
+<cuboid>
+<width>45</width>
+<height>23</height>
+<depth>51</depth>
+<x>30</x>
+<y>38</y>
+<z>33</z>
+</cuboid>
+<cuboid>
+<width>45</width>
+<height>18</height>
+<depth>47</depth>
+<x>40</x>
+<y>19</y>
+<z>0</z>
+</cuboid>
+<cuboid>
+<width>33</width>
+<height>15</height>
+<depth>40</depth>
+<x>37</x>
+<y>38</y>
+<z>0</z>
+</cuboid>
+<cuboid>
+<width>37</width>
+<height>18</height>
+<depth>48</depth>
+<x>38</x>
+<y>21</y>
+>>>>>>> 1c74cc3 (Tested on 100 packages 10 riders)
 <z>0</z>
 </cuboid>
 <cuboid>
 <width>29</width>
+<<<<<<< HEAD
 <height>5</height>
 <depth>20</depth>
 <x>28</x>
@@ -645,11 +717,56 @@
 <width>11</width>
 <height>18</height>
 <depth>28</depth>
+=======
+<height>21</height>
+<depth>43</depth>
+<x>56</x>
+<y>0</y>
+<z>0</z>
+</cuboid>
+<cuboid>
+<width>48</width>
+<height>21</height>
+<depth>42</depth>
+<x>56</x>
+<y>0</y>
+<z>29</z>
+</cuboid>
+<cuboid>
+<width>15</width>
+<height>25</height>
+<depth>47</depth>
+<x>0</x>
+<y>41</y>
+<z>53</z>
+</cuboid>
+<cuboid>
+<width>53</width>
+<height>22</height>
+<depth>54</depth>
+<x>46</x>
+<y>41</y>
+<z>0</z>
+</cuboid>
+<cuboid>
+<width>34</width>
+<height>13</height>
+<depth>46</depth>
+<x>0</x>
+<y>21</y>
+<z>37</z>
+</cuboid>
+<cuboid>
+<width>43</width>
+<height>23</height>
+<depth>46</depth>
+>>>>>>> 1c74cc3 (Tested on 100 packages 10 riders)
 <x>0</x>
 <y>41</y>
 <z>0</z>
 </cuboid>
 <cuboid>
+<<<<<<< HEAD
 <width>28</width>
 <height>12</height>
 <depth>21</depth>
@@ -798,10 +915,25 @@
 <height>8</height>
 <depth>5</depth>
 <x>75</x>
+=======
+<width>34</width>
+<height>13</height>
+<depth>40</depth>
+<x>46</x>
+<y>21</y>
+<z>37</z>
+</cuboid>
+<cuboid>
+<width>33</width>
+<height>20</height>
+<depth>52</depth>
+<x>4</x>
+>>>>>>> 1c74cc3 (Tested on 100 packages 10 riders)
 <y>0</y>
 <z>40</z>
 </cuboid>
 <cuboid>
+<<<<<<< HEAD
 <width>23</width>
 <height>3</height>
 <depth>28</depth>
@@ -813,10 +945,24 @@
 <width>24</width>
 <height>11</height>
 <depth>29</depth>
+=======
+<width>37</width>
+<height>20</height>
+<depth>38</depth>
+<x>0</x>
+<y>21</y>
+<z>0</z>
+</cuboid>
+<cuboid>
+<width>40</width>
+<height>21</height>
+<depth>56</depth>
+>>>>>>> 1c74cc3 (Tested on 100 packages 10 riders)
 <x>0</x>
 <y>0</y>
 <z>0</z>
 </cuboid>
+<<<<<<< HEAD
 <cuboid>
 <width>23</width>
 <height>13</height>
@@ -1044,6 +1190,11 @@
 <base class_id="1" tracking_level="0" version="0">
 <width>80</width>
 <height>80</height>
+=======
+<base class_id="1" tracking_level="0" version="0">
+<width>80</width>
+<height>100</height>
+>>>>>>> 1c74cc3 (Tested on 100 packages 10 riders)
 <x>0</x>
 <y>0</y>
 </base>

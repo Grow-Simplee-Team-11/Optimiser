@@ -36,7 +36,8 @@ void TSP::fillMatrix(){
 	for(int i = 0; i < n; i++){
 		for(int j = 0; j < n; j++){
       // cout<<"getting distance between "<<packages[i].coordinate.latitude<<" "<<packages[i].coordinate.longitude<<" and "<<packages[j].coordinate.latitude<<" "<<packages[j].coordinate.longitude<<endl;
-			double temp = Dist(packages[i].coordinate,packages[j].coordinate);
+			// double temp = Dist(packages[i].coordinate,packages[j].coordinate);
+      double temp = this->DistMatrix[i][j];
       graph[i][j] =  (int)(temp*MULT);
       graph[j][i] = graph[i][j];
       // cout<<"distance is "<<graph[i][j]<<endl;
@@ -312,6 +313,7 @@ void TSP::printAdjList() {
 }
 
 void TSP::PlanRoute(vector<item> &cluster, Coordinate warehouse){
+       ComputeDistMatrix(cluster, warehouse); 
         // cout<<"started with routeplanning"<<endl;
         n = cluster.size()+1;
         item temp;
