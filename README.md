@@ -122,27 +122,115 @@ In order to setup a local copy of the project, you can follow the one of the 2 m
   ```sh
   $ ./bin/server
   ```
-<!-- USAGE EXAMPLES -->
-
+By default the server starts at port `50051` in the local machine.
 ## Usage
 
 Once the local copy of the project has been setup, follow these steps to interact with the system and run tests on the system
 
-### User interaction with the system
+### Interact with the system via GRPC Client
 
-_To interact with the system from the console, do the following steps\:_
+You can create a GRPC request containing the Warehouse location , maximum number of riders and list of packages.
 
-1.  Open terminal from the main project directory
-2.  Run the main go file (Ensure that `DEBUG` is set to `0` in `raft/raft.go` file)
-    ```sh
-    go run main.go
-    ```
-3.  You will be presented with a menu with necessary commands to create raft cluster, send commands, etc.
+The requests are to be structured according to the `OptimiserRequest` message format specified in `proto/main.proto`.  
+Given below is a sample request.json file. You can send this using any grpc client (we recommend postman client).
 
-> **NOTE:** While using the features like set value, get value etc., that should pass through the leader node, you can user the 9th menu and find the leader and then send the request to leader node. Sending a such a request to a non leader node will lead to failure. This implementation is in accordance with the official Raft Implementation from the paper.
+```json
+{
+    "packages": [
+        {
+            "id": 1,
+            "size": {"length": 4.24591402225247, "width": 5.52875984930662, "height": 5.7068272249847904},
+            "coordinates": {"latitude": 12916375, "longitude": 77649741},
+            "weight": 11.978200435741485
+        },
+        {
+            "id": 2,
+            "size": {"length": 15.69703671350186, "width": 14.797416561668777, "height": 7.423968512381623},
+            "coordinates": {"latitude": 12974678, "longitude": 77604902},
+            "weight": 10.81211662971237
+        },
+        {
+            "id": 3,
+            "size": {"length": 6.615859132172195, "width": 28.528347665831106, "height": 15.023585167751161},
+            "coordinates": {"latitude": 12972718, "longitude": 77635140},
+            "weight": 10.512273325983648
+        }
+    ],
+    "bin": {"size": {"length": 80, "width": 80, "height": 80}, "capacity": 512000},
+    "riders": 15,
+    "warehouse": {"latitude": 12907009, "longitude": 77585678}
+}
+
+``` 
+
+On sending the above request an `OptimiserResponse` message packet is obtained which lists all clusters and their routes along with packing position.   
+Given below is a sample response. 
+
+```json
+{
+    "clusters": [
+        {
+            "packages": [
+                {
+                    "id": 2,
+                    "position": {
+                        "x": 0,
+                        "y": 0,
+                        "z": 0,
+                        "length": 15,
+                        "breadth": 14,
+                        "height": 7
+                    }
+                },
+                {
+                    "id": 3,
+                    "position": {
+                        "x": 0,
+                        "y": 0,
+                        "z": 14,
+                        "length": 28,
+                        "breadth": 6,
+                        "height": 15
+                    }
+                },
+                {
+                    "id": 1,
+                    "position": {
+                        "x": 15,
+                        "y": 0,
+                        "z": 0,
+                        "length": 5,
+                        "breadth": 4,
+                        "height": 5
+                    }
+                }
+            ]
+        }
+    ]
+```
+
+*The above response is the result of ensembling across all the algorithms mentioned in Acknowledgements section at the end of this document.*
+
+### Interact with the system via Terminal
+
+Instead of running the GRPC server, for quick and easy testing run the terminal application.  
+We currently support two testing methods:   
+
+* Testing against custom input:  
+  Run the following command  
+  
+  `$ ./bin/main <INPUT_FILENAME>.txt`. 
+
+  The input file format is specified in `input_format.txt` in source file. 
+
+* Testing against standard VRP Dataset to compare results with current optimal.  
+  Download the VRP dataset from [here](https://www.coin-or.org/SYMPHONY/branchandcut/VRP/data/index.htm). Then run the following command : 
+
+  `$ ./bin/main <INPUT_FILE>.vrp`  
+  Here `<INPUT_FILE>.vrp` is the desired VRP input file. 
+  
 
 
-Archisman
 ## Project Details
 
 Following are the details of the file structure of this project:
