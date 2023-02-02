@@ -1,6 +1,10 @@
 #include "../../include/routeplan/TSP_OR.hpp"
 
-
+/**
+ * @brief Computes the Euclidean distance matrix for the given cluster
+ * 
+ * @param cluster list of items belonging to a cluster
+ */
 void TSP_OR::ComputeEuclideanDistanceMatrix(std::vector<item>& cluster)
 {
     distances.clear();
@@ -21,7 +25,12 @@ void TSP_OR::ComputeEuclideanDistanceMatrix(std::vector<item>& cluster)
     }
   }
 }
-
+/**
+ * @brief Main Function to compute optimal path for a given cluster
+ * 
+ * @param cluster list of packages belonging to a cluster
+ * @param w Location of Depot
+ */
 void TSP_OR::PlanRoute(vector<item> &cluster, Coordinate w){
     ComputeDistMatrix(cluster, w);
     cout << "Dist Matrix Computed Successfully" << endl;
@@ -76,7 +85,15 @@ void TSP_OR::PlanRoute(vector<item> &cluster, Coordinate w){
     cout << "Route Planned Successfully" << endl;
     savePath(cluster, manager, routing, *solution);
 }
-
+/**
+ * @brief Function to save the computed path
+ * 
+ * @param clusters list of packages belonging to a cluster
+ * @param manager RoutingIndexManager
+ * @param routing RoutingModel
+ * @param solution Assignment
+ * @return void
+ */
 void TSP_OR::savePath(vector<item>&clusters ,const RoutingIndexManager& manager,
                    const RoutingModel& routing, const Assignment& solution)
 {

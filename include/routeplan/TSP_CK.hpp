@@ -98,6 +98,7 @@ public:
 	void fillMatrix();
 
 	int findBestPath(int start);
+	//main function --> calls all other functions and returns the final path
     void PlanRoute(vector<item> &cluster, Coordinate warehouse);
     void CalculateCost();
 };

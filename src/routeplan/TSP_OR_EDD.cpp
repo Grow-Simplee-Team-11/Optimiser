@@ -50,6 +50,11 @@
 //     return y;
 // }
 
+/**
+ * @brief Computes the Euclidean distance matrix for the given cluster
+ * 
+ * @param cluster list of items belonging to a cluster
+ */
 void TSP_OR_EDD::ComputeEuclideanDistanceMatrix(std::vector<item>& cluster)
 {
     distances.clear();
@@ -70,9 +75,23 @@ void TSP_OR_EDD::ComputeEuclideanDistanceMatrix(std::vector<item>& cluster)
     }
   }
 }
+/**
+ * @brief Comparator of items based on their expected time of delivery
+ * 
+ * @param a package 
+ * @param b package
+ * @return true if a is expected to be delivered after b
+ * @return false if a is expected to be delivered before b
+ */
 bool cmp(item a, item b){
   return a.time>b.time;
 }
+/**
+ * @brief Main Function to compute optimal path for a given cluster
+ * 
+ * @param cluster list of packages belonging to a cluster
+ * @param w Location of Depot
+ */
 void TSP_OR_EDD::PlanRoute(vector<item> &cluster, Coordinate w){
     
     plannedPath.clear();
@@ -166,7 +185,15 @@ void TSP_OR_EDD::PlanRoute(vector<item> &cluster, Coordinate w){
     }
     savePath(cluster, manager, routing, solution);
 }
-
+/**
+ * @brief Function to save the computed path
+ * 
+ * @param clusters list of packages belonging to a cluster
+ * @param manager RoutingIndexManager
+ * @param routing RoutingModel
+ * @param solution Assignment
+ * @return void
+ */
 void TSP_OR_EDD::savePath(vector<item>&clusters ,const RoutingIndexManager& manager,
                    const RoutingModel& routing, const Assignment* solution)
 {

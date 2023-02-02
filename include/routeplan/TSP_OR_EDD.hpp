@@ -12,7 +12,9 @@ using namespace operations_research;
 class TSP_OR_EDD : public RoutePlanInterface{
 
     public : 
+        // Constructor for TSP_OR class, setting the distance method metric
         TSP_OR_EDD(DistanceType method) : RoutePlanInterface(method){}
+        // Main function to calculate the optimal route for a cluster of items
         void PlanRoute(vector<item>& cluster, Coordinate warehouse);
         void CalculateCost();
         // convert longitude to X
@@ -35,6 +37,7 @@ class TSP_OR_EDD : public RoutePlanInterface{
         // for scaling the distances from float to integer type
         const int scale = 1000;
         Coordinate warehouse;
+        // Depot is the first node in the route
         const RoutingIndexManager::NodeIndex depot{0};
 };
 

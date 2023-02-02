@@ -1,5 +1,11 @@
 #include "../../include/clustering/Clarke/clarke.hpp"
-
+/**
+ * @brief Implemented merge sort (sorting pairs of clusters based on how likely they should be merged) using custom comparator
+ * 
+ * @param final_points --> list of pairs (i,j) corresponding to the indexes in clusters vector
+ * @param l left bound for sorting
+ * @param r right bound for sorting
+ */
 void Clarke::merge_sort(vector<pair<int,int>> final_points, int l , int r){
     if(r<=l){
         return;
@@ -31,7 +37,16 @@ void Clarke::merge_sort(vector<pair<int,int>> final_points, int l , int r){
         final_points[i]=temp[i-l];
     return;
 }
-
+/**
+ * @brief Constructor for a Cluster object
+ * 
+ * @param p1 --> index of left endpoint in the cluster
+ * @param p2 --> index of right enpoint in the cluster
+ * @param weight --> total weight of the cluster
+ * @param volume --> total volume of the cluster
+ * @param rank --> rank of the cluster (DSU)
+ * @param distance --> total path length of the cluster
+ */
 Cluster::Cluster(){
         p1 = 0;
         p2 = 0;
@@ -40,6 +55,14 @@ Cluster::Cluster(){
         rank = 0;
         distance = 0;
 }
+/**
+ * @brief Compute Clusters (implementation of the Clarke and Wright savings heuristic)
+ * 
+ * @param packages list of items to be delivered
+ * @param warehouse Depot Coordinate
+ * @param numRiders Number of riders available for delivery
+ * @param b Bag dimensions (for volume constraint)
+ */
 void Clarke::ComputeClusters(vector<item> &packages, Coordinate warehouse, int numRiders, Bin b){
     clusters.clear();
     this->packages = packages;
@@ -55,12 +78,29 @@ void Clarke::ComputeClusters(vector<item> &packages, Coordinate warehouse, int n
 void Clarke::test(){
     cout<<"Hello I exist";
 }
+/**
+ * @brief Utility Function for computing distance of a location from the depot
+ * 
+ * @param c location in latitude and longitude
+ * @return double Distance from the depot
+ */
 double Clarke::depotDist(Coordinate &c){
     return Dist(c,warehouse);
 }
+/**
+ * @brief Utility Function for computing savings (heuristic) if the two items belong to a single cluster
+ * 
+ * @param item1 first of the 2 items to be merged into a cluster
+ * @param item2 second of the 2 items to be merged into a cluster
+ * @return double Savings on distance if the two items are merged into a single cluster
+ */
 double Clarke::compute_savings(item& item1,item& item2){
     return depotDist(item1.coordinate) + depotDist(item2.coordinate) - Dist(item1.coordinate,item2.coordinate) + abs(item1.time -item2.time);
 }
+/**
+ * @brief Function to create priority queue of all possible paris of items and their corresponding savings on merge
+ * 
+ */
 void Clarke::create_pq(){
     q = priority_queue<pair<double,pair<int,int>>> ();
     for(int i = 0;i < numPackages;i++){
@@ -70,16 +110,32 @@ void Clarke::create_pq(){
         }
     }
 }
-
+/**
+ * @brief Initialize DSU
+ * 
+ * @param v index at which set is to be initialized
+ */
 void Clarke::make_set(int v){
     parent[v] = v;
     Clusters[v] = initCluster(v);
 }
+/**
+ * @brief Find the parent of a set
+ * 
+ * @param v index of the set
+ * @return int index of the parent of the set
+ */
 int Clarke::find_set(int v){
     if(v == parent[v])
         return v;
     else return parent[v] = find_set(parent[v]);
 }
+/**
+ * @brief Constructor for a Cluster object
+ * 
+ * @param v 
+ * @return Cluster 
+ */
 Cluster Clarke::initCluster(int v){
     Cluster c;
         c.p1 = v;
@@ -90,6 +146,14 @@ Cluster Clarke::initCluster(int v){
         c.distance = 0;
         return c;
 }
+/**
+ * @brief Merge two clusters
+ * 
+ * @param a index of the first cluster
+ * @param b index of the second cluster
+ * @param constraints flag to check if the merge violates the volume or weight constraints
+ * @return int 1 if merge is successful, 0 if not 
+ */
 int Clarke::union_sets(int a,int b, bool constraints){
     int cluster_a = find_set(a);
     int cluster_b = find_set(b);
@@ -134,7 +198,15 @@ int Clarke::union_sets(int a,int b, bool constraints){
     }
     return 1;
 }
-    bool Clarke::cmp(const pair<int,int> a,const pair<int,int> b){
+/**
+ * @brief Comparatoe function to evaluate likeliness of a pair of clusters to be merged 
+ * 
+ * @param a pair of indexes of the clusters to be merged
+ * @param b pair of indexes of the clusters to be merged
+ * @return true if clusters belonging to a is more likely to be merged with as compared to b
+ * @return false if clusters belonging to b is more likely to be merged with as compared to a
+ */
+bool Clarke::cmp(const pair<int,int> a,const pair<int,int> b){
     int cluster_a1 = find_set(a.first);
     int cluster_a2 = find_set(a.second);
     int cluster_b1 = find_set(b.first);
@@ -147,6 +219,10 @@ int Clarke::union_sets(int a,int b, bool constraints){
     double b_val = (Clusters[cluster_b1].distance + Clusters[cluster_b2].distance - Dist(packages[b.first].coordinate,packages[b.second].coordinate) - (Clusters[cluster_b1].volume + Clusters[cluster_b2].volume) - (Clusters[cluster_b1].weight + Clusters[cluster_b2].weight) -  (Clusters[cluster_b1].rank + Clusters[cluster_b2].rank))/normaliser_b;
     return a_val > b_val;
 }
+/**
+ * @brief Function to consolidate the results of the Clarke Wright Algorithm to limit the number of clusters to number of available riders
+ * 
+ */
 void Clarke::consolodate_further(){
     vector<pair<int,int>> final_points;
     for(int i = 0 ;i < final_Clusters.size(); i++){
@@ -169,6 +245,10 @@ void Clarke::consolodate_further(){
     }
     return;
 }
+/**
+ * @brief Compute Clusters (implementation of the Clarke and Wright savings heuristic)
+ *  Returns the generated clusters in the final_Clusters vector
+ */
 void Clarke::solve(){
     map<int,vector<item>> cluster_list;
     create_pq();

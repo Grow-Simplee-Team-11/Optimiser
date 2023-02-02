@@ -1,6 +1,10 @@
 #include "../../../include/clustering/fesif/fesif.hpp"
 using namespace std;
 
+/**
+ * @brief local initialization of FESIF object with each request being its own cluster
+ * 
+ */
 void FESIF::localInit() {
 	delta = rho;
 	
@@ -12,12 +16,22 @@ void FESIF::localInit() {
 	}
 	nP = nR;
 }
-
+/**
+ * @brief local free of FESIF object
+ * 
+ */
 void FESIF::localFree() {
 	delete[] reqPos;
 	delete[] reqPool;
 }
-
+/**
+ * @brief 
+ * 
+ * @param wid 
+ * @param Rw 
+ * @param Sw 
+ * @param delta 
+ */
 void FESIF::budget(int wid, vector<int>& Rw, vector<int>& Sw, double delta) {
 	// cout<<delta<<endl;
 	worker_t& w = workers[wid];

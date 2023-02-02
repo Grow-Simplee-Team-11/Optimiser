@@ -2,6 +2,10 @@
 #include "../../../include/clustering/selfClustering/selfClustering.hpp"
 using namespace std;
 
+/*******************************************/
+/* IMPLEMENTATION OF PETAL SWEEP ALGORITHM */
+/*******************************************/
+
 int angularCutMetric = 3;
 
 void createCircle(vector<item>& items) {
@@ -28,7 +32,13 @@ void createCircle(vector<item>& items) {
 //     }
 //     return (index+1)%n;
 // }
-
+/**
+ * @brief Create a Radial Cuts after a series of anuglar cuts
+ * 
+ * @param angularCuts list of clusters after angular cuts
+ * @param deliveryBag Dimensions of the delivery bag
+ * @return vector<vector<item>> list of clusters after radial cuts 
+ */
 vector<vector<item> > createRadialCuts(vector<vector<item> >& angularCuts, Bin deliveryBag) {
     // TODO: Define this max volume and max weight
     float maxVolume = deliveryBag.getVolume(), maxWeight = deliveryBag.getCapacity(); 
@@ -66,11 +76,23 @@ vector<vector<item> > createRadialCuts(vector<vector<item> >& angularCuts, Bin d
     }
     return clusters;
 }
-
+/**
+ * @brief Check if the clusters are valid or not
+ * 
+ * @param clusters 
+ * @return true 
+ * @return false 
+ */
 bool checkClusterValidity(vector<vector<item> >& clusters) {
     return true;
 }
-
+/**
+ * @brief Create a Angular Cuts on the boundary of circle formed by the items
+ * 
+ * @param circle the list of items within the circle
+ * @param deliveryBag Dimensions of the delivery bag
+ * @return vector<vector<item>> list of clusters after angular cuts  
+ */
 vector<vector<item> > createAngularCuts(vector<item>& circle, Bin deliveryBag) {
     vector<vector<item> > cuts;
     int n = circle.size();
@@ -192,7 +214,12 @@ vector<vector<item> > createAngularCuts(vector<item>& circle, Bin deliveryBag) {
     cout<<cuts.size()<<endl;
     return cuts;
 }
-
+/**
+ * @brief Assigns a polar coordinate to the item with respect to the warehouse
+ * 
+ * @param temp the item to which polar coordinate is to be assigned
+ * @param warehouse the warehouse with respect to which polar coordinate is to be assigned
+ */
 void assignPolarCoordinate(item& temp, Coordinate warehouse) {
     double x = temp.coordinate.longitude - warehouse.longitude;
     double y = temp.coordinate.latitude - warehouse.latitude;
@@ -204,6 +231,15 @@ void assignPolarCoordinate(item& temp, Coordinate warehouse) {
     cout<<temp.polarCoordinate.angle*180/M_PI<<" "<<x<<" "<<y<<endl;
 }
 
+/**
+ * @brief Main Function which computes the clusters of items
+ * 
+ * @param items List of packages to be delivered
+ * @param warehouse Location of Depot
+ * @param numberOfRiders Number of riders available
+ * @param bin Dimensions of the bag available to the rider
+ * @return vector<vector<item>> The list of computes clusters 
+ */
 vector<vector<item> > SELFCLUSTERING::calculateCluster(vector<item>& items, Coordinate warehouse, int numberOfRiders, Bin bin) {
 
     // vector<item> items;
@@ -219,7 +255,12 @@ vector<vector<item> > SELFCLUSTERING::calculateCluster(vector<item>& items, Coor
 
     return clusters;
 }
-
+/**
+ * @brief Prints the clusters to the output file
+ * 
+ * @param clusters list of computed clusters
+ * @param items entire list of items available
+ */
 void printClusters(vector<vector<item> >& clusters, vector<item>& items) {
     vector<int>  clusterIndex(items.size());
     cout<<clusters.size()<<endl;
