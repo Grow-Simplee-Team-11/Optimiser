@@ -22,6 +22,8 @@ class Optimizer{
         void check_data();
         vector<vector<item>> GetClusters();
 
+        void getPackingLog(vector<item>&);
+
         vector<item> GetPathForCluster(int seqNumberOfCluster);
 
         vector<item> GetPackagingForCluster(int seqNumberOfCluster);
@@ -42,6 +44,7 @@ class Optimizer{
         std::string logFileName;
         bool verbose;
         bool logToFile;
+        int counter;
 
         vector<vector<item>> clusters;
         vector<vector<item>> clusterPaths;

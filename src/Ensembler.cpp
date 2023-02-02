@@ -9,6 +9,8 @@ namespace myNamespace{
     vector<pthread_mutex_t*> locksClustering;
     vector<pthread_mutex_t*> locksRouting;
     vector<pthread_mutex_t*> locksBinPacking;
+
+    vector<Optimizer*> optimizersUsed;
 }
 
 
@@ -29,6 +31,7 @@ Ensembler::Ensembler(vector<string>& RoutePlanningAlgorithms_, vector<string>& B
             if (routeAlgo == "TSP_OR") rp = new TSP_OR(EUCLIDEAN);
             else if (routeAlgo == "TSP_LK") rp = new TSP_LK(EUCLIDEAN);
             else if (routeAlgo == "TSP_CK") rp = new TSP(EUCLIDEAN);
+            else if (routeAlgo == "TSP_OR_EDD") rp = new TSP_OR_EDD(EUCLIDEAN);
             myNamespace::RoutePlanInterfaces.push_back(rp);
         }
     }
@@ -42,8 +45,9 @@ Ensembler::Ensembler(vector<string>& RoutePlanningAlgorithms_, vector<string>& B
 
             ClusteringInterface* cls = NULL;
             if (clusteringAlgo == "CLARKE") cls = new Clarke(EUCLIDEAN);
-            else if (clusteringAlgo == "FESIF") cls = new FESIF(EUCLIDEAN);
+            else if (clusteringAlgo == "FESIF") cls = new Clarke(EUCLIDEAN);
             else if (clusteringAlgo == "SELF") cls = new SELFCLUSTERING(EUCLIDEAN);
+            else if (clusteringAlgo == "HGS") cls = new HGS(EUCLIDEAN);
             myNamespace::ClusteringInterfaces.push_back(cls);
         }
     }
@@ -96,6 +100,45 @@ void Ensembler::EnsembleRun(){
         pthread_join(thread, NULL);
     }
 
+    double minCost = 1e9;
+    Optimizer* minIndex = NULL;
+
+    for(auto tempOptimizer : (myNamespace::optimizersUsed)){
+        double weight = 0.5;
+
+        double routePlanningCost = 0.0;
+        for(double cost: tempOptimizer->GetRoutingCost()){
+            routePlanningCost += cost;
+        }
+
+        double packagingCost = 0.0;
+        for(double cost: tempOptimizer->GetPackagingCost()){
+            packagingCost += cost;
+        }
+
+        double cost = routePlanningCost + weight * packagingCost;
+        if(cost < minCost){
+            minCost = cost;
+            minIndex = tempOptimizer;
+        }
+    }
+
+    int num = minIndex->getNumClusters();
+
+    for(int i = 0;i<num;i++){
+        auto x = ((myNamespace::optimizersUsed)[0])->GetPackagingForCluster(i);
+        ((myNamespace::optimizersUsed)[0])->getPackingLog(x);
+    }
+    vector<vector<item>> bestClusters = minIndex->GetClusters();
+    int counter = 0;
+    for(auto cluster : bestClusters){
+        cout<<"Logging information for cluster - "<<counter<<endl;
+        counter++;
+        minIndex->getPackingLog(cluster);
+    }
+
+    cout<<minCost<<endl;
+
     for(auto ensembler: ensemblersUsed){
         Costs.push_back(ensembler->GetCosts()[0]);
     }
@@ -112,11 +155,11 @@ void Ensembler::Report(){
         string fileName = x.first[0] + x.first[1] + x.first[2];
         fileName += ".txt";
 
-        ofstream output;
-        output.open("C:/Users/ranjan kumar/Desktop/Optimiser/tests/"+fileName, std::ofstream::out);
+        ofstream output("./../tests/"+fileName);
         output<<x.second<<endl;
         output.close();
     }
+    return;
 }
 
 void * run(void * arg){
@@ -127,6 +170,8 @@ void * run(void * arg){
     Optimizer* tempOptimizer = new Optimizer(myNamespace::RoutePlanInterfaces[ensembler->currentCombination[0]], myNamespace::ClusteringInterfaces[ensembler->currentCombination[1]], myNamespace::BinPackingInterfaces[ensembler->currentCombination[2]], ensembler->packages, ensembler->warehouse, ensembler->numberRiders, ensembler->bin, "", 0, 0, myNamespace::locksClustering[ensembler->currentCombination[1]], myNamespace::locksBinPacking[ensembler->currentCombination[2]], myNamespace::locksRouting[ensembler->currentCombination[0]]);
 
     tempOptimizer->optimize();
+
+    (myNamespace::optimizersUsed).push_back(tempOptimizer);
 
     vector<string> Combination = {ensembler->RoutePlanningAlgorithms[ensembler->currentCombination[0]], ensembler->ClusteringAlgorithms[ensembler->currentCombination[1]], ensembler->BinPackingAlgorithms[ensembler->currentCombination[2]]};
     double weight = 0.5;

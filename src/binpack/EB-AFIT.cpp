@@ -169,31 +169,72 @@ float EB_AFIT::CalculateCost() {
     cost = 100 - binpacker.percentagepackedbox;
     return cost;
 }
-// int main() {
+
+class DataModel{
+	public:
+	Coordinate warehouse;
+	Bin bin;
+	vector<item> packages;
+	int optimal;
+	int numRiders = 5;
+};
+
+
+// int get_rand(int a,int b){
+//     return a + rand()%(b - a);
+// }
+
+// DataModel ReadVRPs(string filename);
+
+
+
+// int main(int argc, char** argv) {
+//     DataModel dm;
+	
+//     if(argv[1] != NULL){
+//       try{
+//         dm = ReadVRPs(argv[1]);
+//       }
+//       catch(string err){
+//         cout << err;
+//       }
+      
+//     }
+//     else{
+//       string s;
+//       cin >> s;
+//       try{
+//         dm = ReadVRPs(s);
+//       }
+//       catch(string err){
+//         cout << err;
+//       }
+//     }
+
 //     EB_AFIT eba;
 //     //     104, 96, 84
 //     // 1. 70, 104, 24, 4
 //     // 2. 14, 104, 48, 2
 //     // 3. 40, 52, 36, 3
-//     srand(time(NULL));
+//     // srand(time(NULL));
 
-//     int CLUSTER_SIZE = 20;
-//     vector<int> min_dimensions(3),max_dimensions(3),bin_dimensions(3);
-//     min_dimensions = {3,3,3};
-//     max_dimensions = {40,20,40};
-//     bin_dimensions = {80,100,80};
+//     // int CLUSTER_SIZE = 20;
+//     // vector<int> min_dimensions(3),max_dimensions(3),bin_dimensions(3);
+//     // min_dimensions = {3,3,3};
+//     // max_dimensions = {40,20,40};
+//     // bin_dimensions = {80,100,80};
 
-//     vector<item> cluster(CLUSTER_SIZE);
-//     for(int i = 0;i < CLUSTER_SIZE;i++){
-//         cluster[i].size.length = get_rand(min_dimensions[0],max_dimensions[0]);
-//         cluster[i].size.width = get_rand(min_dimensions[1],max_dimensions[1]);
-//         cluster[i].size.height = get_rand(min_dimensions[2],max_dimensions[2]);
-//     }
-//     item i;
-//     i.size.length = 80;
-//     i.size.width = 80;
-//     i.size.height = 80;
-//     cluster.push_back(i);
+//     // vector<item> cluster(CLUSTER_SIZE);
+//     // for(int i = 0;i < CLUSTER_SIZE;i++){
+//     //     cluster[i].size.length = get_rand(min_dimensions[0],max_dimensions[0]);
+//     //     cluster[i].size.width = get_rand(min_dimensions[1],max_dimensions[1]);
+//     //     cluster[i].size.height = get_rand(min_dimensions[2],max_dimensions[2]);
+//     // }
+//     // item i;
+//     // i.size.length = 80;
+//     // i.size.width = 80;
+//     // i.size.height = 80;
+//     // cluster.push_back(i);
 //     // cluster[0].size.width = 10;
 //     // cluster[0].size.length = 10;
 //     // cluster[0].size.height = 10;
@@ -204,7 +245,10 @@ float EB_AFIT::CalculateCost() {
 //     // cluster[2].size.length = 20;
 //     // cluster[2].size.height = 30;
 
-//     Bin b(bin_dimensions[0], bin_dimensions[1], bin_dimensions[2]);
+//     // Bin b(bin_dimensions[0], bin_dimensions[1], bin_dimensions[2]);
+
+//     auto cluster = dm.packages;
+//     auto b = dm.bin;
 //     eba.BinPack(cluster, b);
 
     
@@ -220,5 +264,75 @@ float EB_AFIT::CalculateCost() {
 //         cout << x.position.x << " " << x.position.y << " " << x.position.z << endl;
 //     }
 
+
+
+//     bool first;
+//     ofstream output;
+//     first = true;
+//     output.open("../../visual/app/cuboids_to_render.xml");
+//     if(!output.is_open()){
+//         cout<<"File NOT OPEN"<<endl;
+//     }
+//     output<<"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\" ?>"<<endl;
+//     output<<"<!DOCTYPE boost_serialization>"<<endl;
+//     output<<"<boost_serialization signature=\"serialization::archive\" version=\"10\">"<<endl;
+//     for(int j = 0 ; j < cluster.size(); j++){
+//         first == true ? output<<"<cuboid class_id=\"0\" tracking_level=\"0\" version=\"0\">"<<endl : output<<"<cuboid>"<<endl;
+//         first = false;
+//         double h = cluster[j].size.height, w = cluster[j].size.width, l = cluster[j].size.length;
+//         output<<"<width>"<<l<<"</width>"<<endl;
+//         output<<"<height>"<<h<<"</height>"<<endl;
+//         output<<"<depth>"<<w<<"</depth>"<<endl;
+//         cout<<cluster[j].position.x<<" "<<cluster[j].position.y<<" "<<cluster[j].position.z<<" "<<l<<" "<<h<<" "<<w<<endl;
+//         output<<"<x>"<<(double)cluster[j].position.x+l/2<<"</x>"<<endl;
+//         output<<"<y>"<<(double)cluster[j].position.y+h/2<<"</y>"<<endl;
+//         output<<"<z>"<<(double)cluster[j].position.z+w/2<<"</z>"<<endl;
+//         output<<"</cuboid>"<<endl;
+//     }
+//     output<<"<base class_id=\"1\" tracking_level=\"0\" version=\"0\">"<<endl;
+//     output<<"<width>"<<b.size.width<<"</width>"<<endl;
+//     output<<"<height>"<<b.size.length<<"</height>"<<endl;
+//     output<<"<x>0</x>"<<endl;
+//     output<<"<y>0</y>"<<endl;
+//     output<<"</base>"<<endl;
+//     output<<"</boost_serialization>"<<endl;
+//     output.close();
+
 //     return 0;
+// }
+
+// DataModel ReadVRPs(string filename){
+// 	DataModel dm;
+// 	int nbClients = 30;
+// 	// add items to datamodel
+// 	dm.packages.resize(nbClients);
+// 	// dm.bin.capacity = vehicleCapacity;
+// 	dm.bin.size.height = 100;
+// 	dm.bin.size.length = 80;
+// 	dm.bin.size.width = 80;
+// 	// dm.warehouse.latitude  = depot_lat;
+// 	// dm.warehouse.longitude = depot_lon;
+// 	// int ub = 13 , lb = 9;
+// 	srand ( time(NULL) );
+
+//     vector<int> min_dimensions(3),max_dimensions(3),bin_dimensions(3);
+//     min_dimensions = {3,3,3};
+//     max_dimensions = {40,20,40};
+//     bin_dimensions = {80,100,80};
+
+
+// 	for(int i=0; i<nbClients; i++)
+// 	{
+// 		// dm.packages[i].coordinate.latitude = x_coords[i];
+// 		// dm.packages[i].coordinate.longitude = y_coords[i];
+// 		dm.packages[i].volume = 1;
+// 		dm.packages[i].size.width = get_rand(min_dimensions[0],max_dimensions[0]);
+// 		dm.packages[i].size.height = get_rand(min_dimensions[1],max_dimensions[1]);
+// 		dm.packages[i].size.length = get_rand(min_dimensions[2],max_dimensions[2]);
+//     cout<<dm.packages[i].size.length<<" "<<dm.packages[i].size.height<<" "<<dm.packages[i].size.width<<endl;
+// 		// dm.packages[i].weight = demands[i];
+// 		// dm.packages[i].time = ((rand() % (ub - lb + 1)) + lb)*60 ;
+// 		// dm.packages[i].time = ((rand() % (ub - lb + 10)));
+// 	}
+// 	return dm;
 // }

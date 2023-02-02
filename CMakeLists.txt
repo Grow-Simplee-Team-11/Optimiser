@@ -6,7 +6,7 @@ include(./cmake/common.cmake)
 
 find_package(Protobuf REQUIRED)
 find_package(gRPC CONFIG REQUIRED)
-find_package(ortools CONFIG REQUIRED)
+# find_package(ortools CONFIG REQUIRED)
 find_package(CURL REQUIRED)
 
 
@@ -77,6 +77,7 @@ add_library(dp_grpc_proto
 
 file (GLOB_RECURSE ALL_SRCS
 "${CMAKE_SOURCE_DIR}/include/*.hpp"
+"${CMAKE_SOURCE_DIR}/include/ortools/*.h"
 "${CMAKE_SOURCE_DIR}/src/*.cpp"
 "${CMAKE_SOURCE_DIR}/src/*.c"
 )
@@ -97,5 +98,5 @@ target_link_libraries(server
     dp_grpc_proto
     grpc++
     ${CURL_LIBRARIES}
-    ortools::ortools
+    -L./lib
 )

@@ -176,6 +176,7 @@ vector<vector<item> > FESIF::wrapperLMD(vector<item>& items, Coordinate warehous
 
 	initWorkers();
 	initNodes();
+	cout<<"Starting tree"<<endl;
 	initTree();
 	initRng();
 

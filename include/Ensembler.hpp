@@ -15,10 +15,12 @@
 #include "clustering/fesif/fesif.hpp"
 #include "clustering/selfClustering/selfClustering.hpp"
 #include "clustering/Clarke/clarke.hpp"
+#include "clustering/HGS/HGS.hpp"
 
 #include "routeplan/TSP_OR.hpp"
 #include "routeplan/TSP_LK.hpp"
 #include "routeplan/TSP_CK.hpp"
+#include "routeplan/TSP_OR_EDD.hpp"
 
 #include "binpack/EB_AFIT.hpp"
 
