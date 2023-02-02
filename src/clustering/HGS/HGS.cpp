@@ -15,7 +15,8 @@ HGS::HGS(DistanceType method,bool EDD): ClusteringInterface(method){
 			pathSolution = "../tests/HGS_sol.txt";
 			ap = default_algorithm_parameters();
 			// ap.timeLimit = 30.0;
-			ap.nbIter = 25000;
+			// ap.nbIter = 25000;
+			ap.nbIter = 5000;
 }
 
 /**
@@ -119,10 +120,12 @@ void HGS::ComputeClusters(vector<item> &packages, Coordinate warehouse, int numR
 	}
 	else{
 		expectation = std::vector<double>(n+1,1e30); 
+		// Params params(x_coords,y_coords,dist_mtx,service_time,demands,
+		// 		b.capacity,1.e30,numRiders,false,verbose, expectation,ap);
 		Params params(x_coords,y_coords,dist_mtx,service_time,demands,
-				b.capacity,1.e30,numRiders,false,verbose, expectation,ap);
+				b.capacity,1.e30,numRiders,true,verbose, expectation,ap);
 		params.averageSpeed = avgspeed;
-		params.penaltyMoreThan25 = avgspeed / 4;
+		params.penaltyMoreThan25 = 2*avgspeed;
 		print_algorithm_parameters(ap);
 		Genetic solver(params);
 		solver.run();

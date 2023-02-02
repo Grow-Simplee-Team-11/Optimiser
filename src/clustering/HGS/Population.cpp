@@ -10,9 +10,9 @@ void Population::generatePopulation()
 	if (params.verbose) std::cout << "----- BUILDING INITIAL POPULATION" << std::endl;
 	for (int i = 0; i < 4*params.ap.mu && (i == 0 || params.ap.timeLimit == 0 || (double)(clock() - params.startTime) / (double)CLOCKS_PER_SEC < params.ap.timeLimit) ; i++)
 	{
-		Individual randomIndiv(params);
-		split.generalSplit(randomIndiv, params.nbVehicles);
-		localSearch.run(randomIndiv, params.penaltyCapacity, params.penaltyDuration);
+		Individual randomIndiv(params); // chromosome
+		split.generalSplit(randomIndiv, params.nbVehicles); // make clusters inside the chromosome
+		localSearch.run(randomIndiv, params.penaltyCapacity, params.penaltyDuration); /// 
 		addIndividual(randomIndiv, true);
 		if (!randomIndiv.eval.isFeasible && params.ran() % 2 == 0)  // Repair half of the solutions in case of infeasibility
 		{
