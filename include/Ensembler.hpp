@@ -40,6 +40,10 @@ class Ensembler{
         vector<string> BinPackingAlgorithms;
         vector<string> ClusteringAlgorithms;
 
+        vector<vector<item>> clusters;
+        vector<vector<item>> paths;
+        vector<vector<item>> binPacking;
+
         vector<Ensembler*> ensemblersUsed;
 
         vector<item> packages;

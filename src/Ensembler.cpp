@@ -139,6 +139,14 @@ void Ensembler::EnsembleRun(){
 
     cout<<minCost<<endl;
 
+    clusters = minIndex->GetClusters();
+    paths.clear();
+    binPacking.clear();
+    for(int i=0;i<clusters.size();i++){
+        paths.push_back(minIndex->GetPathForCluster(i));
+        binPacking.push_back(minIndex->GetPackagingForCluster(i));
+    }
+
     for(auto ensembler: ensemblersUsed){
         Costs.push_back(ensembler->GetCosts()[0]);
     }
