@@ -215,7 +215,7 @@ int main(int argc, char** argv){
 	// RoutePlanInterface* rp = new TSP_LK;
 	// ClusteringInterface* cls = new FESIF;
 	// ClusteringInterface* cls = new Clarke(EUCLIDEAN);
-	ClusteringInterface* cls = new HGS(EUCLIDEAN);
+	ClusteringInterface* cls = new Clarke(EUCLIDEAN);
 	BinPackInterface* bp =  new EB_AFIT;
 
 	bool verbose = true;

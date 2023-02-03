@@ -61,14 +61,14 @@ void Optimizer::optimize(){
     int avg = 0;
     int dropoffs = INT_MAX;
     ofstream output;
-    if(this->clusteringInterface->clustering_method){
+    if(this->clusteringInterface->clustering_method && this->clusteringInterface->multithreading){
        
         output.open("./output.txt");
-        for(int k = 0 ; k < 2; k ++){
+        for(int k = 0 ; k < 5; k ++){
             output << "Starting Iteration "<< k <<endl;
             vector<thread> threads;
             vector<Optimizer*> optimizers;
-            for(int j = 0 ; j < 10 ; j ++ ){
+            for(int j = 0 ; j < 20 ; j ++ ){
                 RoutePlanInterface* rp = new TSP_OR_EDD(EUCLIDEAN);
                 ClusteringInterface* cls = new Clarke(EUCLIDEAN);
                 BinPackInterface* bp =  new EB_AFIT;

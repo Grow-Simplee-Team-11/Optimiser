@@ -26,7 +26,7 @@ class Cluster{
 
 class Clarke: public ClusteringInterface{
     public:
-    Clarke(bool method) : ClusteringInterface(method){ clustering_method = 1; }
+    Clarke(bool method) : ClusteringInterface(method){ clustering_method = 1; multithreading = 1; }
     vector<item> packages; Coordinate warehouse; int numPackages;int numRiders; Bin b;double distThresh;
     vector<Cluster> Clusters;
     vector<Cluster> final_Clusters;
