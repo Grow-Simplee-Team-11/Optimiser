@@ -2,9 +2,9 @@
 
 ## About The Project
 
-'''
-Add Image for the application, may be a running image. 
-'''
+<p align="center">
+  <img src="./First_Image.png" />
+</p>
 
 In this part of our solution we have tackled the problem of Route Planning and Bin Packing for the rider, in which we aim to improve the current system by applying state-of-the-art algorithms to reduce the complexity of work for the Delivery Hub as well as the Riders while making a delivery.
 
