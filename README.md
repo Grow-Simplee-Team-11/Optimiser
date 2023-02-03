@@ -360,18 +360,20 @@ Sequence Diagram
 The Optimizer class creates interfaces for "ClusteringInterface," "BinPackInterface," and "RoutePlanInterface," which serve as the backend for different algorithms. The input is first passed to the ClusteringInterface, which provides the clusters. These clusters are then processed by both the RoutePlanInterface and BinPackInterface to determine the path, bin packing orientation, and corresponding costs. The lowest cost combination is then selected and its final output is used for further processing.
 
 
-## Acknowledgements
-​
+
+# Acknowledgements
+
 We list below any external resource we came across to help us build the entire codebase -
 ### Clustering Algorithms
-  1.  [Clarke Wright Algorithm](https://oaji.net/articles/2014/818-1399311943.pdf) - Improved upon the classical clarke wright algorithm to also handle `Estimated Time of Delivery` and added a consolidation function.
-  2.  [HGS - Hybrid Genetic Search](https://w1.cirrelt.ca/~vidalt/papers/HGS-CIRRELT-2011.pdf) -A Genetic Algorithm for the CVRP . Added `time expectation` to get a better performing heuristic.
+1.  [Clarke Wright Algorithm](https://oaji.net/articles/2014/818-1399311943.pdf) - Improved upon the classical clarke wright algorithm to also handle `Estimated Time of Delivery` and added a consolidation function.
+2.  [HGS - Hybrid Genetic Search](https://w1.cirrelt.ca/~vidalt/papers/HGS-CIRRELT-2011.pdf) -A Genetic Algorithm for the CVRP . Added `time expectation` to get a better performing heuristic.
 3.  [fESI - Fast Embedding Sorting and Insertion](https://www.vldb.org/pvldb/vol13/p320-zeng.pdf) - A `6ρ Approximation Algorithm` implemented using a binary search strategy. A Hierarchical Search Tree is used as spatial index to embed the cost metric.
-​
+
 ### Route Planning Algorithms
 1. [Christofides Algorithm](https://github.com/sth144/christofides-algorithm-cpp/tree/176e61b2d9ba94344fc6c13a57dc3fee7bf0654d) Industry Standard Approximation Algorithm for Travelling Salesman Problem.
 2. [Google OR-Tools](https://developers.google.com/optimization) - Linear Programming Optimization library developed by Google with ensemble of randomization and approximation algorithm for CVRP.
-​
+3. [Lin Kernighan Algorithm](https://en.wikipedia.org/wiki/Lin%E2%80%93Kernighan_heuristic) - A Local Search based algorithm belonging to the family of combinatorial optimization to solve the Travelling Salesman Problem.
+
 ### Bin Packing Algorithms
 1. [Online 3D Bin Packing Using Algorithm](https://openreview.net/forum?id=bfuGjlCwAq) - Trained RL agent for bin backing which maintains package ordering while packing.
 2. [EB-AFIT](https://scholar.afit.edu/cgi/viewcontent.cgi?article=5567&context=etd) - Algorithm for 3D Binpacking with an improved setup to maintain package ordering while having high bin packing efficiency.
@@ -379,3 +381,4 @@ We list below any external resource we came across to help us build the entire c
 1. [Google gRPC](https://grpc.io/docs/what-is-grpc/introduction/)-  RPC server handler for handling client side requests by Google.
 2. [Bing MAPS API](https://www.microsoft.com/en-us/maps/choose-your-bing-maps-api) Accessable Microsoft API for computing real world distance matrices.
 3. [redis GEOSEARCH](https://redis.io/commands/geosearch/) Efficently finds the closest points using geohashing methods to identify candidtate points for dynamic pickup.
+
