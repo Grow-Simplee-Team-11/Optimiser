@@ -28,6 +28,7 @@ class Optimizer{
 
         vector<float> GetRoutingCost();
         int getNumClusters();
+        int dropoffs = INT_MAX;
         RoutePlanInterface* routePlannerInterface;
         ClusteringInterface* clusteringInterface;
         BinPackInterface* binPackInterface;

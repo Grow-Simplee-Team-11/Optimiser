@@ -47,9 +47,7 @@ void Optimizer::optimize(){
     ofstream output;
     if(this->clusteringInterface->clustering_method && this->clusteringInterface->multithreading){
        
-        output.open("./output.txt");
         for(int k = 0 ; k < 5; k ++){
-            output << "Starting Iteration "<< k <<endl;
             vector<thread> threads;
             vector<Optimizer*> optimizers;
             for(int j = 0 ; j < 20 ; j ++ ){
@@ -100,7 +98,6 @@ void Optimizer::optimize(){
     int avg = 0;
     int maximum = -INT_MAX;
     bool first = true;
-    ofstream output;
     
     for(auto& cluster: clusters){
         if(verbose){
