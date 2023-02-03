@@ -1,21 +1,11 @@
-/*************************************************************************
-Title: TSP.cpp
-Description: TSP class implementation file for our Christofides implementation
-Authors: Sean Hinds, Ryan Hong, Jeff Herlitz
-Date: 08/16/17
-*************************************************************************/
 const double R = 6371;
 #define MULT 10000
 #include "../../include/routeplan/TSP_CK.hpp"
 
-
-// extern double toRadians(const double degree){}
-// extern double Dist(Coordinate &c1, Coordinate &c2){}
-
-//Constructor
-
-
-//Destructor
+/**
+ * @brief Destroy the TSP::TSP object
+ * 
+ */
 TSP::~TSP(){
 	for(int i = 0; i < n; i++){
 		delete [] graph[i];
@@ -27,11 +17,20 @@ TSP::~TSP(){
 	delete [] cost_odd;
 	delete [] adjlist;
 }
-
+/**
+ * @brief Gets the between 2 items
+ * 
+ * @param p1 
+ * @param p2 
+ * @return double 
+ */
 double TSP::get_distance(item p1, item p2){
 	return Dist(p1.coordinate, p2.coordinate);
 }
-
+/**
+ * @brief Fills the distance Matrix
+ * 
+ */
 void TSP::fillMatrix(){
 	for(int i = 0; i < n; i++){
 		for(int j = 0; j < n; j++){
@@ -45,12 +44,10 @@ void TSP::fillMatrix(){
 	}
 }
 
-
-/******************************************************************************
-  This function uses Prim's algorithm to determine a minimum spanning tree on
-    the graph
-******************************************************************************/
-
+/**
+ * @brief This function uses Prim's algorithm to determine a minimum spanning tree on the graph
+ * 
+ */
 void TSP::findMST() {
 
   int *key = new int[n];
@@ -113,11 +110,13 @@ void TSP::findMST() {
 
 }
 
-
-/******************************************************************************
-  find the index of the closest unexamined node
-******************************************************************************/
-
+/**
+ * @brief find the index of the closest unexamined node
+ * 
+ * @param key 
+ * @param mst 
+ * @return int 
+ */
 int TSP::getMinIndex(int key[], bool mst[]) {
 
   // initialize min and min_index
@@ -143,10 +142,10 @@ int TSP::getMinIndex(int key[], bool mst[]) {
 }
 
 
-/******************************************************************************
-  find all vertices of odd degree in the MST. Store them in an subgraph O
-******************************************************************************/
-
+/**
+ * @brief find all vertices of odd degree in the MST. Store them in an subgraph O
+ * 
+ */
 void TSP::findOdds() {
 
   for (int i = 0; i < n; i++) {
@@ -163,11 +162,11 @@ void TSP::findOdds() {
 
 }
 
-
+/**
+ * @brief find a perfect matching M in the subgraph O using greedy algorithm but not minimum
+ * 
+ */
 void TSP::perfectMatching() {
-  /************************************************************************************
-   find a perfect matching M in the subgraph O using greedy algorithm but not minimum
-  *************************************************************************************/
   int closest, length; //int d;
   std::vector<int>::iterator tmp, first;
 
@@ -196,7 +195,12 @@ void TSP::perfectMatching() {
 }
 
 
-//find an euler circuit
+/**
+ * @brief Finds Euler Cicuit
+ * 
+ * @param start 
+ * @param path 
+ */
 void TSP::euler_tour(int start, vector<int> &path){
 	//Create copy of adj. list
 	vector<int> *tempList = new vector<int>[n];
@@ -238,7 +242,12 @@ void TSP::euler_tour(int start, vector<int> &path){
 }
 
 
-//Make euler tour Hamiltonian
+/**
+ * @brief Makes the Euler Tour Hamiltonian
+ * 
+ * @param path 
+ * @param pathCost 
+ */
 void TSP::make_hamiltonian(vector<int> &path, int &pathCost){
 
 	//remove visited nodes from Euler tour
@@ -281,7 +290,10 @@ int TSP::findBestPath(int start){
 	make_hamiltonian(path, length);
 	return length;
 }
-
+/**
+ * @brief Prints Path
+ * 
+ */
 void TSP::printPath(){
   cout << endl;
   int letsee=0;
@@ -301,7 +313,10 @@ void TSP::printEuler() {
   for (vector<int>::iterator it = circuit.begin(); it != circuit.end(); ++it)
     cout << *it << endl;
 }
-
+/**
+ * @brief Prints adjList
+ * 
+ */
 void TSP::printAdjList() {
   for (int i = 0; i < n; i++) {
     cout << i << ": "; //print which vertex's edge list follows
@@ -311,7 +326,12 @@ void TSP::printAdjList() {
     cout << endl;
   }
 }
-
+/**
+ * @brief Plans Route
+ * 
+ * @param cluster 
+ * @param warehouse 
+ */
 void TSP::PlanRoute(vector<item> &cluster, Coordinate warehouse){
        ComputeDistMatrix(cluster, warehouse); 
         // cout<<"started with routeplanning"<<endl;

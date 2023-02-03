@@ -11,7 +11,12 @@ double dist[N][N];    // distance between cities
 int tour[N];          // current tour
 int best_tour[N];     // best tour found so far
 double best_distance; // length of the best tour found so far
-
+/**
+ * @brief gets the Distance of the Tour
+ * 
+ * @param tour 
+ * @return double Dist
+ */
 double TSP_LK::tour_distance(int tour[])
 {
     double d = 0;
@@ -19,12 +24,25 @@ double TSP_LK::tour_distance(int tour[])
         d += dist[tour[i]][tour[i + 1]];
     return d;
 }
-
+/**
+ * @brief gets optimal of 2 points
+ * 
+ * @param tour 
+ * @param i 
+ * @param j 
+ */
 void TSP_LK::two_opt(int tour[], int i, int j)
 {
     reverse(tour + i, tour + j + 1);
 }
-
+/**
+ * @brief gets optimal of 3 points
+ * 
+ * @param tour 
+ * @param i 
+ * @param j 
+ * @param k 
+ */
 void TSP_LK::three_opt(int tour[], int i, int j, int k)
 {
     int tmp[N];
@@ -40,7 +58,10 @@ void TSP_LK::three_opt(int tour[], int i, int j, int k)
     for (int p = 0; p < num; p++)
         tour[p] = tmp[p];
 }
-
+/**
+ * @brief Main body of function lin_kernighan
+ * 
+ */
 void TSP_LK::lin_kernighan()
 {
     // Initialize the current tour as a random permutation of the cities
@@ -82,7 +103,12 @@ void TSP_LK::lin_kernighan()
     }
 }
 
-
+/**
+ * @brief Plans Route
+ * 
+ * @param cluster 
+ * @param warehouse 
+ */
 void TSP_LK::PlanRoute(vector<item>& cluster, Coordinate warehouse)
 {
     ComputeDistMatrix(cluster, warehouse);
@@ -121,27 +147,5 @@ void TSP_LK::PlanRoute(vector<item>& cluster, Coordinate warehouse)
 }
 
 void TSP_LK::CalculateCost(){
-
+    return;
 }
-// int main()
-// {
-//     cin >> num;
-//     for (int i = 0; i < num; i++)
-//         for (int j = 0; j < num; j++)
-//             cin >> dist[i][j];
-
-//     auto start = clock();
-//     lin_kernighan();
-
-//     cout << "Best Tour: ";
-//     for (int i = 0; i < num; i++)
-//         cout << best_tour[i] << " ";
-//     cout << best_tour[0] << endl;
-
-//     cout.setf(ios::fixed);
-//     cout.precision(5);
-//     cout << "Best Distance: " << best_distance << endl;
-
-//     cout << "Time: " << (clock() - (double)start) / (double)CLOCKS_PER_SEC << endl;
-//     return 0;
-// }

@@ -1,55 +1,5 @@
 #include "../../include/routeplan/TSP_OR_EDD.hpp"
 
-// double TSP_OR_EDD::haversine(double lat_1_deg,double lon_1_deg,double lat_2_deg,double lon_2_deg)
-// { 
-//     double PI = 3.14159265359;
-//     double lat_1_rad, lon_1_rad, lat_2_rad, lon_2_rad;
-//     lat_1_rad = lat_1_deg * (PI / 180);
-//     lon_1_rad = lon_1_deg * (PI / 180);
-//     lat_2_rad = lat_2_deg * (PI / 180);
-//     lon_2_rad = lon_2_deg * (PI / 180);
-//     double delta_lat, delta_lon;
-// TSP    delta_lat = lat_1_rad - lat_2_rad;
-//     delta_lon = lon_1_rad - lon_2_rad;
-
-//     // Calculate sin^2 (delta / 2) for both lat and long
-//     double sdlat = pow(sin(delta_lat / 2), 2);
-//     double sdlon = pow(sin(delta_lon / 2), 2);
-
-//     // Radius of the Earth (approximate)
-//     const double radius_earth_miles = 3963;
-//     const double radius_earth_km = 6378;
-
-//     // http://en.wikipedia/org/wiki/Haversine_formula
-//     // d=2r*asin(sqrt(sin^2((lat1-lat2)/2)+cos(l1)cos(l2)sin^2((lon2-lon1)/2)))
-//     //  if t = sqrt(sin^2((lat1-lat2)/2)+cos(l1)cos(l2)sin^2((lon2-lon1)/2)
-//     //  -> d = 2 * radius_earth * asin (t)	
-//     double t = sqrt(sdlat + (cos(lat_1_rad) * cos(lat_2_rad) * sdlon));
-//     double distance_miles = 2 * radius_earth_miles * asin(t);
-//     double distance_km = 2 * radius_earth_km * asin(t);
-//     return distance_km;
-// }
-// double TSP_OR_EDD::haversine(double lat_1_deg,double lon_1_deg,double lat_2_deg,double lon_2_deg){
-//   return sqrt((lat_1_deg-lat_2_deg)*(lat_1_deg-lat_2_deg)+(lon_1_deg-lon_2_deg)*(lon_1_deg-lon_2_deg));
-// }
-// double TSP_OR_EDD::getX(double lon){
-//     // width is map width
-//     double x = fmod((2043*(180+lon)/360), (2043 +(2043/2)));
-
-//     return x;
-// }
-
-// double TSP_OR_EDD::getY(double lat){
-//     // height and width are map height and width
-//     double PI = 3.14159265359;
-//     double latRad = lat*PI/180;
-
-//     // get y value
-//     double mercN = log(tan((PI/4)+(latRad/2)));
-//     double y     = (1730/2)-(2043*mercN/(2*PI));
-//     return y;
-// }
-
 /**
  * @brief Computes the Euclidean distance matrix for the given cluster
  * 
@@ -230,24 +180,7 @@ void TSP_OR_EDD::savePath(vector<item>&clusters ,const RoutingIndexManager& mana
   }
   std::cout << "Problem solved in " << routing.solver()->wall_time() << "ms";
 }
-    // int64_t index = routing.Start(0);
-    // int64_t distance{0};
-    
-    // std::cout<<"Debugggggg \n";
-  //   while (routing.IsEnd(index) == false) {
-    // std::cout<<mod_cluster[manager.IndexToNode(index).value()].coordinate.latitude << " " << mod_cluster[manager.IndexToNode(index).value()].coordinate.longitude ;
-    
-    // int64_t previous_index = index;
-    // index = solution.Value(routing.NextVar(index));
-    // distance += routing.GetArcCostForVehicle(previous_index, index, int64_t{0});
-  // }
-  // double tot_dist = (double)distance ;
- 
-  // std::cout << "Route distance: " << tot_dist<< "km";
-  // std::cout << "  ";
-  // std::cout << "Problem solved in " << routing.solver()->wall_time() << "ms" << std::endl;
-
 
 void TSP_OR_EDD::CalculateCost(){
-    ;
+    break;
 }
