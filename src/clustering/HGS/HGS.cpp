@@ -37,7 +37,8 @@ void HGS::ComputeClusters(vector<item> &packages, Coordinate warehouse, int numR
 	vector<double> x_coords(n+1);
 	vector<double> y_coords(n+1);
 	vector<double> demands(n+1,0.);
-	vector<double> service_time(n+1,time_to_deliver_in_km);
+	vector<double> service_time(n+1,5);
+	service_time[0] = 0;
 	x_coords[0] = warehouse.latitude;
 	y_coords[0] = warehouse.longitude;
 	std::vector < std::vector< double > > dist_mtx = std::vector < std::vector< double > >(n + 1, std::vector <double>(n + 1));
@@ -84,9 +85,8 @@ void HGS::ComputeClusters(vector<item> &packages, Coordinate warehouse, int numR
 	std::vector<double> expectation(n,1e30); 
 	// TODO: add expectation in HGS
 	for(int i=0;i<n;i++) expectation[i] = packages[i].time;
-	double avgspeed = 100.0;
-	
-	double DurationLimit = avgspeed*5;//Duration Limit is given in kms
+	double avgspeed = 0.5;
+	double DurationLimit = 300;//Duration Limit is given in kms
 	
 	if(this->EDD){
 		cout << "With EDD " << endl;
@@ -123,9 +123,9 @@ void HGS::ComputeClusters(vector<item> &packages, Coordinate warehouse, int numR
 		// Params params(x_coords,y_coords,dist_mtx,service_time,demands,
 		// 		b.capacity,1.e30,numRiders,false,verbose, expectation,ap);
 		Params params(x_coords,y_coords,dist_mtx,service_time,demands,
-				b.capacity,1.e30,numRiders,true,verbose, expectation,ap);
+				b.capacity,DurationLimit,numRiders,true,verbose, expectation,ap);
 		params.averageSpeed = avgspeed;
-		params.penaltyMoreThan25 = 2*avgspeed;
+		// params.penaltyMoreThan25 = 2*avgspeed;
 		print_algorithm_parameters(ap);
 		Genetic solver(params);
 		solver.run();
@@ -149,6 +149,9 @@ void HGS::ComputeClusters(vector<item> &packages, Coordinate warehouse, int numR
 			if (params.verbose) std::cout << "----- WRITING BEST SOLUTION IN : " << pathSolution << std::endl;
 			solver.population.exportCVRPLibFormat(*solver.population.getBestFound(), pathSolution);
 			solver.population.exportSearchProgress(pathSolution + ".PG.csv", pathInstance);
+		}
+		else {
+			cout << "best found NULL" << endl;
 		}
 	}			
 }

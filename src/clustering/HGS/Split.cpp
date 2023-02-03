@@ -61,9 +61,9 @@ int Split::splitSimple(Individual & indiv)
 				serviceDuration += cliSplit[j].serviceTime;
 				if (j == i + 1) distance += cliSplit[j].d0_x;
 				else distance += cliSplit[j - 1].dnext;
-				double cost = distance + cliSplit[j].dx_0
+				double cost = (distance + cliSplit[j].dx_0) +
 					+ params.penaltyCapacity * std::max<double>(load - params.vehicleCapacity, 0.)
-					+ params.penaltyDuration * std::max<double>(distance + cliSplit[j].dx_0 + serviceDuration - params.durationLimit, 0.);
+					+ params.penaltyDuration * std::max<double>((distance + cliSplit[j].dx_0) / params.averageSpeed + serviceDuration - params.durationLimit, 0.);
 				if (potential[0][i] + cost < potential[0][j])
 				{
 					potential[0][j] = potential[0][i] + cost;
@@ -151,10 +151,9 @@ int Split::splitLF(Individual & indiv)
 					if (j == i + 1) distance += cliSplit[j].d0_x;
 					else distance += cliSplit[j - 1].dnext;
 					
-					double cost = distance + cliSplit[j].dx_0
+					double cost = (distance + cliSplit[j].dx_0) / params.averageSpeed + serviceDuration
 								+ params.penaltyCapacity * std::max<double>(load - params.vehicleCapacity, 0.)
-								+ params.penaltyDuration * std::max<double>(distance + cliSplit[j].dx_0 + serviceDuration - params.durationLimit, 0.) 
-								+ params.penaltyMoreThan25 * std::max<int>(j - i + 1 - 25, 0);
+								+ params.penaltyDuration * std::max<double>((distance + cliSplit[j].dx_0) / params.averageSpeed + serviceDuration - params.durationLimit, 0.);
 					if (potential[k][i] + cost < potential[k + 1][j])
 					{
 						potential[k + 1][j] = potential[k][i] + cost;

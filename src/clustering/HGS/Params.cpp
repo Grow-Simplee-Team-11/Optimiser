@@ -134,6 +134,7 @@ Params::Params(
 	penaltyCapacity = std::max<double>(0.1, std::min<double>(1000., maxDist / maxDemand));
 	if (verbose)
 		std::cout << "----- INSTANCE SUCCESSFULLY LOADED WITH " << nbClients << " CLIENTS AND " << nbVehicles << " VEHICLES" << std::endl;
+	durationLimit = 300;
 }
 
 
