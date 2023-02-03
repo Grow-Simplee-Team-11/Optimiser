@@ -8,7 +8,6 @@
 #include "interface/RoutePlanInterface.hpp"
 #include "interface/BinPackInterface.hpp"
 #include "interface/ClusteringInterface.hpp"
-
 using namespace std;
 
 class Optimizer{

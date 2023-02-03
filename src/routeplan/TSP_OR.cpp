@@ -23,7 +23,15 @@ void TSP_OR::ComputeEuclideanDistanceMatrix(std::vector<item>& cluster)
 }
 
 void TSP_OR::PlanRoute(vector<item> &cluster, Coordinate w){
-    
+    ComputeDistMatrix(cluster, w);
+    cout << "Dist Matrix Computed Successfully" << endl;
+    // for(int i = 0;i < DistMatrix.size();i++){
+    //   for(int j = 0;j < DistMatrix.size();j++){
+    //     cout << DistMatrix[i][j] << " ";
+    //   }
+    //   cout << endl;
+    // }
+    cout<<"Planning Route..."<<endl;
     plannedPath.clear();
     if(cluster.size() == 1){
       plannedPath.push_back(cluster[0]);
@@ -36,14 +44,23 @@ void TSP_OR::PlanRoute(vector<item> &cluster, Coordinate w){
     RoutingModel routing(manager);
     std::cout<<"Warehouse : "<<w.latitude<<" "<<w.longitude<<endl;
     warehouse = w;
-    ComputeEuclideanDistanceMatrix(cluster);
+    // ComputeEuclideanDistanceMatrix(cluster);
+    // const int transit_callback_index = routing.RegisterTransitCallback(
+    //   [this, &manager](int64_t from_index,
+    //                                int64_t to_index) -> int64_t {
+    //     // Convert from routing variable Index to distance matrix NodeIndex.
+    //     auto from_node = manager.IndexToNode(from_index).value();
+    //     auto to_node = manager.IndexToNode(to_index).value();
+    //     return this->distances[from_node][to_node];
+    //   });
+
     const int transit_callback_index = routing.RegisterTransitCallback(
       [this, &manager](int64_t from_index,
                                    int64_t to_index) -> int64_t {
         // Convert from routing variable Index to distance matrix NodeIndex.
         auto from_node = manager.IndexToNode(from_index).value();
         auto to_node = manager.IndexToNode(to_index).value();
-        return this->distances[from_node][to_node];
+        return static_cast<int64_t>(this->DistMatrix[from_node][to_node]*scale);
       });
 
     routing.SetArcCostEvaluatorOfAllVehicles(transit_callback_index);
@@ -56,7 +73,7 @@ void TSP_OR::PlanRoute(vector<item> &cluster, Coordinate w){
     search_parameters.mutable_time_limit()->set_seconds(5);
 
     const Assignment* solution = routing.SolveWithParameters(search_parameters);
-
+    cout << "Route Planned Successfully" << endl;
     savePath(cluster, manager, routing, *solution);
 }
 

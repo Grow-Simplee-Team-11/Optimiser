@@ -3,13 +3,14 @@ import random
 from datetime import datetime
 #day month year hour minute second  //12 feb 2020 13:05:06 --> 12 2 2020 13 5 6
 def generate_latlon(func):
-    NUM_BOXES = 30
+    NUM_BOXES = 100
+    NUM_RIDERS = 10
     BIN_LEN = 100
     BIN_BRE = 80
     BIN_HEI = 80
-    MEAN_LEN = 20
-    MEAN_BRE = 20
-    MEAN_HEI = 10
+    MEAN_LEN = 40
+    MEAN_BRE = 40
+    MEAN_HEI = 20
     longi = random.randint(77469960, 77703250)/(1e6)
     lat = random.randint(12873190, 13065670)/(1e6)
     s=""
@@ -26,6 +27,8 @@ def generate_latlon(func):
     s+=str(BIN_BRE)
     s+=" "
     s+=str(BIN_HEI)
+    s+="\n"
+    s+=str(NUM_RIDERS)
     s+="\n"
     s+=str(NUM_BOXES)
     s+="\n"
@@ -50,9 +53,9 @@ def generate_latlon(func):
         hour = random.randint(10, 17)
         minute = random.randint(0,59)
         second = random.randint(0,59)
-        t = datetime(year, month, day, hour, minute, second)
-        s+=" "
-        s+=str(t.timestamp())
+        # t = datetime(year, month, day, hour, minute, second)
+        # s+=" "
+        # s+=str(t.timestamp())
         s+="\n"
     return s
 func = np.random.default_rng().normal

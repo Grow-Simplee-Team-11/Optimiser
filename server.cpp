@@ -6,6 +6,7 @@
 
 
 #include "./include/routeplan/TSP_OR.hpp"
+#include "./include/routeplan/TSP_OR_EDD.hpp"
 #include "./include/routeplan/TSP_LK.hpp"
 #include "./include/clustering/HGS/HGS.hpp"
 #include "./include/routeplan/TSP_CK.hpp"
@@ -102,8 +103,8 @@ class OptimizerServiceImpl final : public optimizer::optimizer::Service
         std::cout << "Received request" << std::endl;
         (*reply) = OptimizerResponse();
         // RoutePlanInterface* rp = new TSP_OR(EUCLIDEAN);
-        RoutePlanInterface* rp = new TSP_OR(EUCLIDEAN);
-    	ClusteringInterface* cls = new HGS(EUCLIDEAN);
+        RoutePlanInterface* rp = new TSP_OR(HAVERSINE);
+    	ClusteringInterface* cls = new HGS(REAL);
 	    BinPackInterface* bp =  new EB_AFIT;
         cout << "I am here" << endl;
         DataModel dm = getData(request);
@@ -114,22 +115,13 @@ class OptimizerServiceImpl final : public optimizer::optimizer::Service
         Optimizer optim(rp, cls, bp, dm.packages, dm.warehouse, dm.numRiders, dm.bin, logFileName, verbose, logToFile);
         optim.optimize();
 
-
-        for(auto &x: optim.clusters)
-        {
-            std::cout<<x.size.length<<" "<<x.size.breadth<<" "<<x.size.height<<std::endl;
-        }
         
         vector<float> rcosts = optim.GetRoutingCost();
         float total_cost = 0;
         for(auto &x : rcosts)
         {
-            total_cost+=x;
-        }	
-
-        if(verbose)
             std::cout<<"\nTotal Cost for routing: "<<total_cost<<" km"<<std::endl;
-        
+        }
         if(logToFile)
         {
             std::ofstream out(logFileName, std::ios_base::app);

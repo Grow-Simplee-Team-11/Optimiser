@@ -8029,6 +8029,268 @@ Printing the packing --
 
 Total Cost for routing: 787.065 km
 Printing Cluster -- 0 
+<<<<<<< HEAD
+77.5609 13.0748
+Printing Cluster -- 1 
+77.6312 13.0144
+=======
+32 19
+24 14
+39 2
+42 5
+65 1
+70 20
+82 3
+97 9
+89 29
+93 50
+Printing Cluster -- 1 
+62 61
+69 57
+Printing Cluster -- 2 
+30 58
+8 49
+5 50
+9 42
+7 13
+10 5
+15 23
+59 61
+Printing Cluster -- 3 
+14 98
+5 98
+3 93
+2 91
+25 84
+39 84
+55 80
+Printing Cluster -- 4 
+60 85
+51 88
+44 96
+52 98
+>>>>>>> d46e5d0 (Altered hyperparameters to test Vrp-All Dataset)
+Printing information for cluster - 0
+The Routes for the cluster -- 
+Warehouse -> -> Warehouse
+Printing the packing -- 
+<<<<<<< HEAD
+77.5609 13.0748
+=======
+65 1
+>>>>>>> d46e5d0 (Altered hyperparameters to test Vrp-All Dataset)
+
+
+Printing information for cluster - 1
+The Routes for the cluster -- 
+Warehouse -> -> Warehouse
+Printing the packing -- 
+<<<<<<< HEAD
+77.6312 13.0144
+=======
+62 61
+
+
+Printing information for cluster - 2
+The Routes for the cluster -- 
+Warehouse -> -> Warehouse
+Printing the packing -- 
+5 50
+
+
+Printing information for cluster - 3
+The Routes for the cluster -- 
+Warehouse -> -> Warehouse
+Printing the packing -- 
+39 84
+
+
+Printing information for cluster - 4
+The Routes for the cluster -- 
+Warehouse -> -> Warehouse
+Printing the packing -- 
+52 98
+>>>>>>> d46e5d0 (Altered hyperparameters to test Vrp-All Dataset)
+
+
+
+Total Cost for routing: 0 km
+Printing Cluster -- 0 
+<<<<<<< HEAD
+77.5609 13.0748
+Printing Cluster -- 1 
+77.6312 13.0144
+=======
+93 50
+89 29
+97 9
+82 3
+70 20
+65 1
+42 5
+39 2
+24 14
+32 19
+Printing Cluster -- 1 
+69 57
+62 61
+Printing Cluster -- 2 
+30 58
+8 49
+5 50
+9 42
+7 13
+10 5
+15 23
+59 61
+Printing Cluster -- 3 
+55 80
+39 84
+25 84
+2 91
+3 93
+5 98
+14 98
+Printing Cluster -- 4 
+60 85
+51 88
+44 96
+52 98
+>>>>>>> d46e5d0 (Altered hyperparameters to test Vrp-All Dataset)
+Printing information for cluster - 0
+The Routes for the cluster -- 
+Warehouse -> -> Warehouse
+Printing the packing -- 
+<<<<<<< HEAD
+77.5609 13.0748
+=======
+70 20
+>>>>>>> d46e5d0 (Altered hyperparameters to test Vrp-All Dataset)
+
+
+Printing information for cluster - 1
+The Routes for the cluster -- 
+Warehouse -> -> Warehouse
+Printing the packing -- 
+<<<<<<< HEAD
+77.6312 13.0144
+=======
+69 57
+
+
+Printing information for cluster - 2
+The Routes for the cluster -- 
+Warehouse -> -> Warehouse
+Printing the packing -- 
+7 13
+
+
+Printing information for cluster - 3
+The Routes for the cluster -- 
+Warehouse -> -> Warehouse
+Printing the packing -- 
+39 84
+
+
+Printing information for cluster - 4
+The Routes for the cluster -- 
+Warehouse -> -> Warehouse
+Printing the packing -- 
+60 85
+>>>>>>> d46e5d0 (Altered hyperparameters to test Vrp-All Dataset)
+
+
+
+Total Cost for routing: 0 km
+Printing Cluster -- 0 
+<<<<<<< HEAD
+77.5609 13.0748
+Printing Cluster -- 1 
+77.6312 13.0144
+=======
+93 50
+89 29
+97 9
+82 3
+65 1
+42 5
+39 2
+24 14
+32 19
+59 61
+Printing Cluster -- 1 
+62 61
+69 57
+Printing Cluster -- 2 
+70 20
+10 5
+7 13
+15 23
+9 42
+5 50
+8 49
+30 58
+Printing Cluster -- 3 
+55 80
+39 84
+25 84
+2 91
+3 93
+5 98
+14 98
+Printing Cluster -- 4 
+60 85
+51 88
+44 96
+52 98
+>>>>>>> d46e5d0 (Altered hyperparameters to test Vrp-All Dataset)
+Printing information for cluster - 0
+The Routes for the cluster -- 
+Warehouse -> -> Warehouse
+Printing the packing -- 
+<<<<<<< HEAD
+77.5609 13.0748
+=======
+93 50
+>>>>>>> d46e5d0 (Altered hyperparameters to test Vrp-All Dataset)
+
+
+Printing information for cluster - 1
+The Routes for the cluster -- 
+Warehouse -> -> Warehouse
+Printing the packing -- 
+<<<<<<< HEAD
+77.6312 13.0144
+=======
+62 61
+
+
+Printing information for cluster - 2
+The Routes for the cluster -- 
+Warehouse -> -> Warehouse
+Printing the packing -- 
+10 5
+
+
+Printing information for cluster - 3
+The Routes for the cluster -- 
+Warehouse -> -> Warehouse
+Printing the packing -- 
+39 84
+
+
+Printing information for cluster - 4
+The Routes for the cluster -- 
+Warehouse -> -> Warehouse
+Printing the packing -- 
+44 96
+>>>>>>> d46e5d0 (Altered hyperparameters to test Vrp-All Dataset)
+
+
+
+Total Cost for routing: 0 km
+Printing Cluster -- 0 
+<<<<<<< HEAD
 77.5609 13.0748
 Printing Cluster -- 1 
 77.6312 13.0144
@@ -8037,10 +8299,67 @@ The Routes for the cluster --
 Warehouse -> -> Warehouse
 Printing the packing -- 
 77.5609 13.0748
+=======
+93 50
+89 29
+97 9
+82 3
+70 20
+65 1
+42 5
+39 2
+24 14
+32 19
+Printing Cluster -- 1 
+62 61
+69 57
+Printing Cluster -- 2 
+59 61
+15 23
+10 5
+7 13
+9 42
+5 50
+8 49
+30 58
+Printing Cluster -- 3 
+55 80
+39 84
+25 84
+2 91
+3 93
+5 98
+14 98
+Printing Cluster -- 4 
+60 85
+51 88
+44 96
+52 98
+Printing information for cluster - 0
+The Routes for the cluster -- 
+Warehouse -> 76 82
+ -> 93 50
+ -> 70 20
+ -> 82 3
+ -> 39 2
+ -> 32 19
+ -> -> Warehouse
+Printing the packing -- 
+70 20
+
+39 2
+
+32 19
+
+93 50
+
+82 3
+>>>>>>> d46e5d0 (Altered hyperparameters to test Vrp-All Dataset)
 
 
 Printing information for cluster - 1
 The Routes for the cluster -- 
+<<<<<<< HEAD
 Warehouse -> -> Warehouse
 Printing the packing -- 
 77.6312 13.0144
@@ -8057,10 +8376,149 @@ The Routes for the cluster --
 Warehouse -> -> Warehouse
 Printing the packing -- 
 77.5609 13.0748
+=======
+Warehouse -> 76 82
+ -> 69 57
+ -> 62 61
+ -> -> Warehouse
+Printing the packing -- 
+62 61
+
+69 57
+
+
+Printing information for cluster - 2
+The Routes for the cluster -- 
+Warehouse -> 76 82
+ -> 30 58
+ -> 8 49
+ -> 9 42
+ -> 15 23
+ -> 7 13
+ -> 5 50
+ -> -> Warehouse
+Printing the packing -- 
+7 13
+
+9 42
+
+5 50
+
+30 58
+
+15 23
+
+8 49
+
+
+Printing information for cluster - 3
+The Routes for the cluster -- 
+Warehouse -> 76 82
+ -> 55 80
+ -> 39 84
+ -> 25 84
+ -> 2 91
+ -> 3 93
+ -> 5 98
+ -> -> Warehouse
+Printing the packing -- 
+39 84
+
+2 91
+
+25 84
+
+5 98
+
+55 80
+
+3 93
+
+
+Printing information for cluster - 4
+The Routes for the cluster -- 
+Warehouse -> 76 82
+ -> 60 85
+ -> 44 96
+ -> 52 98
+ -> -> Warehouse
+Printing the packing -- 
+60 85
+
+44 96
+
+52 98
+
+
+
+Total Cost for routing: 437 km
+Printing Cluster -- 0 
+70 20
+42 5
+39 2
+65 1
+82 3
+97 9
+89 29
+93 50
+Printing Cluster -- 1 
+62 61
+15 23
+7 13
+10 5
+24 14
+32 19
+69 57
+Printing Cluster -- 2 
+30 58
+8 49
+5 50
+9 42
+59 61
+Printing Cluster -- 3 
+14 98
+5 98
+3 93
+2 91
+25 84
+39 84
+55 80
+Printing Cluster -- 4 
+60 85
+51 88
+44 96
+52 98
+Printing information for cluster - 0
+The Routes for the cluster -- 
+Warehouse -> 76 82
+ -> 42 5
+ -> 39 2
+ -> 65 1
+ -> 82 3
+ -> 97 9
+ -> 89 29
+ -> 93 50
+ -> -> Warehouse
+Printing the packing -- 
+42 5
+
+65 1
+
+82 3
+
+93 50
+
+97 9
+
+89 29
+
+39 2
+>>>>>>> d46e5d0 (Altered hyperparameters to test Vrp-All Dataset)
 
 
 Printing information for cluster - 1
 The Routes for the cluster -- 
+<<<<<<< HEAD
 Warehouse -> -> Warehouse
 Printing the packing -- 
 77.6312 13.0144
@@ -8077,10 +8535,153 @@ The Routes for the cluster --
 Warehouse -> -> Warehouse
 Printing the packing -- 
 77.5609 13.0748
+=======
+Warehouse -> 76 82
+ -> 69 57
+ -> 32 19
+ -> 24 14
+ -> 10 5
+ -> 15 23
+ -> -> Warehouse
+Printing the packing -- 
+15 23
+
+69 57
+
+24 14
+
+32 19
+
+10 5
+
+
+Printing information for cluster - 2
+The Routes for the cluster -- 
+Warehouse -> 76 82
+ -> 59 61
+ -> 30 58
+ -> 8 49
+ -> -> Warehouse
+Printing the packing -- 
+59 61
+
+30 58
+
+8 49
+
+
+Printing information for cluster - 3
+The Routes for the cluster -- 
+Warehouse -> 76 82
+ -> 55 80
+ -> 39 84
+ -> 25 84
+ -> 2 91
+ -> 3 93
+ -> 5 98
+ -> 14 98
+ -> -> Warehouse
+Printing the packing -- 
+14 98
+
+5 98
+
+3 93
+
+2 91
+
+25 84
+
+39 84
+
+55 80
+
+
+Printing information for cluster - 4
+The Routes for the cluster -- 
+Warehouse -> -> Warehouse
+Printing the packing -- 
+51 88
+
+
+
+Total Cost for routing: 524 km
+Printing Cluster -- 0 
+32 19
+24 14
+39 2
+42 5
+65 1
+70 20
+82 3
+97 9
+89 29
+93 50
+Printing Cluster -- 1 
+62 61
+69 57
+Printing Cluster -- 2 
+30 58
+8 49
+5 50
+9 42
+7 13
+10 5
+15 23
+59 61
+Printing Cluster -- 3 
+14 98
+5 98
+3 93
+2 91
+25 84
+39 84
+55 80
+Printing Cluster -- 4 
+60 85
+51 88
+44 96
+52 98
+Printing information for cluster - 0
+The Routes for the cluster -- 
+Warehouse -> 76 82
+ -> 93 50
+ -> 89 29
+ -> 97 9
+ -> 82 3
+ -> 70 20
+ -> 65 1
+ -> 42 5
+ -> 39 2
+ -> 24 14
+ -> 32 19
+ -> -> Warehouse
+Printing the packing -- 
+32 19
+
+24 14
+
+39 2
+
+42 5
+
+65 1
+
+70 20
+
+82 3
+
+97 9
+
+89 29
+
+93 50
+>>>>>>> d46e5d0 (Altered hyperparameters to test Vrp-All Dataset)
 
 
 Printing information for cluster - 1
 The Routes for the cluster -- 
+<<<<<<< HEAD
 Warehouse -> -> Warehouse
 Printing the packing -- 
 77.6312 13.0144
@@ -8097,10 +8698,170 @@ The Routes for the cluster --
 Warehouse -> -> Warehouse
 Printing the packing -- 
 77.5609 13.0748
+=======
+Warehouse -> 76 82
+ -> 69 57
+ -> 62 61
+ -> -> Warehouse
+Printing the packing -- 
+62 61
+
+69 57
+
+
+Printing information for cluster - 2
+The Routes for the cluster -- 
+Warehouse -> 76 82
+ -> 59 61
+ -> 10 5
+ -> 7 13
+ -> 15 23
+ -> 9 42
+ -> 5 50
+ -> 8 49
+ -> 30 58
+ -> -> Warehouse
+Printing the packing -- 
+30 58
+
+8 49
+
+5 50
+
+9 42
+
+7 13
+
+10 5
+
+15 23
+
+59 61
+
+
+Printing information for cluster - 3
+The Routes for the cluster -- 
+Warehouse -> 76 82
+ -> 55 80
+ -> 39 84
+ -> 25 84
+ -> 2 91
+ -> 3 93
+ -> 5 98
+ -> 14 98
+ -> -> Warehouse
+Printing the packing -- 
+14 98
+
+5 98
+
+3 93
+
+2 91
+
+25 84
+
+39 84
+
+55 80
+
+
+Printing information for cluster - 4
+The Routes for the cluster -- 
+Warehouse -> 76 82
+ -> 60 85
+ -> 51 88
+ -> 44 96
+ -> 52 98
+ -> -> Warehouse
+Printing the packing -- 
+60 85
+
+51 88
+
+44 96
+
+52 98
+
+
+
+Total Cost for routing: 454 km
+Printing Cluster -- 0 
+93 50
+89 29
+97 9
+82 3
+70 20
+65 1
+42 5
+39 2
+24 14
+32 19
+Printing Cluster -- 1 
+69 57
+62 61
+Printing Cluster -- 2 
+30 58
+8 49
+5 50
+9 42
+7 13
+10 5
+15 23
+59 61
+Printing Cluster -- 3 
+55 80
+39 84
+25 84
+2 91
+3 93
+5 98
+14 98
+Printing Cluster -- 4 
+60 85
+51 88
+44 96
+52 98
+Printing information for cluster - 0
+The Routes for the cluster -- 
+Warehouse -> 76 82
+ -> 93 50
+ -> 89 29
+ -> 97 9
+ -> 82 3
+ -> 70 20
+ -> 65 1
+ -> 42 5
+ -> 39 2
+ -> 24 14
+ -> 32 19
+ -> -> Warehouse
+Printing the packing -- 
+93 50
+
+89 29
+
+97 9
+
+82 3
+
+70 20
+
+65 1
+
+42 5
+
+39 2
+
+24 14
+
+32 19
+>>>>>>> d46e5d0 (Altered hyperparameters to test Vrp-All Dataset)
 
 
 Printing information for cluster - 1
 The Routes for the cluster -- 
+<<<<<<< HEAD
 Warehouse -> -> Warehouse
 Printing the packing -- 
 77.6312 13.0144
@@ -8117,70 +8878,199 @@ The Routes for the cluster --
 Warehouse -> -> Warehouse
 Printing the packing -- 
 77.5609 13.0748
-
-
-Printing information for cluster - 1
-The Routes for the cluster -- 
-Warehouse -> -> Warehouse
+=======
+Warehouse -> 76 82
+ -> 62 61
+ -> 69 57
+ -> -> Warehouse
 Printing the packing -- 
-77.6312 13.0144
+69 57
+
+62 61
+
+
+Printing information for cluster - 2
+The Routes for the cluster -- 
+Warehouse -> 76 82
+ -> 59 61
+ -> 10 5
+ -> 7 13
+ -> 15 23
+ -> 9 42
+ -> 5 50
+ -> 8 49
+ -> 30 58
+ -> -> Warehouse
+Printing the packing -- 
+30 58
+
+8 49
+
+5 50
+
+9 42
+
+7 13
+
+10 5
+
+15 23
+
+59 61
+
+
+Printing information for cluster - 3
+The Routes for the cluster -- 
+Warehouse -> 76 82
+ -> 55 80
+ -> 39 84
+ -> 25 84
+ -> 2 91
+ -> 3 93
+ -> 5 98
+ -> 14 98
+ -> -> Warehouse
+Printing the packing -- 
+55 80
+
+39 84
+
+25 84
+
+2 91
+
+3 93
+
+5 98
+
+14 98
+
+
+Printing information for cluster - 4
+The Routes for the cluster -- 
+Warehouse -> 76 82
+ -> 60 85
+ -> 51 88
+ -> 44 96
+ -> 52 98
+ -> -> Warehouse
+Printing the packing -- 
+60 85
+
+51 88
+
+44 96
+
+52 98
 
 
 
-Total Cost for routing: 0 km
+Total Cost for routing: 454 km
 Printing Cluster -- 0 
-77.5609 13.0748
+25 19
+25 10
+23 9
+22 2
+44 4
+40 14
 Printing Cluster -- 1 
-77.6312 13.0144
+28 39
+16 25
+9 14
+9 14
+8 11
+21 20
+31 33
+Printing Cluster -- 2 
+22 54
+18 58
+4 64
+7 46
+0 37
+14 36
+16 34
+24 41
+39 40
+Printing Cluster -- 3 
+30 79
+25 80
+20 90
+16 94
+9 87
+13 82
+18 67
+29 68
+Printing Cluster -- 4 
+59 68
+55 88
+54 94
+39 95
+47 87
+43 72
+36 61
+Printing Cluster -- 5 
+64 70
+74 72
+68 84
+87 94
+97 96
+90 64
+91 51
+73 50
+Printing Cluster -- 6 
+64 37
+84 23
+92 9
+91 12
+89 32
+93 34
+93 36
+98 40
+91 40
+Printing Cluster -- 7 
+50 58
+59 43
+54 33
+54 38
+46 48
+Printing Cluster -- 8 
+68 18
+76 9
+78 5
+70 3
+60 0
+51 3
+57 11
+52 13
+50 28
 Printing information for cluster - 0
 The Routes for the cluster -- 
-Warehouse -> -> Warehouse
+Warehouse -> 44 59
+ -> 25 19
+ -> 25 10
+ -> 23 9
+ -> 22 2
+ -> 44 4
+ -> 40 14
+ -> -> Warehouse
 Printing the packing -- 
-77.5609 13.0748
+25 19
+
+25 10
+
+23 9
+
+22 2
+
+44 4
+
+40 14
+>>>>>>> d46e5d0 (Altered hyperparameters to test Vrp-All Dataset)
 
 
 Printing information for cluster - 1
 The Routes for the cluster -- 
-Warehouse -> -> Warehouse
-Printing the packing -- 
-77.6312 13.0144
-
-
-
-Total Cost for routing: 0 km
-Printing Cluster -- 0 
-77.5609 13.0748
-Printing Cluster -- 1 
-77.6312 13.0144
-Printing information for cluster - 0
-The Routes for the cluster -- 
-Warehouse -> -> Warehouse
-Printing the packing -- 
-77.5609 13.0748
-
-
-Printing information for cluster - 1
-The Routes for the cluster -- 
-Warehouse -> -> Warehouse
-Printing the packing -- 
-77.6312 13.0144
-
-
-
-Total Cost for routing: 0 km
-Printing Cluster -- 0 
-77.5609 13.0748
-Printing Cluster -- 1 
-77.6312 13.0144
-Printing information for cluster - 0
-The Routes for the cluster -- 
-Warehouse -> -> Warehouse
-Printing the packing -- 
-77.5609 13.0748
-
-
-Printing information for cluster - 1
-The Routes for the cluster -- 
+<<<<<<< HEAD
 Warehouse -> -> Warehouse
 Printing the packing -- 
 77.6312 13.0144
@@ -8841,3 +9731,2690 @@ Printing the packing --
 
 
 Total Cost for routing: 1.3591 km
+=======
+Warehouse -> 44 59
+ -> 28 39
+ -> 16 25
+ -> 9 14
+ -> 8 11
+ -> 9 14
+ -> 21 20
+ -> 31 33
+ -> -> Warehouse
+Printing the packing -- 
+28 39
+
+16 25
+
+9 14
+
+9 14
+
+8 11
+
+21 20
+
+31 33
+
+
+Printing information for cluster - 2
+The Routes for the cluster -- 
+Warehouse -> 44 59
+ -> 39 40
+ -> 24 41
+ -> 16 34
+ -> 14 36
+ -> 0 37
+ -> 7 46
+ -> 4 64
+ -> 18 58
+ -> 22 54
+ -> -> Warehouse
+Printing the packing -- 
+22 54
+
+18 58
+
+4 64
+
+7 46
+
+0 37
+
+14 36
+
+16 34
+
+24 41
+
+39 40
+
+
+Printing information for cluster - 3
+The Routes for the cluster -- 
+Warehouse -> 44 59
+ -> 29 68
+ -> 18 67
+ -> 13 82
+ -> 9 87
+ -> 16 94
+ -> 20 90
+ -> 25 80
+ -> 30 79
+ -> -> Warehouse
+Printing the packing -- 
+30 79
+
+25 80
+
+20 90
+
+16 94
+
+9 87
+
+13 82
+
+18 67
+
+29 68
+
+
+Printing information for cluster - 4
+The Routes for the cluster -- 
+Warehouse -> 44 59
+ -> 36 61
+ -> 43 72
+ -> 47 87
+ -> 39 95
+ -> 54 94
+ -> 55 88
+ -> 59 68
+ -> -> Warehouse
+Printing the packing -- 
+59 68
+
+55 88
+
+54 94
+
+39 95
+
+47 87
+
+43 72
+
+36 61
+
+
+Printing information for cluster - 5
+The Routes for the cluster -- 
+Warehouse -> 44 59
+ -> 73 50
+ -> 91 51
+ -> 90 64
+ -> 97 96
+ -> 87 94
+ -> 68 84
+ -> 74 72
+ -> 64 70
+ -> -> Warehouse
+Printing the packing -- 
+64 70
+
+74 72
+
+68 84
+
+87 94
+
+97 96
+
+90 64
+
+91 51
+
+73 50
+
+
+Printing information for cluster - 6
+The Routes for the cluster -- 
+Warehouse -> 44 59
+ -> 64 37
+ -> 84 23
+ -> 91 12
+ -> 92 9
+ -> 89 32
+ -> 93 34
+ -> 93 36
+ -> 98 40
+ -> 91 40
+ -> -> Warehouse
+Printing the packing -- 
+64 37
+
+84 23
+
+92 9
+
+91 12
+
+89 32
+
+93 34
+
+93 36
+
+98 40
+
+91 40
+
+
+Printing information for cluster - 7
+The Routes for the cluster -- 
+Warehouse -> 44 59
+ -> 50 58
+ -> 59 43
+ -> 54 33
+ -> 54 38
+ -> 46 48
+ -> -> Warehouse
+Printing the packing -- 
+50 58
+
+59 43
+
+54 33
+
+54 38
+
+46 48
+
+
+Printing information for cluster - 8
+The Routes for the cluster -- 
+Warehouse -> 44 59
+ -> 50 28
+ -> 52 13
+ -> 57 11
+ -> 51 3
+ -> 60 0
+ -> 70 3
+ -> 78 5
+ -> 76 9
+ -> 68 18
+ -> -> Warehouse
+Printing the packing -- 
+68 18
+
+76 9
+
+78 5
+
+70 3
+
+60 0
+
+51 3
+
+57 11
+
+52 13
+
+50 28
+
+
+
+Total Cost for routing: 660 km
+Printing Cluster -- 0 
+26 -61
+19 -69
+12 -92
+9 -97
+-20 -94
+-30 -94
+-36 -96
+-30 -83
+-29 -84
+-16 -77
+-14 -82
+-3 -82
+0 -75
+9 -58
+Printing Cluster -- 1 
+20 -60
+6 -70
+0 -65
+-2 -62
+-14 -63
+-20 -60
+-26 -61
+-26 -47
+-26 -46
+-6 -42
+Printing Cluster -- 2 
+-50 -54
+-62 -56
+-76 -61
+-75 -63
+-87 -72
+-96 -73
+-95 -80
+-97 -99
+-86 -93
+-79 -86
+-68 -90
+-61 -88
+-31 -80
+-19 -70
+-19 -69
+12 -47
+Printing Cluster -- 3 
+-56 -38
+-67 -39
+-81 -38
+-84 -40
+-89 -25
+-94 -30
+-95 -44
+-84 -57
+-82 -46
+-79 -46
+-60 -50
+Printing Cluster -- 4 
+-54 -25
+-71 -28
+-68 -30
+-63 -30
+-54 -35
+-30 -43
+-3 -46
+Printing Cluster -- 5 
+16 -16
+4 -24
+4 -36
+7 -44
+7 -45
+Printing Cluster -- 6 
+-39 -18
+-62 -19
+-66 -17
+-75 0
+-78 0
+-92 -7
+-84 8
+-79 9
+-81 16
+-72 17
+-49 10
+-47 -2
+-39 -5
+-5 -20
+Printing Cluster -- 7 
+-49 39
+-71 49
+-77 51
+-80 53
+-82 54
+-90 53
+-84 44
+-90 37
+-80 40
+-68 32
+-41 5
+-20 -3
+Printing Cluster -- 8 
+10 -12
+-7 -4
+-17 1
+-22 8
+-35 17
+-25 17
+-4 7
+14 0
+17 -3
+Printing Cluster -- 9 
+-37 26
+-87 78
+-86 81
+-91 83
+-97 82
+-83 96
+-74 82
+-70 74
+-62 79
+-61 71
+-48 54
+-33 33
+-6 6
+Printing Cluster -- 10 
+-24 38
+-37 50
+-45 51
+-47 49
+-49 59
+-48 66
+-46 69
+-41 63
+-39 60
+-1 35
+Printing Cluster -- 11 
+12 31
+8 38
+8 49
+-8 62
+-14 70
+-18 75
+-22 76
+-19 69
+-17 64
+-19 58
+-21 54
+-15 42
+Printing Cluster -- 12 
+0 70
+0 75
+-9 95
+-17 98
+-17 92
+-24 83
+-29 93
+-50 93
+-43 77
+-29 68
+-14 63
+Printing Cluster -- 13 
+17 -4
+21 17
+22 26
+27 40
+33 43
+33 42
+39 38
+41 29
+31 7
+29 2
+Printing Cluster -- 14 
+12 52
+20 64
+11 85
+15 91
+27 92
+28 92
+36 91
+40 92
+49 93
+59 69
+Printing Cluster -- 15 
+33 29
+37 64
+35 82
+35 86
+36 85
+38 79
+39 66
+42 41
+41 36
+Printing Cluster -- 16 
+34 -18
+36 -16
+34 1
+41 24
+42 20
+48 12
+59 7
+54 -5
+52 -7
+Printing Cluster -- 17 
+49 -1
+58 25
+57 33
+61 40
+66 52
+70 51
+71 59
+89 55
+80 40
+85 31
+73 7
+66 3
+Printing Cluster -- 18 
+93 19
+91 25
+93 28
+96 42
+95 57
+99 70
+80 70
+79 77
+81 99
+65 88
+58 60
+52 23
+Printing Cluster -- 19 
+38 -13
+42 -12
+44 -14
+49 -17
+51 -20
+43 -26
+39 -28
+Printing Cluster -- 20 
+87 -19
+85 -12
+97 -3
+95 0
+97 5
+94 6
+96 11
+98 15
+89 14
+75 0
+60 -11
+Printing Cluster -- 21 
+46 -37
+47 -43
+61 -39
+72 -29
+73 -28
+77 -21
+73 -22
+64 -18
+62 -16
+59 -19
+Printing Cluster -- 22 
+55 -76
+55 -80
+74 -84
+85 -96
+84 -83
+80 -77
+85 -70
+88 -67
+88 -53
+63 -42
+Printing Cluster -- 23 
+39 -55
+50 -59
+56 -61
+63 -66
+72 -67
+70 -64
+66 -61
+64 -58
+62 -53
+60 -50
+Printing Cluster -- 24 
+53 -78
+49 -83
+51 -87
+35 -97
+36 -88
+37 -81
+39 -70
+Printing information for cluster - 0
+The Routes for the cluster -- 
+Warehouse -> 33 -33
+ -> 26 -61
+ -> 19 -69
+ -> 12 -92
+ -> 9 -97
+ -> -20 -94
+ -> -30 -94
+ -> -36 -96
+ -> -30 -83
+ -> -14 -82
+ -> -16 -77
+ -> 0 -75
+ -> 9 -58
+ -> -> Warehouse
+Printing the packing -- 
+19 -69
+
+9 -97
+
+-16 -77
+
+-14 -82
+
+0 -75
+
+-20 -94
+
+9 -58
+
+-30 -94
+
+-36 -96
+
+-30 -83
+
+26 -61
+
+12 -92
+
+
+Printing information for cluster - 1
+The Routes for the cluster -- 
+Warehouse -> 33 -33
+ -> -6 -42
+ -> -26 -46
+ -> -26 -47
+ -> -26 -61
+ -> -20 -60
+ -> -14 -63
+ -> -2 -62
+ -> 0 -65
+ -> 6 -70
+ -> 20 -60
+ -> -> Warehouse
+Printing the packing -- 
+20 -60
+
+6 -70
+
+0 -65
+
+-2 -62
+
+-14 -63
+
+-20 -60
+
+-26 -61
+
+-26 -47
+
+-26 -46
+
+-6 -42
+
+
+Printing information for cluster - 2
+The Routes for the cluster -- 
+Warehouse -> 33 -33
+ -> 12 -47
+ -> -19 -69
+ -> -19 -70
+ -> -31 -80
+ -> -62 -56
+ -> -76 -61
+ -> -75 -63
+ -> -61 -88
+ -> -68 -90
+ -> -79 -86
+ -> -86 -93
+ -> -97 -99
+ -> -95 -80
+ -> -96 -73
+ -> -87 -72
+ -> -> Warehouse
+Printing the packing -- 
+-95 -80
+
+-86 -93
+
+-68 -90
+
+12 -47
+
+-75 -63
+
+-87 -72
+
+-96 -73
+
+-79 -86
+
+-19 -70
+
+-19 -69
+
+-62 -56
+
+-76 -61
+
+-97 -99
+
+-61 -88
+
+-31 -80
+
+
+Printing information for cluster - 3
+The Routes for the cluster -- 
+Warehouse -> 33 -33
+ -> -56 -38
+ -> -67 -39
+ -> -81 -38
+ -> -89 -25
+ -> -94 -30
+ -> -95 -44
+ -> -84 -57
+ -> -82 -46
+ -> -79 -46
+ -> -60 -50
+ -> -> Warehouse
+Printing the packing -- 
+-89 -25
+
+-94 -30
+
+-84 -57
+
+-56 -38
+
+-67 -39
+
+-81 -38
+
+-60 -50
+
+-95 -44
+
+-82 -46
+
+-79 -46
+
+
+Printing information for cluster - 4
+The Routes for the cluster -- 
+Warehouse -> 33 -33
+ -> -54 -25
+ -> -68 -30
+ -> -71 -28
+ -> -63 -30
+ -> -54 -35
+ -> -> Warehouse
+Printing the packing -- 
+-54 -35
+
+-54 -25
+
+-71 -28
+
+-63 -30
+
+-68 -30
+
+
+Printing information for cluster - 5
+The Routes for the cluster -- 
+Warehouse -> 33 -33
+ -> 16 -16
+ -> 4 -24
+ -> 4 -36
+ -> 7 -45
+ -> 7 -44
+ -> -> Warehouse
+Printing the packing -- 
+16 -16
+
+4 -24
+
+4 -36
+
+7 -44
+
+7 -45
+
+
+Printing information for cluster - 6
+The Routes for the cluster -- 
+Warehouse -> 33 -33
+ -> -5 -20
+ -> -39 -18
+ -> -62 -19
+ -> -66 -17
+ -> -75 0
+ -> -78 0
+ -> -84 8
+ -> -72 17
+ -> -49 10
+ -> -39 -5
+ -> -> Warehouse
+Printing the packing -- 
+-84 8
+
+-39 -5
+
+-39 -18
+
+-66 -17
+
+-49 10
+
+-5 -20
+
+-62 -19
+
+-75 0
+
+-78 0
+
+-72 17
+
+
+Printing information for cluster - 7
+The Routes for the cluster -- 
+Warehouse -> 33 -33
+ -> -20 -3
+ -> -68 32
+ -> -80 40
+ -> -84 44
+ -> -90 37
+ -> -90 53
+ -> -82 54
+ -> -71 49
+ -> -49 39
+ -> -> Warehouse
+Printing the packing -- 
+-49 39
+
+-82 54
+
+-71 49
+
+-84 44
+
+-68 32
+
+-20 -3
+
+-90 53
+
+-90 37
+
+-80 40
+
+
+Printing information for cluster - 8
+The Routes for the cluster -- 
+Warehouse -> 33 -33
+ -> 17 -3
+ -> 14 0
+ -> -7 -4
+ -> -17 1
+ -> -22 8
+ -> -35 17
+ -> -25 17
+ -> -4 7
+ -> 10 -12
+ -> -> Warehouse
+Printing the packing -- 
+10 -12
+
+-7 -4
+
+-17 1
+
+-22 8
+
+-35 17
+
+-25 17
+
+-4 7
+
+14 0
+
+17 -3
+
+
+Printing information for cluster - 9
+The Routes for the cluster -- 
+Warehouse -> 33 -33
+ -> -6 6
+ -> -37 26
+ -> -48 54
+ -> -62 79
+ -> -74 82
+ -> -83 96
+ -> -91 83
+ -> -87 78
+ -> -86 81
+ -> -70 74
+ -> -> Warehouse
+Printing the packing -- 
+-86 81
+
+-70 74
+
+-87 78
+
+-91 83
+
+-62 79
+
+-83 96
+
+-74 82
+
+-48 54
+
+-6 6
+
+-37 26
+
+
+Printing information for cluster - 10
+The Routes for the cluster -- 
+Warehouse -> 33 -33
+ -> -1 35
+ -> -39 60
+ -> -41 63
+ -> -46 69
+ -> -48 66
+ -> -49 59
+ -> -47 49
+ -> -45 51
+ -> -24 38
+ -> -> Warehouse
+Printing the packing -- 
+-45 51
+
+-49 59
+
+-46 69
+
+-41 63
+
+-39 60
+
+-48 66
+
+-24 38
+
+-47 49
+
+-1 35
+
+
+Printing information for cluster - 11
+The Routes for the cluster -- 
+Warehouse -> 33 -33
+ -> 12 31
+ -> 8 38
+ -> 8 49
+ -> -8 62
+ -> -14 70
+ -> -18 75
+ -> -19 69
+ -> -17 64
+ -> -21 54
+ -> -> Warehouse
+Printing the packing -- 
+-18 75
+
+-17 64
+
+-21 54
+
+8 38
+
+8 49
+
+-14 70
+
+12 31
+
+-8 62
+
+-19 69
+
+
+Printing information for cluster - 12
+The Routes for the cluster -- 
+Warehouse -> 33 -33
+ -> 0 70
+ -> -29 68
+ -> -43 77
+ -> -50 93
+ -> -17 98
+ -> 0 75
+ -> -> Warehouse
+Printing the packing -- 
+-50 93
+
+-43 77
+
+0 75
+
+-17 98
+
+0 70
+
+-29 68
+
+
+Printing information for cluster - 13
+The Routes for the cluster -- 
+Warehouse -> 33 -33
+ -> 29 2
+ -> 31 7
+ -> 41 29
+ -> 39 38
+ -> 33 43
+ -> 33 42
+ -> 27 40
+ -> 22 26
+ -> 21 17
+ -> 17 -4
+ -> -> Warehouse
+Printing the packing -- 
+17 -4
+
+21 17
+
+22 26
+
+27 40
+
+33 43
+
+33 42
+
+39 38
+
+41 29
+
+31 7
+
+29 2
+
+
+Printing information for cluster - 14
+The Routes for the cluster -- 
+Warehouse -> 33 -33
+ -> 12 52
+ -> 20 64
+ -> 11 85
+ -> 15 91
+ -> 27 92
+ -> 28 92
+ -> 36 91
+ -> 40 92
+ -> 59 69
+ -> -> Warehouse
+Printing the packing -- 
+11 85
+
+36 91
+
+59 69
+
+15 91
+
+27 92
+
+28 92
+
+40 92
+
+12 52
+
+20 64
+
+
+Printing information for cluster - 15
+The Routes for the cluster -- 
+Warehouse -> 33 -33
+ -> 33 29
+ -> 35 86
+ -> 36 85
+ -> 38 79
+ -> 39 66
+ -> 37 64
+ -> 42 41
+ -> 41 36
+ -> -> Warehouse
+Printing the packing -- 
+38 79
+
+39 66
+
+35 86
+
+36 85
+
+42 41
+
+37 64
+
+41 36
+
+33 29
+
+
+Printing information for cluster - 16
+The Routes for the cluster -- 
+Warehouse -> 33 -33
+ -> 34 -18
+ -> 36 -16
+ -> 34 1
+ -> 41 24
+ -> 42 20
+ -> 48 12
+ -> 59 7
+ -> 54 -5
+ -> 52 -7
+ -> -> Warehouse
+Printing the packing -- 
+34 -18
+
+36 -16
+
+34 1
+
+41 24
+
+42 20
+
+48 12
+
+59 7
+
+54 -5
+
+52 -7
+
+
+Printing information for cluster - 17
+The Routes for the cluster -- 
+Warehouse -> 33 -33
+ -> 49 -1
+ -> 58 25
+ -> 57 33
+ -> 61 40
+ -> 66 52
+ -> 70 51
+ -> 71 59
+ -> 89 55
+ -> 80 40
+ -> 85 31
+ -> 73 7
+ -> 66 3
+ -> -> Warehouse
+Printing the packing -- 
+49 -1
+
+58 25
+
+57 33
+
+61 40
+
+66 52
+
+70 51
+
+71 59
+
+89 55
+
+80 40
+
+85 31
+
+73 7
+
+66 3
+
+
+Printing information for cluster - 18
+The Routes for the cluster -- 
+Warehouse -> 33 -33
+ -> 93 19
+ -> 91 25
+ -> 93 28
+ -> 96 42
+ -> 95 57
+ -> 99 70
+ -> 80 70
+ -> 79 77
+ -> 65 88
+ -> 58 60
+ -> 52 23
+ -> -> Warehouse
+Printing the packing -- 
+91 25
+
+96 42
+
+99 70
+
+58 60
+
+93 28
+
+95 57
+
+79 77
+
+65 88
+
+52 23
+
+80 70
+
+93 19
+
+
+Printing information for cluster - 19
+The Routes for the cluster -- 
+Warehouse -> 33 -33
+ -> 39 -28
+ -> 43 -26
+ -> 51 -20
+ -> 49 -17
+ -> 44 -14
+ -> 42 -12
+ -> 38 -13
+ -> -> Warehouse
+Printing the packing -- 
+38 -13
+
+42 -12
+
+44 -14
+
+49 -17
+
+51 -20
+
+43 -26
+
+39 -28
+
+
+Printing information for cluster - 20
+The Routes for the cluster -- 
+Warehouse -> 33 -33
+ -> 60 -11
+ -> 75 0
+ -> 89 14
+ -> 98 15
+ -> 96 11
+ -> 94 6
+ -> 97 5
+ -> 95 0
+ -> 97 -3
+ -> 85 -12
+ -> 87 -19
+ -> -> Warehouse
+Printing the packing -- 
+87 -19
+
+85 -12
+
+97 -3
+
+95 0
+
+97 5
+
+94 6
+
+96 11
+
+98 15
+
+89 14
+
+75 0
+
+60 -11
+
+
+<<<<<<< HEAD
+Printing information for cluster - 21
+The Routes for the cluster -- 
+Warehouse -> 33 -33
+ -> 46 -37
+ -> 47 -43
+ -> 61 -39
+ -> 72 -29
+ -> 73 -28
+ -> 77 -21
+ -> 73 -22
+ -> 64 -18
+ -> 62 -16
+ -> 59 -19
+ -> -> Warehouse
+Printing the packing -- 
+46 -37
+
+47 -43
+
+61 -39
+
+72 -29
+
+73 -28
+
+77 -21
+
+73 -22
+
+64 -18
+
+62 -16
+
+59 -19
+
+
+Printing information for cluster - 22
+The Routes for the cluster -- 
+Warehouse -> 33 -33
+ -> 63 -42
+ -> 55 -76
+ -> 55 -80
+ -> 74 -84
+ -> 80 -77
+ -> 85 -96
+ -> 84 -83
+ -> 85 -70
+ -> 88 -67
+ -> 88 -53
+ -> -> Warehouse
+Printing the packing -- 
+55 -76
+
+55 -80
+
+74 -84
+
+85 -96
+
+84 -83
+
+80 -77
+
+85 -70
+
+88 -67
+
+88 -53
+
+63 -42
+
+
+Printing information for cluster - 23
+The Routes for the cluster -- 
+Warehouse -> 33 -33
+ -> 39 -55
+ -> 50 -59
+ -> 56 -61
+ -> 63 -66
+ -> 72 -67
+ -> 70 -64
+ -> 66 -61
+ -> 64 -58
+ -> 62 -53
+ -> 60 -50
+ -> -> Warehouse
+Printing the packing -- 
+39 -55
+
+50 -59
+
+56 -61
+
+63 -66
+
+72 -67
+
+70 -64
+
+66 -61
+
+64 -58
+
+62 -53
+
+60 -50
+
+
+Printing information for cluster - 24
+The Routes for the cluster -- 
+Warehouse -> 33 -33
+ -> 39 -70
+ -> 37 -81
+ -> 36 -88
+ -> 35 -97
+ -> 51 -87
+ -> 49 -83
+ -> 53 -78
+ -> -> Warehouse
+Printing the packing -- 
+53 -78
+
+49 -83
+
+51 -87
+
+35 -97
+
+36 -88
+
+37 -81
+
+39 -70
+
+
+
+Total Cost for routing: 3204 km
+Printing Cluster -- 0 
+26 -61
+19 -69
+12 -92
+9 -97
+-20 -94
+-30 -94
+-36 -96
+-30 -83
+-29 -84
+-16 -77
+-14 -82
+-3 -82
+0 -75
+9 -58
+Printing Cluster -- 1 
+20 -60
+6 -70
+0 -65
+-2 -62
+-14 -63
+-20 -60
+-26 -61
+-26 -47
+-26 -46
+-6 -42
+Printing Cluster -- 2 
+-62 -56
+-75 -63
+-76 -61
+-84 -57
+-87 -72
+-96 -73
+-95 -80
+-97 -99
+-86 -93
+-79 -86
+-68 -90
+-61 -88
+-31 -80
+-19 -70
+-19 -69
+12 -47
+Printing Cluster -- 3 
+-50 -54
+-60 -50
+-79 -46
+-82 -46
+-95 -44
+-94 -30
+-89 -25
+-84 -40
+-81 -38
+-67 -39
+-56 -38
+Printing Cluster -- 4 
+-3 -46
+-30 -43
+-54 -35
+-63 -30
+-68 -30
+-71 -28
+-54 -25
+Printing Cluster -- 5 
+7 -45
+7 -44
+4 -36
+4 -24
+16 -16
+Printing Cluster -- 6 
+-39 -18
+-62 -19
+-66 -17
+-75 0
+-78 0
+-92 -7
+-84 8
+-79 9
+-81 16
+-72 17
+-49 10
+-47 -2
+-39 -5
+-5 -20
+Printing Cluster -- 7 
+-49 39
+-71 49
+-77 51
+-80 53
+-82 54
+-90 53
+-84 44
+-90 37
+-80 40
+-68 32
+-41 5
+-20 -3
+Printing Cluster -- 8 
+10 -12
+-7 -4
+-17 1
+-22 8
+-35 17
+-25 17
+14 0
+17 -4
+Printing Cluster -- 9 
+-6 6
+-33 33
+-61 71
+-62 79
+-70 74
+-74 82
+-86 81
+-87 78
+-97 82
+-91 83
+-83 96
+-50 93
+-24 83
+Printing Cluster -- 10 
+-37 26
+-47 49
+-45 51
+-48 54
+-49 59
+-48 66
+-46 69
+-41 63
+-39 60
+-37 50
+-24 38
+-4 7
+Printing Cluster -- 11 
+-1 35
+-8 62
+-14 63
+-14 70
+-18 75
+-22 76
+-19 69
+-17 64
+-19 58
+-21 54
+-15 42
+Printing Cluster -- 12 
+12 31
+8 49
+0 70
+0 75
+-9 95
+-17 98
+-17 92
+-29 93
+-43 77
+-29 68
+Printing Cluster -- 13 
+17 -3
+8 38
+12 52
+20 64
+11 85
+15 91
+27 92
+28 92
+36 91
+40 92
+49 93
+Printing Cluster -- 14 
+41 29
+41 36
+39 38
+33 42
+33 43
+27 40
+22 26
+21 17
+29 2
+Printing Cluster -- 15 
+31 7
+33 29
+37 64
+35 82
+35 86
+36 85
+38 79
+39 66
+42 41
+Printing Cluster -- 16 
+34 -18
+36 -16
+34 1
+41 24
+42 20
+48 12
+59 7
+54 -5
+52 -7
+Printing Cluster -- 17 
+49 -1
+58 25
+58 60
+59 69
+65 88
+81 99
+79 77
+80 70
+99 70
+95 57
+80 40
+85 31
+Printing Cluster -- 18 
+52 23
+57 33
+61 40
+66 52
+70 51
+71 59
+89 55
+96 42
+93 28
+91 25
+93 19
+89 14
+75 0
+Printing Cluster -- 19 
+38 -13
+42 -12
+44 -14
+49 -17
+51 -20
+43 -26
+39 -28
+Printing Cluster -- 20 
+87 -19
+85 -12
+97 -3
+95 0
+97 5
+94 6
+96 11
+98 15
+73 7
+66 3
+60 -11
+Printing Cluster -- 21 
+46 -37
+47 -43
+61 -39
+72 -29
+73 -28
+77 -21
+73 -22
+64 -18
+62 -16
+59 -19
+Printing Cluster -- 22 
+63 -42
+88 -53
+88 -67
+85 -70
+80 -77
+84 -83
+85 -96
+74 -84
+55 -80
+55 -76
+Printing Cluster -- 23 
+60 -50
+62 -53
+64 -58
+66 -61
+70 -64
+72 -67
+63 -66
+56 -61
+50 -59
+39 -55
+Printing Cluster -- 24 
+53 -78
+49 -83
+51 -87
+35 -97
+36 -88
+37 -81
+39 -70
+Printing information for cluster - 0
+The Routes for the cluster -- 
+Warehouse -> 33 -33
+ -> 26 -61
+ -> 19 -69
+ -> 0 -75
+ -> -14 -82
+ -> -16 -77
+ -> -29 -84
+ -> -30 -83
+ -> -30 -94
+ -> -36 -96
+ -> -20 -94
+ -> 9 -97
+ -> 12 -92
+ -> -3 -82
+ -> 9 -58
+ -> -> Warehouse
+Printing the packing -- 
+26 -61
+
+19 -69
+
+12 -92
+
+9 -97
+
+-20 -94
+
+-30 -94
+
+-36 -96
+
+-30 -83
+
+-29 -84
+
+-16 -77
+
+-14 -82
+
+-3 -82
+
+0 -75
+
+9 -58
+
+
+Printing information for cluster - 1
+The Routes for the cluster -- 
+Warehouse -> 33 -33
+ -> 20 -60
+ -> 6 -70
+ -> 0 -65
+ -> -2 -62
+ -> -14 -63
+ -> -20 -60
+ -> -26 -61
+ -> -26 -47
+ -> -26 -46
+ -> -6 -42
+ -> -> Warehouse
+Printing the packing -- 
+20 -60
+
+6 -70
+
+0 -65
+
+-2 -62
+
+-14 -63
+
+-20 -60
+
+-26 -61
+
+-26 -47
+
+-26 -46
+
+-6 -42
+
+
+Printing information for cluster - 2
+The Routes for the cluster -- 
+Warehouse -> 33 -33
+ -> -19 -70
+ -> -31 -80
+ -> -61 -88
+ -> -68 -90
+ -> -79 -86
+ -> -95 -80
+ -> -84 -57
+ -> -76 -61
+ -> -75 -63
+ -> -62 -56
+ -> -> Warehouse
+Printing the packing -- 
+-19 -70
+
+-62 -56
+
+-79 -86
+
+-61 -88
+
+-31 -80
+
+-76 -61
+
+-95 -80
+
+-75 -63
+
+-84 -57
+
+-68 -90
+
+
+Printing information for cluster - 3
+The Routes for the cluster -- 
+Warehouse -> 33 -33
+ -> -56 -38
+ -> -67 -39
+ -> -81 -38
+ -> -84 -40
+ -> -89 -25
+ -> -94 -30
+ -> -95 -44
+ -> -82 -46
+ -> -79 -46
+ -> -60 -50
+ -> -50 -54
+ -> -> Warehouse
+Printing the packing -- 
+-50 -54
+
+-60 -50
+
+-79 -46
+
+-82 -46
+
+-95 -44
+
+-94 -30
+
+-89 -25
+
+-84 -40
+
+-81 -38
+
+-67 -39
+
+-56 -38
+
+
+Printing information for cluster - 4
+The Routes for the cluster -- 
+Warehouse -> 33 -33
+ -> -3 -46
+ -> -30 -43
+ -> -54 -35
+ -> -63 -30
+ -> -54 -25
+ -> -> Warehouse
+Printing the packing -- 
+-54 -35
+
+-54 -25
+
+-30 -43
+
+-63 -30
+
+-3 -46
+
+
+Printing information for cluster - 5
+The Routes for the cluster -- 
+Warehouse -> 33 -33
+ -> 16 -16
+ -> 4 -24
+ -> 4 -36
+ -> 7 -45
+ -> 7 -44
+ -> -> Warehouse
+Printing the packing -- 
+7 -45
+
+7 -44
+
+4 -36
+
+4 -24
+
+16 -16
+
+
+Printing information for cluster - 6
+The Routes for the cluster -- 
+Warehouse -> 33 -33
+ -> -5 -20
+ -> -39 -18
+ -> -62 -19
+ -> -66 -17
+ -> -92 -7
+ -> -78 0
+ -> -75 0
+ -> -72 17
+ -> -49 10
+ -> -39 -5
+ -> -> Warehouse
+Printing the packing -- 
+-75 0
+
+-72 17
+
+-5 -20
+
+-78 0
+
+-92 -7
+
+-49 10
+
+-39 -18
+
+-66 -17
+
+-39 -5
+
+-62 -19
+
+
+Printing information for cluster - 7
+The Routes for the cluster -- 
+Warehouse -> 33 -33
+ -> -20 -3
+ -> -41 5
+ -> -68 32
+ -> -80 40
+ -> -90 37
+ -> -90 53
+ -> -82 54
+ -> -80 53
+ -> -77 51
+ -> -71 49
+ -> -49 39
+ -> -> Warehouse
+Printing the packing -- 
+-77 51
+
+-80 53
+
+-82 54
+
+-90 37
+
+-41 5
+
+-20 -3
+
+-49 39
+
+-71 49
+
+-80 40
+
+-90 53
+
+-68 32
+
+
+Printing information for cluster - 8
+The Routes for the cluster -- 
+Warehouse -> 33 -33
+ -> 17 -4
+ -> 14 0
+ -> -25 17
+ -> -35 17
+ -> -22 8
+ -> -17 1
+ -> -7 -4
+ -> 10 -12
+ -> -> Warehouse
+Printing the packing -- 
+10 -12
+
+-7 -4
+
+-17 1
+
+-22 8
+
+-35 17
+
+-25 17
+
+14 0
+
+17 -4
+
+
+Printing information for cluster - 9
+The Routes for the cluster -- 
+Warehouse -> 33 -33
+ -> -6 6
+ -> -33 33
+ -> -61 71
+ -> -62 79
+ -> -70 74
+ -> -74 82
+ -> -86 81
+ -> -87 78
+ -> -91 83
+ -> -97 82
+ -> -83 96
+ -> -50 93
+ -> -24 83
+ -> -> Warehouse
+Printing the packing -- 
+-6 6
+
+-33 33
+
+-61 71
+
+-62 79
+
+-70 74
+
+-74 82
+
+-86 81
+
+-87 78
+
+-97 82
+
+-91 83
+
+-83 96
+
+-50 93
+
+-24 83
+
+
+Printing information for cluster - 10
+The Routes for the cluster -- 
+Warehouse -> 33 -33
+ -> -4 7
+ -> -37 26
+ -> -47 49
+ -> -48 54
+ -> -49 59
+ -> -48 66
+ -> -46 69
+ -> -41 63
+ -> -39 60
+ -> -37 50
+ -> -24 38
+ -> -> Warehouse
+Printing the packing -- 
+-49 59
+
+-4 7
+
+-48 54
+
+-41 63
+
+-39 60
+
+-37 50
+
+-47 49
+
+-48 66
+
+-46 69
+
+-24 38
+
+-37 26
+
+
+Printing information for cluster - 11
+The Routes for the cluster -- 
+Warehouse -> 33 -33
+ -> -1 35
+ -> -8 62
+ -> -18 75
+ -> -22 76
+ -> -19 69
+ -> -17 64
+ -> -15 42
+ -> -> Warehouse
+Printing the packing -- 
+-1 35
+
+-17 64
+
+-15 42
+
+-8 62
+
+-18 75
+
+-19 69
+
+-22 76
+
+
+Printing information for cluster - 12
+The Routes for the cluster -- 
+Warehouse -> 33 -33
+ -> 12 31
+ -> 8 49
+ -> 0 70
+ -> 0 75
+ -> -9 95
+ -> -17 98
+ -> -29 93
+ -> -43 77
+ -> -29 68
+ -> -> Warehouse
+Printing the packing -- 
+8 49
+
+0 70
+
+-29 93
+
+-29 68
+
+-43 77
+
+12 31
+
+-17 98
+
+0 75
+
+-9 95
+
+
+Printing information for cluster - 13
+The Routes for the cluster -- 
+Warehouse -> 33 -33
+ -> 17 -3
+ -> 8 38
+ -> 12 52
+ -> 20 64
+ -> 15 91
+ -> 27 92
+ -> 28 92
+ -> 36 91
+ -> 40 92
+ -> 49 93
+ -> -> Warehouse
+Printing the packing -- 
+36 91
+
+40 92
+
+12 52
+
+20 64
+
+17 -3
+
+8 38
+
+15 91
+
+27 92
+
+28 92
+
+49 93
+
+
+Printing information for cluster - 14
+The Routes for the cluster -- 
+Warehouse -> 33 -33
+ -> 29 2
+ -> 21 17
+ -> 22 26
+ -> 27 40
+ -> 33 42
+ -> 33 43
+ -> 39 38
+ -> 41 36
+ -> 41 29
+ -> -> Warehouse
+Printing the packing -- 
+41 29
+
+41 36
+
+39 38
+
+33 42
+
+33 43
+
+27 40
+
+22 26
+
+21 17
+
+29 2
+
+
+Printing information for cluster - 15
+The Routes for the cluster -- 
+Warehouse -> 33 -33
+ -> 31 7
+ -> 42 41
+ -> 37 64
+ -> 39 66
+ -> 38 79
+ -> 36 85
+ -> 35 86
+ -> 35 82
+ -> 33 29
+ -> -> Warehouse
+Printing the packing -- 
+31 7
+
+33 29
+
+37 64
+
+35 82
+
+35 86
+
+36 85
+
+38 79
+
+39 66
+
+42 41
+
+
+Printing information for cluster - 16
+The Routes for the cluster -- 
+Warehouse -> 33 -33
+ -> 34 -18
+ -> 36 -16
+ -> 34 1
+ -> 41 24
+ -> 42 20
+ -> 48 12
+ -> 59 7
+ -> 54 -5
+ -> 52 -7
+ -> -> Warehouse
+Printing the packing -- 
+34 -18
+
+36 -16
+
+34 1
+
+41 24
+
+42 20
+
+48 12
+
+59 7
+
+54 -5
+
+52 -7
+
+
+Printing information for cluster - 17
+The Routes for the cluster -- 
+Warehouse -> 33 -33
+ -> 49 -1
+ -> 58 25
+ -> 58 60
+ -> 59 69
+ -> 65 88
+ -> 81 99
+ -> 79 77
+ -> 80 70
+ -> 99 70
+ -> 95 57
+ -> 80 40
+ -> 85 31
+ -> -> Warehouse
+Printing the packing -- 
+49 -1
+
+58 25
+
+58 60
+
+59 69
+
+65 88
+
+81 99
+
+79 77
+
+80 70
+
+99 70
+
+95 57
+
+80 40
+
+85 31
+
+
+Printing information for cluster - 18
+The Routes for the cluster -- 
+Warehouse -> 33 -33
+ -> 52 23
+ -> 57 33
+ -> 61 40
+ -> 66 52
+ -> 70 51
+ -> 71 59
+ -> 89 55
+ -> 96 42
+ -> 91 25
+ -> 89 14
+ -> 75 0
+ -> -> Warehouse
+Printing the packing -- 
+66 52
+
+52 23
+
+89 55
+
+91 25
+
+89 14
+
+75 0
+
+57 33
+
+70 51
+
+71 59
+
+96 42
+
+61 40
+
+
+Printing information for cluster - 19
+The Routes for the cluster -- 
+Warehouse -> 33 -33
+ -> 39 -28
+ -> 43 -26
+ -> 51 -20
+ -> 49 -17
+ -> 44 -14
+ -> 42 -12
+ -> 38 -13
+ -> -> Warehouse
+Printing the packing -- 
+38 -13
+
+42 -12
+
+44 -14
+
+49 -17
+
+51 -20
+
+43 -26
+
+39 -28
+
+
+Printing information for cluster - 20
+The Routes for the cluster -- 
+Warehouse -> 33 -33
+ -> 87 -19
+ -> 85 -12
+ -> 97 -3
+ -> 95 0
+ -> 94 6
+ -> 97 5
+ -> 96 11
+ -> 98 15
+ -> 73 7
+ -> 66 3
+ -> 60 -11
+ -> -> Warehouse
+Printing the packing -- 
+87 -19
+
+85 -12
+
+97 -3
+
+95 0
+
+97 5
+
+94 6
+
+96 11
+
+98 15
+
+73 7
+
+66 3
+
+60 -11
+
+
+Printing information for cluster - 21
+The Routes for the cluster -- 
+Warehouse -> 33 -33
+ -> 46 -37
+ -> 47 -43
+ -> 61 -39
+ -> 72 -29
+ -> 73 -28
+ -> 77 -21
+ -> 73 -22
+ -> 64 -18
+ -> 62 -16
+ -> 59 -19
+ -> -> Warehouse
+Printing the packing -- 
+46 -37
+
+47 -43
+
+61 -39
+
+72 -29
+
+73 -28
+
+77 -21
+
+73 -22
+
+64 -18
+
+62 -16
+
+59 -19
+
+
+Printing information for cluster - 22
+The Routes for the cluster -- 
+Warehouse -> 33 -33
+ -> 63 -42
+ -> 88 -53
+ -> 88 -67
+ -> 85 -70
+ -> 80 -77
+ -> 84 -83
+ -> 85 -96
+ -> 74 -84
+ -> 55 -80
+ -> 55 -76
+ -> -> Warehouse
+Printing the packing -- 
+63 -42
+
+88 -53
+
+88 -67
+
+85 -70
+
+80 -77
+
+84 -83
+
+85 -96
+
+74 -84
+
+55 -80
+
+55 -76
+
+
+Printing information for cluster - 23
+The Routes for the cluster -- 
+Warehouse -> 33 -33
+ -> 39 -55
+ -> 50 -59
+ -> 56 -61
+ -> 63 -66
+ -> 72 -67
+ -> 70 -64
+ -> 66 -61
+ -> 64 -58
+ -> 62 -53
+ -> 60 -50
+ -> -> Warehouse
+Printing the packing -- 
+60 -50
+
+62 -53
+
+64 -58
+
+66 -61
+
+70 -64
+
+72 -67
+
+63 -66
+
+56 -61
+
+50 -59
+
+39 -55
+
+
+Printing information for cluster - 24
+The Routes for the cluster -- 
+Warehouse -> 33 -33
+ -> 39 -70
+ -> 37 -81
+ -> 36 -88
+ -> 35 -97
+ -> 51 -87
+ -> 49 -83
+ -> 53 -78
+ -> -> Warehouse
+Printing the packing -- 
+53 -78
+
+49 -83
+
+51 -87
+
+35 -97
+
+36 -88
+
+37 -81
+
+39 -70
+
+
+
+Total Cost for routing: 3161 km
+<<<<<<< HEAD
+>>>>>>> d46e5d0 (Altered hyperparameters to test Vrp-All Dataset)
+=======
+Printing Cluster -- 0 
+93 50
+89 29
+97 9
+82 3
+65 1
+39 2
+42 5
+70 20
+Printing Cluster -- 1 
+69 57
+62 61
+59 61
+30 58
+Printing Cluster -- 2 
+32 19
+24 14
+10 5
+7 13
+15 23
+9 42
+5 50
+8 49
+Printing Cluster -- 3 
+55 80
+39 84
+25 84
+2 91
+3 93
+5 98
+14 98
+Printing Cluster -- 4 
+52 98
+44 96
+51 88
+60 85
+Printing information for cluster - 0
+The Routes for the cluster -- 
+Warehouse -> 76 82
+ -> 42 5
+ -> 39 2
+ -> 82 3
+ -> 97 9
+ -> 89 29
+ -> 93 50
+ -> -> Warehouse
+Printing the packing -- 
+93 50
+
+89 29
+
+97 9
+
+82 3
+
+39 2
+
+42 5
+
+
+Printing information for cluster - 1
+The Routes for the cluster -- 
+Warehouse -> 76 82
+ -> 69 57
+ -> 62 61
+ -> 59 61
+ -> 30 58
+ -> -> Warehouse
+Printing the packing -- 
+69 57
+
+62 61
+
+59 61
+
+30 58
+
+
+Printing information for cluster - 2
+The Routes for the cluster -- 
+Warehouse -> 76 82
+ -> 32 19
+ -> 10 5
+ -> 7 13
+ -> 15 23
+ -> 9 42
+ -> 5 50
+ -> 8 49
+ -> -> Warehouse
+Printing the packing -- 
+32 19
+
+7 13
+
+9 42
+
+5 50
+
+8 49
+
+15 23
+
+10 5
+
+
+Printing information for cluster - 3
+The Routes for the cluster -- 
+Warehouse -> 76 82
+ -> 55 80
+ -> 39 84
+ -> 25 84
+ -> 2 91
+ -> 5 98
+ -> 14 98
+ -> -> Warehouse
+Printing the packing -- 
+2 91
+
+5 98
+
+55 80
+
+39 84
+
+14 98
+
+25 84
+
+
+Printing information for cluster - 4
+The Routes for the cluster -- 
+Warehouse -> 76 82
+ -> 60 85
+ -> 51 88
+ -> 44 96
+ -> 52 98
+ -> -> Warehouse
+Printing the packing -- 
+52 98
+
+44 96
+
+51 88
+
+60 85
+
+
+
+Total Cost for routing: 794 km
+>>>>>>> ae1f2ec (Integrated Bing Maps API for calculating real world distance and refactored code to support enum DistanceType)
+<<<<<<< HEAD
+=======
+=======
+Total Cost for routing: 1.3591 km
+>>>>>>> 7566b01 (Altered hyperparameters to test Vrp-All Dataset)
+>>>>>>> 1c74cc3 (Tested on 100 packages 10 riders)

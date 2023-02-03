@@ -1,7 +1,7 @@
 /*************************************************************************
 Title: TSP.hpp
 Description: TSP class specification file for our Christofides implementation
-Authors: Sean Hinds, Ryan Hong, Jeff Herlitz
+Authors: Sean Hinds, Ryan Hong, J 
 Date: 08/16/17
 *************************************************************************/
 
@@ -44,7 +44,7 @@ protected:
 
 
 public:
-	TSP(bool method):RoutePlanInterface(method){
+	TSP(DistanceType method):RoutePlanInterface(method){
 		
 	}
 	// Number of cities

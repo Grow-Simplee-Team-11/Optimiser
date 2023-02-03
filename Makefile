@@ -68,6 +68,8 @@ EB-AFIT.o:
 
 Optimiser.o:
 	$(CXX) $(CFLAGS) -c src/Optimiser.cpp $(LIBS) 
+DistMatrix.o:
+	$(CXX) $(CFLAGS) -c src/DistMatrix.cpp -lcurl $(LIBS) 
 
 AlgorithmParameters.o: $(HGS_SRC_DIR)/AlgorithmParameters.cpp
 	$(CXX)  -fPIC -c $(HGS_SRC_DIR)/AlgorithmParameters.cpp 
@@ -102,8 +104,8 @@ clarke.o :
 libHGS.so : AlgorithmParameters.o C_Interface.o Params.o Individual.o LocalSearch.o Population.o Split.o Genetic.o InstanceCVRPLIB.o HGS.o
 	$(CXX)  -shared -fPIC -o ./lib/libHGS.so AlgorithmParameters.o C_Interface.o Params.o Individual.o LocalSearch.o Population.o Split.o Genetic.o InstanceCVRPLIB.o HGS.o
 # Build the executable
-Integrate: main.cpp fesif.o TSP_OR.o EB-AFIT.o TSP_OR_EDD.o Optimiser.o $(CLARKE_INCLUDE_DIR)/clarke.hpp $(CLARKE_SRC_DIR)/clarke.cpp $(TSP_SRC_DIR)/TSP_CK.cpp $(TSP_INCLUDE_DIR)/TSP_CK.hpp $(TSP_SRC_DIR)/TSP_LK.cpp $(RP_INC_DIR)/TSP_LK.hpp libHGS.so
-	/usr/bin/g++-11 --std=c++17 -W -Wall -Wno-sign-compare -O4 -pipe -mmmx -msse -msse2 -msse3 -g -Iinclude/ortools -Iinclude -I. global.o HST.o utils.o FESIF.o TSP_OR.o TSP_OR_EDD.o EB-AFIT.o Optimiser.o  main.cpp $(CLARKE_SRC_DIR)/clarke.cpp $(TSP_SRC_DIR)/TSP_CK.cpp $(TSP_SRC_DIR)/TSP_LK.cpp -o Integrate -Llib  -lortools -lHGS
+Integrate: main.cpp fesif.o TSP_OR.o EB-AFIT.o TSP_OR_EDD.o Optimiser.o DistMatrix.o $(CLARKE_INCLUDE_DIR)/clarke.hpp $(CLARKE_SRC_DIR)/clarke.cpp $(TSP_SRC_DIR)/TSP_CK.cpp $(TSP_INCLUDE_DIR)/TSP_CK.hpp $(TSP_SRC_DIR)/TSP_LK.cpp $(RP_INC_DIR)/TSP_LK.hpp libHGS.so
+	/usr/bin/g++-11 --std=c++17 -W -Wall -Wno-sign-compare -O4 -pipe -mmmx -msse -msse2 -msse3 -g -Iinclude/ortools -Iinclude -I. global.o HST.o utils.o FESIF.o TSP_OR.o TSP_OR_EDD.o EB-AFIT.o Optimiser.o DistMatrix.o main.cpp $(CLARKE_SRC_DIR)/clarke.cpp $(TSP_SRC_DIR)/TSP_CK.cpp $(TSP_SRC_DIR)/TSP_LK.cpp -o Integrate -Llib  -lortools -lHGS -lcurl
 
 
 .PHONY: clean

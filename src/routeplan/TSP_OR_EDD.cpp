@@ -76,7 +76,6 @@ bool cmp(item a, item b){
 void TSP_OR_EDD::PlanRoute(vector<item> &cluster, Coordinate w){
     
     plannedPath.clear();
-    
     if(cluster.size() == 1){
       plannedPath.push_back(cluster[0]);
       cost = 2 * Dist(w, cluster[0].coordinate);
@@ -84,26 +83,27 @@ void TSP_OR_EDD::PlanRoute(vector<item> &cluster, Coordinate w){
       std::cout << "  "<<endl;
       return;
     }
-    
-
+    ComputeDistMatrix(cluster, w);
     RoutingIndexManager manager(cluster.size()+1, num_vehicles, depot);
     RoutingModel routing(manager);
     warehouse = w;
-    ComputeEuclideanDistanceMatrix(cluster);
-    
-    // for(int i = 0 ; i < distances.size(); i++){
-    //   for(int j =0 ; j< distances.size(); j++){
-    //     cout<<distances[i][j]<<" ";
-    //   }
-    //   cout<<endl;
-    // }
+    // ComputeEuclideanDistanceMatrix(cluster);
+    // const int transit_callback_index = routing.RegisterTransitCallback(
+    //   [this, &manager](int64_t from_index,
+    //                                int64_t to_index) -> int64_t {
+    //     // Convert from routing variable Index to distance matrix NodeIndex.
+    //     auto from_node = manager.IndexToNode(from_index).value();
+    //     auto to_node = manager.IndexToNode(to_index).value();
+    //     return this->distances[from_node][to_node];
+    //   });
     const int transit_callback_index = routing.RegisterTransitCallback(
       [this, &manager](int64_t from_index,
                                    int64_t to_index) -> int64_t {
         // Convert from routing variable Index to distance matrix NodeIndex.
         auto from_node = manager.IndexToNode(from_index).value();
         auto to_node = manager.IndexToNode(to_index).value();
-        return this->distances[from_node][to_node];
+        return static_cast<int64_t>(this->DistMatrix[from_node][to_node]);
+        // return this->distances[from_node][to_node];
       });
 
     routing.SetArcCostEvaluatorOfAllVehicles(transit_callback_index);
@@ -137,8 +137,8 @@ void TSP_OR_EDD::PlanRoute(vector<item> &cluster, Coordinate w){
     const RoutingDimension& time_dimension = routing.GetDimensionOrDie(time);
     for (int i = 1; i < mod_cluster.size(); ++i) {
     int64_t index = manager.NodeToIndex(RoutingIndexManager::NodeIndex(i));
-    cout<<mod_cluster[i].time-480<<endl;
-    time_dimension.CumulVar(index)->SetRange(0, mod_cluster[i].time-480);
+    cout<<mod_cluster[i].time<<endl;
+    time_dimension.CumulVar(index)->SetRange(0, mod_cluster[i].time*60);
   }
   for (int i = 0; i < num_vehicles; ++i) {
     int64_t index = routing.Start(i);

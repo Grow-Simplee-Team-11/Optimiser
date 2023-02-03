@@ -1,5 +1,4 @@
 #include "../include/Optimiser.hpp"
-
 Optimizer::Optimizer(RoutePlanInterface* routePlannerInterface_, ClusteringInterface* clusteringInterface_, BinPackInterface* binPackInterface_, vector<item>& packages_, Coordinate& warehouse_, int numberRiders_, Bin& bin_, string logFileName_, bool verbose_, bool logToFile_) {
     routePlannerInterface = routePlannerInterface_;
     clusteringInterface = clusteringInterface_;
@@ -29,6 +28,9 @@ void Optimizer::optimize(){
     int i = 0;
     int avg = 0;
     int maximum = -INT_MAX;
+    bool first = true;
+    ofstream output;
+    
     for(auto& cluster: clusters){
         if(verbose){
             cout<<"Printing information for cluster - "<<i<<endl;
@@ -59,7 +61,31 @@ void Optimizer::optimize(){
             clusterPackagings.push_back(binPackInterface->GetPackaging());
             binPackInterface->CalculateCost();
             packagingCost.push_back(binPackInterface->CalculateCost());
+            first = true;
 
+            output.open("./cuboids_to_render.xml");
+            output<<"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\" ?>"<<endl;
+            output<<"<!DOCTYPE boost_serialization>"<<endl;
+            output<<"<boost_serialization signature=\"serialization::archive\" version=\"10\">"<<endl;
+            for(int j = 0 ; j < cluster.size(); j++){
+                first == true ? output<<"<cuboid class_id=\"0\" tracking_level=\"0\" version=\"0\">"<<endl : output<<"<cuboid>"<<endl;
+                first = false;
+                output<<"<width>"<<cluster[j].size.width<<"</width>"<<endl;
+                output<<"<height>"<<cluster[j].size.height<<"</height>"<<endl;
+                output<<"<depth>"<<cluster[j].size.length<<"</depth>"<<endl;
+                output<<"<x>"<<cluster[j].position.x<<"</x>"<<endl;
+                output<<"<y>"<<cluster[j].position.y<<"</y>"<<endl;
+                output<<"<z>"<<cluster[j].position.z<<"</z>"<<endl;
+                output<<"</cuboid>"<<endl;
+            }
+            output<<"<base class_id=\"1\" tracking_level=\"0\" version=\"0\">"<<endl;
+            output<<"<width>"<<bin.size.width<<"</width>"<<endl;
+            output<<"<height>"<<bin.size.length<<"</height>"<<endl;
+            output<<"<x>0</x>"<<endl;
+            output<<"<y>0</y>"<<endl;
+            output<<"</base>"<<endl;
+            output<<"</boost_serialization>"<<endl;
+            output.close();
             if(verbose){
                 binPackInterface->PrintPackedData();
             }
@@ -70,7 +96,6 @@ void Optimizer::optimize(){
             maximum = max(maximum, (int)cluster.size());
 
     }
-    ofstream output;
     output.open("./tests/cluster.txt");
     output<<clusterPaths.size()<<"\n";
     i=0;
