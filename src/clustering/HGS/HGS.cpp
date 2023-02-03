@@ -79,7 +79,7 @@ void HGS::ComputeClusters(vector<item> &packages, Coordinate warehouse, int numR
 	}
 	cout << "X : ";
 	for(int i = 0;i < x_coords.size();i++){
-		cout << x_coords[i]<< ' ' << i << ' ';
+		cout << x_coords[i]<< ' ' <<i<<' ';
 	}
 	cout << "\nY : ";
 	for(int i = 0;i < y_coords.size();i++){
@@ -98,12 +98,12 @@ void HGS::ComputeClusters(vector<item> &packages, Coordinate warehouse, int numR
 	cout << "Number of Packages : " << n << endl;
 	cout << "Average Volume per cluster : " << total_demand / numRiders << endl << endl;
 	cout << endl;
-	std::vector<double> expectation(n,1e30); 
+	std::vector<double> expectation(n, 1e30); 
 	// TODO: add expectation in HGS
 	for(int i=0;i<n;i++) expectation[i] = packages[i].time;
 	
 	if(this->EDD){
-		cout << "With EDD " << endl;
+		cout<<"With EDD"<<endl;
 		Params params = Params(x_coords,y_coords,dist_mtx,service_time,demands,
 				b.capacity,DurationLimit,numRiders,true,verbose, expectation,ap);
 		params.averageSpeed = avgspeed;

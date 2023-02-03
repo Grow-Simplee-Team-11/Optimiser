@@ -300,7 +300,7 @@ int32_t main(int argc, char** argv){
 
 	vector<string> routingAlgorithms = {"TSP_OR", "TSP_LK", "TSP_CK", "TSP_OR_EDD"};
 	vector<string> binPackingAlgorithms = {"EB_AFIT"};
-	vector<string> clusteringAlgorithms = {"CLARKE", "SELF", "FESIF"};
+	vector<string> clusteringAlgorithms = {"CLARKE", "SELF", "FESIF", "HGS"};
 
 	Ensembler* ens = new Ensembler(routingAlgorithms, binPackingAlgorithms, clusteringAlgorithms, dm.packages, dm.warehouse, dm.numRiders, dm.bin); 
 
