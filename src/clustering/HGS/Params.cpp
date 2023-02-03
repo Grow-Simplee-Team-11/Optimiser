@@ -132,6 +132,8 @@ Params::Params(
 	// A reasonable scale for the initial values of the penalties
 	penaltyDuration = 1;
 	penaltyCapacity = std::max<double>(0.1, std::min<double>(1000., maxDist / maxDemand));
+	penaltyEDD = 2;
+	
 	if (verbose)
 		std::cout << "----- INSTANCE SUCCESSFULLY LOADED WITH " << nbClients << " CLIENTS AND " << nbVehicles << " VEHICLES" << std::endl;
 	durationLimit = 300;

@@ -62,7 +62,7 @@ public:
 	/* ADAPTIVE PENALTY COEFFICIENTS */
 	double penaltyCapacity;				// Penalty for one unit of capacity excess (adapted through the search)
 	double penaltyDuration;				// Penalty for one unit of duration excess (adapted through the search)
-	double penaltyMoreThan25;
+	double penaltyEDD ;
 	/* START TIME OF THE ALGORITHM */
 	clock_t startTime;                  // Start time of the optimization (set when Params is constructed)
 

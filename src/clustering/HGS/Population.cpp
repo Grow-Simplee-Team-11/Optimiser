@@ -63,10 +63,12 @@ bool Population::addIndividual(const Individual & indiv, bool updateFeasible)
 
 	// Track best solution
 	if (indiv.eval.isFeasible && indiv.eval.penalizedCost < bestSolutionRestart.eval.penalizedCost - MY_EPSILON)
-	{
+	{	
+		std::cout << "Reached Here" << std::endl;
 		bestSolutionRestart = indiv; // Copy
 		if (indiv.eval.penalizedCost < bestSolutionOverall.eval.penalizedCost - MY_EPSILON)
-		{
+		{	
+			std::cout << "Over Here"<< std::endl;
 			bestSolutionOverall = indiv;
 			searchProgress.push_back({ clock() - params.startTime , bestSolutionOverall.eval.penalizedCost });
 		}

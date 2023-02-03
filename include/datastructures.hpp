@@ -5,6 +5,7 @@
 
 #include <fstream>
 #include <iostream>
+#define DO_GRID_SEARCH
 
 using namespace std;
 // #define int long long

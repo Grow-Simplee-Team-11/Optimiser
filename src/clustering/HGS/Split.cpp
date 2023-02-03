@@ -151,7 +151,7 @@ int Split::splitLF(Individual & indiv)
 					if (j == i + 1) distance += cliSplit[j].d0_x;
 					else distance += cliSplit[j - 1].dnext;
 					
-					double cost = (distance + cliSplit[j].dx_0) / params.averageSpeed + serviceDuration
+					double cost = (distance + cliSplit[j].dx_0) 
 								+ params.penaltyCapacity * std::max<double>(load - params.vehicleCapacity, 0.)
 								+ params.penaltyDuration * std::max<double>((distance + cliSplit[j].dx_0) / params.averageSpeed + serviceDuration - params.durationLimit, 0.);
 					if (potential[k][i] + cost < potential[k + 1][j])
