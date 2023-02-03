@@ -11,7 +11,34 @@ Optimizer::Optimizer(RoutePlanInterface* routePlannerInterface_, ClusteringInter
     verbose = verbose_;
     logToFile = logToFile_;
 }
+void multithreading(Optimizer * opt, Optimizer * temp, int thread_number){
+    if(opt->clusteringInterface->clustering_method){
+        vector<item> main_packages = opt->packages;
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_real_distribution<double> Temporal_Factor_Gen(opt->clusteringInterface->Temporal_Factor_Lower_Limit, opt->clusteringInterface->Temporal_Factor_Upper_Limit);
+        std::uniform_real_distribution<double> Spactial_Factor_Gen(opt->clusteringInterface->Spatial_Factor_Lower_Limit, opt->clusteringInterface->Spatial_Factor_Upper_Limit);
+        opt->clusteringInterface->Temporal_Factor = ((1 - (1.0/(opt->dropoffs*10L + 1)))*Temporal_Factor_Gen(gen) +  ((1.0/(opt->dropoffs*10L + 1))*opt->clusteringInterface->best_Temporal_Factor));
+        opt->clusteringInterface->Spatial_Factor = ((1 - (1.0/(opt->dropoffs*10L + 1)))*Spactial_Factor_Gen(gen) + ((1.0/(opt->dropoffs*10L + 1))*opt->clusteringInterface->best_Spatial_Factor));
+        std::cout<<"Now starting iteration with Temporal Factor ====> "<<opt->clusteringInterface->Temporal_Factor<<endl;
+        std::cout<<"Now starting iteration with Spatial Factor ====> "<<opt->clusteringInterface->Spatial_Factor<<endl;        
+        assert(opt->routePlannerInterface!=NULL);
+        assert(opt != NULL);
+        cout<<"This is ThreadNumber " << thread_number<<endl;
+        opt->routePlannerInterface->drop_offs = 0;
 
+
+        opt->clusteringInterface->ComputeClusters(main_packages, opt->warehouse, opt->numberRiders, opt->bin);
+        opt->clusteringInterface->CalculateCost();
+        opt->clusters = opt->clusteringInterface->GetClusters();
+        
+        for(auto& cluster: opt->clusters){
+            opt->routePlannerInterface->PlanRoute(cluster, opt->warehouse);
+            opt->routePlannerInterface->CalculateCost();
+        }
+    }
+    
+}
 void Optimizer::optimize(){
     clusteringInterface->ComputeClusters(packages, warehouse, numberRiders, bin);
     clusteringInterface->CalculateCost();
