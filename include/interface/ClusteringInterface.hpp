@@ -18,7 +18,17 @@ using namespace std;
 
 class ClusteringInterface{
     public:
-        const int SCALING_FACTOR=100; 
+        const int SCALING_FACTOR=100;
+        bool clustering_method=0;
+        bool multithreading =0;
+        double Spatial_Factor = 2;
+        double Temporal_Factor = 0;
+        double best_Temporal_Factor = 0;
+        double best_Spatial_Factor = 0;
+        const double Spatial_Factor_Lower_Limit = 0;
+        const double Spatial_Factor_Upper_Limit = 10;
+        const double Temporal_Factor_Lower_Limit = 0;
+        const double Temporal_Factor_Upper_Limit = 1; 
         DistanceType method;
         ClusteringInterface(DistanceType method) {
             this->method = method;

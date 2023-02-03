@@ -1,5 +1,7 @@
 #include "../include/Optimiser.hpp"
 #include "clustering/Clarke/clarke.hpp"
+#include "routeplan/TSP_OR_EDD.hpp"
+#include "binpack/EB_AFIT.hpp"
 
 Optimizer::Optimizer(RoutePlanInterface* routePlannerInterface_, ClusteringInterface* clusteringInterface_, BinPackInterface* binPackInterface_, vector<item>& packages_, Coordinate& warehouse_, int numberRiders_, Bin& bin_, string logFileName_, bool verbose_, bool logToFile_) {
     routePlannerInterface = routePlannerInterface_;
