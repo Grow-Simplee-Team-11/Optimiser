@@ -320,35 +320,45 @@ Following are the details of the file structure and their functionalities that a
 - **Optimiser/src/binpack** - The older structure of the src folder is similar to what was in the header file, but this contains implementation of all the methods discussed above. `./binpack` folder consist of the binpacking algorithms implementation.
   - `EB-AFIT.cpp` - The implementation of our modified Bin Packing algorithm which is based on the EB-AFIT algorithm[Bin Packing 2] is done in this file. In this we have added constraints to get the package at top at their respective delivery location.
 - **Optimiser/src/clustering** - All the clustering algorithms are implemented in this folder.
-    - `Clarke` - As discussed in the include folder, this contains the implementation of our Clarke algorithm which is similar to [Clustering Algorithms 1].  Our algorithm is inspired by Kruskal’s algorithm of finding the Minimum Spanning Tree, in which we first select the most profitable locations, profit being the cost reduced in traveling, and join them if they satisfy the condition of endpoints, i.e. the locations need to be the endpoints of their respective group. 
-    - `fesif` - 
-    - `selfClustering` - 
-    - `HGS` - 
-    - `TimeWindow` - 
-- **Optimiser/src/DistMatrix.cpp** - 
-- **Optimiser/src/Optimser.cpp** - 
-- **Optimiser/src/routeplan** - 
-  - `TSP_CK.cpp` - 
-  - `TSP_LK.cpp` - 
-  - `TSP_OR_EDD.cpp` -
-- **Optimser/tests** - 
-  - `data_gen.py` - 
-  - `visualise_cluster.py` - 
+    - `Clarke` - As discussed in the include folder, this contains the implementation of our Clarke algorithm which is similar to [Clustering Algorithms 1].  Our algorithm is inspired by Kruskal's algorithm of finding the Minimum Spanning Tree, in which we first select the most profitable locations, profit being the cost reduced in traveling, and join them if they satisfy the condition of endpoints, i.e. the locations need to be the endpoints of their respective group. 
+    - `HGS` - An extremely efficient randomization algorithm based on a meta-heuristic search on the Genetic Paradigm inculcating penaty costs on distance, cluster size and delay times of delivery based on a certain average speed of delivery. This algorithm generates a path for the cluster formed as well which is later further optimzed. It is a modified version of the algorithm described in [Clustering Algorithms 2].
+    - `fesif` - 'fast Embedding Sorting and Insertion`[Clustering Algorithms 3] is a 6ρ Approximation Algorithm for package clustering implemented using a greedy approach -  For a given “travel budget”, a  binary search strategy is used to find the largest number of packages that can be delivered from the package list . A Hierarchical Search Tree is used as spatial index to embed the cost metric to minimize the delay in delivery time.
+    - `selfClustering` - Hours and hours of testing lead us to the realization that most of the clusters formed are "petal shaped". Thus we define two cuts - radial cut and angular cut to find the most optimal clusters formed by this "petal shaped" analogy. It is an extremely fast O(NlogN) algorithm to generate clusters.
+
+    
+        1. Manhattan Distance
+        2. Euclidean Distance
+        3. Haversine Distance
+        4. Real World Path Distance (Bing Maps API)
+        5. Real World Path Time (Bing Maps API)
+All route plannning algorithms can thus use any of the above metric to compute optimal paths based on input format.
+- **Optimiser/src/Optimser.cpp** - _Top Level of our System Design, which implements the complete pipleline starting from Clustering packages using the `Clustering Interface` to Route Planning for riders using the `Route Planning Interface` to finally ordering and Bin Packing using the `Bin Packing Interface` to give the final optimized results, which supports an ensembled implementation, thus providing best possible results from all available algorithms._
+
+- **Optimiser/src/routeplan** - _This folder contains implementation of all route planning algorithms inheriting the Route Planning Interface. More formally, it contains all implemented variants of the Travelling Salesman Problem while handling additional constrained dimensions._
+  - `TSP_CK.cpp` - An improved variant of the Christofides Algorithm [Routing Algorithms 1] which supports Estimated Delivery Time. It is an extremely efficient approximation algorithm for the Travelling Salesman problem which translates remarkably well in a real world setting.
+  - `TSP_LK.cpp` - Inspired from Lin Kernighan Algorithm [Route Planning Algorithm 3], we develop a modified heuristic based approach to  which takes a tour (Hamiltonian cycle) as part of the input and attempts to improve it by searching in the neighbourhood of the given tour for one that is shortersolve the Travelling Salesman Problem.
+  - `TSP_OR.cpp` - An ensembled implementation of randomization and approximation algorithms from the linear programming library - OR-tools developed by google. Refer to [Routing Algorithms 2] for more details.
+  - `TSP_OR_EDD.cpp` - An implementation of Constrained Vehicle Routing Problem with an added constrained dimension of estimated time of delivery while minimizing package dropoffs.Refer to [Routing Algorithms 2] for more details.
 
 
-Things missing, 
- - test files and inputs.
- - visulaise test
- - metric decider
+## Codeflow
 
-## Roadmap
+![Class Diagram](/ClassDiagramOptimizer.drawio.png)
+<p align = "center">
+Class Diagram
+</p>
 
-- Additional browser support
+We experimented with various algorithms to solve the different components of the problem statement and found that different combinations of algorithms work best for different test cases. Therefore, we combined these components into an "Ensembler" object to achieve the best results.
 
-- Add more integrations
+The input is fed into the Ensembler, which creates multiple instances of the "Optimizer" class to work on the optimization problem concurrently. The final output is selected by polling the combination with the lowest cost.
 
+![Sequence Diagram](/SequenceDiagramOptimizer.drawio.jpg)
+<p align = "center">
+Sequence Diagram
+</p>
 
-Rohit
+The Optimizer class creates interfaces for "ClusteringInterface," "BinPackInterface," and "RoutePlanInterface," which serve as the backend for different algorithms. The input is first passed to the ClusteringInterface, which provides the clusters. These clusters are then processed by both the RoutePlanInterface and BinPackInterface to determine the path, bin packing orientation, and corresponding costs. The lowest cost combination is then selected and its final output is used for further processing.
+
 
 ## Acknowledgements
 ​
