@@ -1,4 +1,6 @@
 #include "../include/Optimiser.hpp"
+#include "clustering/Clarke/clarke.hpp"
+
 Optimizer::Optimizer(RoutePlanInterface* routePlannerInterface_, ClusteringInterface* clusteringInterface_, BinPackInterface* binPackInterface_, vector<item>& packages_, Coordinate& warehouse_, int numberRiders_, Bin& bin_, string logFileName_, bool verbose_, bool logToFile_) {
     routePlannerInterface = routePlannerInterface_;
     clusteringInterface = clusteringInterface_;
@@ -40,6 +42,46 @@ void multithreading(Optimizer * opt, Optimizer * temp, int thread_number){
     
 }
 void Optimizer::optimize(){
+    ofstream output;
+    if(this->clusteringInterface->clustering_method && this->clusteringInterface->multithreading){
+       
+        output.open("./output.txt");
+        for(int k = 0 ; k < 5; k ++){
+            output << "Starting Iteration "<< k <<endl;
+            vector<thread> threads;
+            vector<Optimizer*> optimizers;
+            for(int j = 0 ; j < 20 ; j ++ ){
+                RoutePlanInterface* rp = new TSP_OR_EDD(EUCLIDEAN);
+                ClusteringInterface* cls = new Clarke(EUCLIDEAN);
+                BinPackInterface* bp =  new EB_AFIT;
+
+                assert(rp != NULL);
+                assert(cls != NULL);
+                assert(bp != NULL);
+
+                Optimizer* tempOpt = new Optimizer(rp, cls, bp, this->packages, this->warehouse, this->numberRiders, this->bin, this->logFileName, this->verbose, this->logToFile);
+
+                optimizers.push_back(tempOpt);
+                optimizers[j]->routePlannerInterface->drop_offs = 0;
+                optimizers[j]->clusteringInterface->best_Spatial_Factor = this->clusteringInterface->best_Spatial_Factor;
+                optimizers[j]->clusteringInterface->best_Temporal_Factor = this->clusteringInterface->best_Temporal_Factor;
+                threads.push_back(thread(multithreading,optimizers[j], this , j+1));
+            }
+            for(auto &th : threads){
+                th.join();
+            }
+            for(int j = 0 ; j< optimizers.size(); j++){
+                if(this->dropoffs > optimizers[j]->routePlannerInterface->drop_offs){
+                    this->dropoffs = optimizers[j]->routePlannerInterface->drop_offs;
+                    this->clusteringInterface->best_Spatial_Factor = optimizers[j]->clusteringInterface->best_Spatial_Factor;
+                    this->clusteringInterface->best_Temporal_Factor = optimizers[j]->clusteringInterface->best_Temporal_Factor;
+                }
+                delete optimizers[j];
+            }
+
+        }
+    output.close();
+    }
     clusteringInterface->ComputeClusters(packages, warehouse, numberRiders, bin);
     clusteringInterface->CalculateCost();
     clusteringCost = clusteringInterface->GetClusteringCost();
