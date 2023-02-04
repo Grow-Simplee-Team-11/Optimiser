@@ -42,6 +42,8 @@ Cluster::Cluster(){
         distance = 0;
 }
 void Clarke::ComputeClusters(vector<item> &packages, Coordinate warehouse, int numRiders, Bin b){
+    temporal_mean =0;
+    spacial_mean = 0;
     clusters.clear();
     this->packages = packages;
     this->warehouse = warehouse;
@@ -107,7 +109,7 @@ int Clarke::union_sets(int a,int b, bool constraints){
     if(b != Clusters[cluster_b].p1 && b !=Clusters[cluster_b].p2){
         return 0;
     }
-    if((Clusters[cluster_a].volume + Clusters[cluster_b].volume > (this->b).getVolume() && constraints) || (Clusters[cluster_a].weight + Clusters[cluster_b].weight > (this->b).capacity && constraints)){
+    if((Clusters[cluster_a].volume + Clusters[cluster_b].volume > (this->b).getVolume() && constraints) || (Clusters[cluster_a].weight + Clusters[cluster_b].weight > (this->b).capacity && constraints) || (Clusters[cluster_a].rank + Clusters[cluster_b].rank > 35 && constraints)){
         return 0;
     }
     if(cluster_a==cluster_b)

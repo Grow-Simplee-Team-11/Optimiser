@@ -12,7 +12,7 @@ using namespace operations_research;
 class TSP_OR_EDD : public RoutePlanInterface{
 
     public : 
-        TSP_OR_EDD(DistanceType method) : RoutePlanInterface(method){}
+        TSP_OR_EDD(DistanceType method) : RoutePlanInterface(method){ routing_method = 1; }
         void PlanRoute(vector<item>& cluster, Coordinate warehouse);
         void CalculateCost();
         // convert longitude to X

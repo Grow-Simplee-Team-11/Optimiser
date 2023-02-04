@@ -15,6 +15,7 @@ using namespace std;
 class RoutePlanInterface{
     public:
     int drop_offs=0;
+    bool routing_method = 0;
     const int SCALING_FACTOR=100; 
     vector<vector<double>> DistMatrix;
     DistanceType method;

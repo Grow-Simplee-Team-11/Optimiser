@@ -1,55 +1,5 @@
 #include "../../include/routeplan/TSP_OR_EDD.hpp"
 
-// double TSP_OR_EDD::haversine(double lat_1_deg,double lon_1_deg,double lat_2_deg,double lon_2_deg)
-// { 
-//     double PI = 3.14159265359;
-//     double lat_1_rad, lon_1_rad, lat_2_rad, lon_2_rad;
-//     lat_1_rad = lat_1_deg * (PI / 180);
-//     lon_1_rad = lon_1_deg * (PI / 180);
-//     lat_2_rad = lat_2_deg * (PI / 180);
-//     lon_2_rad = lon_2_deg * (PI / 180);
-//     double delta_lat, delta_lon;
-//     delta_lat = lat_1_rad - lat_2_rad;
-//     delta_lon = lon_1_rad - lon_2_rad;
-
-//     // Calculate sin^2 (delta / 2) for both lat and long
-//     double sdlat = pow(sin(delta_lat / 2), 2);
-//     double sdlon = pow(sin(delta_lon / 2), 2);
-
-//     // Radius of the Earth (approximate)
-//     const double radius_earth_miles = 3963;
-//     const double radius_earth_km = 6378;
-
-//     // http://en.wikipedia/org/wiki/Haversine_formula
-//     // d=2r*asin(sqrt(sin^2((lat1-lat2)/2)+cos(l1)cos(l2)sin^2((lon2-lon1)/2)))
-//     //  if t = sqrt(sin^2((lat1-lat2)/2)+cos(l1)cos(l2)sin^2((lon2-lon1)/2)
-//     //  -> d = 2 * radius_earth * asin (t)	
-//     double t = sqrt(sdlat + (cos(lat_1_rad) * cos(lat_2_rad) * sdlon));
-//     double distance_miles = 2 * radius_earth_miles * asin(t);
-//     double distance_km = 2 * radius_earth_km * asin(t);
-//     return distance_km;
-// }
-// double TSP_OR_EDD::haversine(double lat_1_deg,double lon_1_deg,double lat_2_deg,double lon_2_deg){
-//   return sqrt((lat_1_deg-lat_2_deg)*(lat_1_deg-lat_2_deg)+(lon_1_deg-lon_2_deg)*(lon_1_deg-lon_2_deg));
-// }
-// double TSP_OR_EDD::getX(double lon){
-//     // width is map width
-//     double x = fmod((2043*(180+lon)/360), (2043 +(2043/2)));
-
-//     return x;
-// }
-
-// double TSP_OR_EDD::getY(double lat){
-//     // height and width are map height and width
-//     double PI = 3.14159265359;
-//     double latRad = lat*PI/180;
-
-//     // get y value
-//     double mercN = log(tan((PI/4)+(latRad/2)));
-//     double y     = (1730/2)-(2043*mercN/(2*PI));
-//     return y;
-// }
-
 void TSP_OR_EDD::ComputeEuclideanDistanceMatrix(std::vector<item>& cluster)
 {
     distances.clear();
@@ -110,14 +60,15 @@ void TSP_OR_EDD::PlanRoute(vector<item> &cluster, Coordinate w){
     // for(int i =0;i<mod_cluster.size();i++){
     //   cout<<mod_cluster[i].coordinate.latitude<<" "<<mod_cluster[i].coordinate.longitude<<" "<<mod_cluster[i].time<<endl;
     // }
-    for(int i =0 ;i< DistMatrix.size(); i++){
-      for(int j = 0; j< DistMatrix.size(); j++){
-        // cout<<DistMatrix[i][j]<<" ";
-        DistMatrix[i][j] = ceil(DistMatrix[i][j]);
-      }
-      // cout<<endl;
-    }
-    // cout<<"------------------------------------------------------------------------------------------------------------"<<endl;
+    // for(int i =0 ;i< DistMatrix.size(); i++){
+    //   for(int j = 0; j< DistMatrix.size(); j++){
+        
+    //     DistMatrix[i][j] = ceil(DistMatrix[i][j]);
+    //     cout<<DistMatrix[i][j]<<" ";
+    //   }
+    //   cout<<endl;
+    // }
+    cout<<DistMatrix.size()<<endl;
     std::string time{"Time"};
     routing.AddDimension(transit_callback_index,  // transit callback index
                        int64_t{1440},             // allow waiting time
@@ -128,9 +79,11 @@ void TSP_OR_EDD::PlanRoute(vector<item> &cluster, Coordinate w){
     const RoutingDimension& time_dimension = routing.GetDimensionOrDie(time);
     for (int i = 1; i < mod_cluster.size(); ++i) {
     int64_t index = manager.NodeToIndex(RoutingIndexManager::NodeIndex(i));
-    // cout<<mod_cluster[i].time<<endl;
-    time_dimension.CumulVar(index)->SetRange(0, mod_cluster[i].time*60);
+    cout<<mod_cluster[i].time<<" ";
+    time_dimension.CumulVar(index)->SetRange(0, mod_cluster[i].time);
   }
+  cout<<endl;
+  cout<<mod_cluster.size()<<endl;
   for (int i = 0; i < num_vehicles; ++i) {
     int64_t index = routing.Start(i);
     time_dimension.CumulVar(index)->SetRange(0, 1440);
