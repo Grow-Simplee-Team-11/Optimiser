@@ -11,9 +11,38 @@ Optimizer::Optimizer(RoutePlanInterface* routePlannerInterface_, ClusteringInter
     verbose = verbose_;
     logToFile = logToFile_;
 }
+void Optimizer::check_data(){
+    if(warehouse.latitude <= 0 || warehouse.longitude <= 0){
+        throw "Warehouse coordinates are not valid";
+    }
+    if(numberRiders <= 0){
+        throw "Number of riders are not valid";
+    }
+    if(packages.size() == 0){
+        throw "No packages to optimize";
+    }
+    if(bin.size.length < 0 || bin.size.width < 0 || bin.size.height < 0 || bin.capacity < 0 || bin.getVolume() < 0){
+        throw "Bin dimensions are not valid";
+    }
+    for(auto& package: packages){
+        if(package.coordinate.latitude <= 0 || package.coordinate.longitude <= 0){
+            throw "Package coordinates are not valid";
+        }
+        if(package.size.length <= 0 || package.size.width <= 0 || package.size.height <= 0 || package.getVolume() <= 0){
+            throw "Package dimensions are not valid";
+        }
+        if(package.weight <= 0){
+            throw "Package weight is not valid";
+        }
+    }
 
+}
 void Optimizer::optimize(){
+    check_data();
     clusteringInterface->ComputeClusters(packages, warehouse, numberRiders, bin);
+    if(clusters.size() == 0){
+        throw "Clustering Algorithm Could Not found a solution";
+    }
     clusteringInterface->CalculateCost();
     clusteringCost = clusteringInterface->GetClusteringCost();
     clusters = clusteringInterface->GetClusters();

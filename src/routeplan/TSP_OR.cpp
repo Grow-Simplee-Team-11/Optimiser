@@ -23,14 +23,7 @@ void TSP_OR::ComputeEuclideanDistanceMatrix(std::vector<item>& cluster)
 }
 
 void TSP_OR::PlanRoute(vector<item> &cluster, Coordinate w){
-    ComputeDistMatrix(cluster, w);
-    cout << "Dist Matrix Computed Successfully" << endl;
-    // for(int i = 0;i < DistMatrix.size();i++){
-    //   for(int j = 0;j < DistMatrix.size();j++){
-    //     cout << DistMatrix[i][j] << " ";
-    //   }
-    //   cout << endl;
-    // }
+   
     cout<<"Planning Route..."<<endl;
     plannedPath.clear();
     if(cluster.size() == 1){
@@ -40,6 +33,8 @@ void TSP_OR::PlanRoute(vector<item> &cluster, Coordinate w){
       std::cout << "  "<<endl;
       return;
     }
+    ComputeDistMatrix(cluster, w);
+    cout << "Dist Matrix Computed Successfully" << endl;
     RoutingIndexManager manager(cluster.size()+1, num_vehicles, depot);
     RoutingModel routing(manager);
     std::cout<<"Warehouse : "<<w.latitude<<" "<<w.longitude<<endl;

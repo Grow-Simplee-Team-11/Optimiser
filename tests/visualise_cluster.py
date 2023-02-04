@@ -22,37 +22,31 @@ def randomColor():
 if __name__=="__main__":
     random.seed(10)
 
-    pts = open("../tests/input.txt", "r")
+    pts = open("input.txt", "r")
 
-    line = pts.readline()
+    numclusters = int(pts.readline())
+
     color = randomColor()
-    cluster_idx = 0
     fig5=Figure(height=550,width=750)
     m5=folium.Map(location=[12.97095, 77.59058],zoom_start=100)
     fig5.add_child(m5)
     # map = folium.Map(location=[0, -88.0815])
     # folium.Marker(location=[42.1649, -88.0815], popup =  'Depot').add_to(map)
     listofclusters = []
-    while line:
-        line = int(line)
-        m = line
-        # print(type(line))
-        while m:
-            m-=1
-            line = pts.readline()
-            clustercnt = int(line)
-            line = pts.readline()  
-            pointsclustercnt = int(line)
-            n = pointsclustercnt
-            listofpoints = []
-            while n:
-                n-=1
-                loc = pts.readline()
-                depot_x_loc = float(loc.split(" ")[0])
-                depot_y_loc = float(loc.split(" ")[1])
-                listofpoints.append([depot_x_loc, depot_y_loc])
+    print(numclusters)
+    while numclusters:
+        numclusters-=1
+        cluster_index = int(pts.readline())
+        num_packages = int(pts.readline())
+        listofpoints = []
+        while num_packages:
+            num_packages -= 1
+            loc = pts.readline()
+            depot_x_loc = float(loc.split(" ")[0])
+            depot_y_loc = float(loc.split(" ")[1])
+            listofpoints.append([depot_x_loc, depot_y_loc])
             listofclusters.append(listofpoints)
-        line = pts.readline()
+        # line = pts.readline()
    
     # print(listofclusters)
     

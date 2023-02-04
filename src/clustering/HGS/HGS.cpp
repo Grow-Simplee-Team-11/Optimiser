@@ -169,7 +169,9 @@ void HGS::ComputeClusters(vector<item> &packages, Coordinate warehouse, int numR
 		}
 		else {
 			cout << "best found NULL" << endl;
+			clusters.clear();
 		}
+		
 	}			
 }
 

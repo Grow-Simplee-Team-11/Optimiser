@@ -117,9 +117,20 @@ class OptimizerServiceImpl final : public optimizer::optimizer::Service
 	    bool logToFile = true;
 	    string logFileName = "FESIF_TSP_LK.txt";
         Optimizer optim(rp, cls, bp, dm.packages, dm.warehouse, dm.numRiders, dm.bin, logFileName, verbose, logToFile);
-        optim.optimize();
-
-        
+        try{
+             optim.optimize();
+        }
+        catch(const char* msg)
+        {
+            std::cerr << msg << std::endl;
+            return Status::CANCELLED;
+        }
+        catch(...)
+        {
+            std::cerr << "Unknown exception" << std::endl;
+            return Status::CANCELLED;
+        }
+    
         vector<float> rcosts = optim.GetRoutingCost();
         float total_cost = 0;
         for(auto &x : rcosts)
