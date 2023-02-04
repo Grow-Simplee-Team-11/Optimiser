@@ -195,7 +195,7 @@ void Optimizer::optimize(){
         if(binPackLock!=NULL)
             pthread_mutex_lock(binPackLock);
 
-        binPackInterface->BinPack(cluster, bin);
+        binPackInterface->BinPack(rps, bin);
         clusterPackagings.push_back(binPackInterface->GetPackaging());
         binPackInterface->CalculateCost();
         packagingCost.push_back(binPackInterface->CalculateCost());
