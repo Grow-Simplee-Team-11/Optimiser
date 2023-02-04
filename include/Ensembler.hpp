@@ -5,6 +5,8 @@
 #ifndef __ENSEMBLER__
 #define __ENSEMBLER__
 
+// Including neccesary files
+
 #include<string>
 #include "interface/RoutePlanInterface.hpp"
 #include "interface/BinPackInterface.hpp"
@@ -28,14 +30,25 @@ using namespace std;
 
 void* run(void *);
 
-
 class Ensembler{
+    /**
+     * @class  Ensembler
+     * @brief  Constructor for the Ensembler class.
+     *
+     * @param  RoutePlanningAlgorithms  The route planning algorithms
+     * @param  ClusteringAlgorithms     The clustering algorithms
+     * @param  BinPackingAlgorithms     The bin packing algorithms
+     * @param  packages                 The packages
+     * @param  warehouse                The warehouse
+     * @param  numberRiders             The number riders
+     * @param  bin                      The bin
+     *     
+     */
     public:
         Ensembler(vector<string>&, vector<string>&, vector<string>&, vector<item>& packages, Coordinate& warehouse, int numberRiders, Bin& bin);
         void Report();
         void EnsembleRun();
-        vector<pair<vector<string>,double>> GetCosts();
-    
+        vector<pair<vector<string>,double>> GetCosts();    
         vector<string> RoutePlanningAlgorithms;
         vector<string> BinPackingAlgorithms;
         vector<string> ClusteringAlgorithms;
@@ -52,7 +65,7 @@ class Ensembler{
         Bin bin;
 
         int* currentCombination;
-        
+
         vector<pair<vector<string>, double>> Costs;
 };
 

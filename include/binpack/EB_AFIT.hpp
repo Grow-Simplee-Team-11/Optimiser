@@ -79,6 +79,14 @@ class Binpacker{
         return *(long int*)i - *(long int*)j;
     }
     void operator=(Binpacker& binpacker){
+        /**
+         * 
+         * @brief Assignment operator for the Binpacker class
+         * This function assigns the values of the variables of one Binpacker object to another Binpacker object.
+         * 
+         * @param binpacker The Binpacker object whose values are being assigned.
+         * 
+        */
         packing = binpacker.packing;
         layerdone = binpacker.layerdone;
         evened = binpacker.evened;
@@ -175,6 +183,14 @@ class Binpacker{
     }
 
     Binpacker(Binpacker& binpacker, int newSize){
+    /**
+    * 
+    * @brief Copy constructor for the Binpacker class
+    * @param binpacker Reference to the Binpacker object to be copied
+    * @param newSize New size for the copied Binpacker object
+    * This constructor initializes a new Binpacker object using the data from an existing Binpacker object. The size of the new object can be different from the original object.
+    *
+    */
         packing = binpacker.packing;
         layerdone = binpacker.layerdone;
         evened = binpacker.evened;
@@ -266,6 +282,15 @@ class Binpacker{
     }
 
     void listcanditlayers(vector<item>& cluster) {
+        /**
+        * 
+        * @brief Evaluates the layers for packing items in a cluster.
+        * The function takes a vector of items as input and evaluates the layers for packing the items in the cluster.
+        * The function updates the layer list with the layer dimension and the layer evaluation value.
+        * @param cluster A vector of items representing the items to be packed in the cluster.
+        * @return void
+        * 
+        */
         bool same;
         short int exdim, dimdif, dimen2, dimen3, y, z, k;
         long int layereval;
@@ -300,12 +325,14 @@ class Binpacker{
     }
 
     void execiterations(vector<item>& cluster) {
+    /**
+    * 
+    * @brief Executes the packing iterations.
+    * @param cluster A vector of type 'item' containing information about the items to be packed.
+    * @return void
+    * This function lists the candidate layers, sorts them, sets the packing parameters and packs the items in the layers. It then updates the best volume, best variant, best iteration and the percentage used.
+    */
         listcanditlayers(cluster);
-        // cout<<"Printing Layers information"<<endl;
-        // for(int i=1;i<=layerlistlen;i++){
-        //     cout<<layers[i].layerdim<<endl;
-        // }
-        // cout<<"Ending Layer information"<<endl;
         layers[0].layereval = -1;
         qsort(layers, layerlistlen + 1, sizeof(struct layerlist), complayerlist);
 
@@ -320,14 +347,9 @@ class Binpacker{
         for (x = 0; x < n; x++) {
             boxStatus[x] = 0;
         }
-
-        // cout<<"Done with exceiterations"<<endl;
-
-        // BEGIN DO-WHILE
         do {
             layerinlayer = 0;
             layerdone = 0;
-            // Bookmark 1a here
             if (packlayer(cluster)) {
                 exit(1);
             }
@@ -350,7 +372,6 @@ class Binpacker{
             }
             findlayer(cluster, remainpy);
         } while (packing);
-        // END DO-WHILE
 
         if ((packedvolume > bestvolume)) {
             bestvolume = packedvolume;
@@ -358,15 +379,24 @@ class Binpacker{
             bestite = itelayer;
             bestpackednum = packednumbox;
         }
-        // cout<<"HELLLLLLLLLLLLL"<<endl;
-        // for(auto x:cluster){
-        //     cout<<x.position.x<<" "<<x.position.y<<" "<<x.position.z<<endl;
-        // }
 
         percentageused = bestvolume * 100 / totalvolume;
     }
 
     int packlayer(vector<item>& cluster) {
+        /**
+        * 
+        * @brief Packing items in a cluster into a layer with given thickness
+        * The function packlayer packs items in the vector cluster into a layer with the specified layerthickness. The position of each item in the layer is determined and updated in the position member of the item structure. If the layerthickness is not set, the packing process is not performed and packing is set to 0.
+        * The process of packing involves finding the box with the smallest height and fitting it into the layer. This process continues until all items in the cluster are packed into the layer or the layer is full. Three different situations can occur while packing the items:
+        * No boxes are present on either side of the box with the smallest height
+        * No boxes are present on the left side of the box with the smallest height
+        * No boxes are present on the right side of the box with the smallest height
+        * If insufficient memory is available, the function returns 1 and a message indicating insufficient memory is printed.
+        * @param cluster vector of items to be packed into a layer
+        * @return returns 0 if the function completes successfully and returns 1 if there is insufficient memory available
+        * 
+        */
         short int lenx, lenz, lpz;
 
         if (!layerthickness) {
@@ -377,21 +407,15 @@ class Binpacker{
         scrapfirst->cumx = px;
         scrapfirst->cumz = 0;
 
-        // cout<<"Entering packlayer loop"<<endl;
         for (;;) {
             // Bookmark 2
             findsmallestz(cluster);
-            // cout<<smallestz->pre<<" "<<smallestz->pos<<endl;
 
             if (!(smallestz->pre) && !(smallestz->pos)) {
                 //*** SITUATION-1: NO BOXES ON THE RIGHT AND LEFT SIDES ***
 
                 lenx = smallestz->cumx;
                 lpz = remainpz - (smallestz->cumz);
-                // cout<<"In Packlayer"<<endl;
-                // cout<<lenx<<" "<<lpz<<" "<<remainpy<<endl;
-                // cout<<"Out Packlayer"<<endl;
-                //   Bookmark 3
                 findbox(cluster, lenx, layerthickness, remainpy, lpz, lpz);
                 checkfound();
 
@@ -424,10 +448,6 @@ class Binpacker{
                 lenz = (*((*smallestz).pos)).cumz - (*smallestz).cumz;
                 lpz = remainpz - (*smallestz).cumz;
 
-                // cout<<"In Packlayer"<<endl;
-                // cout<<lenx<<" "<<" "<<lenz<<" "<<lpz<<" "<<remainpy<<endl;
-                // cout<<"Out Packlayer"<<endl;
-
                 findbox(cluster, lenx, layerthickness, remainpy, lenz, lpz);
                 checkfound();
 
@@ -446,7 +466,6 @@ class Binpacker{
                         if ((*smallestz).pos) {
                             (*((*smallestz).pos)).pre = smallestz;
                         }
-                        // delete trash;
                     } else {
                         (*smallestz).cumz = (*smallestz).cumz + cboxz;
                     }
@@ -475,9 +494,6 @@ class Binpacker{
                 lenx = (*smallestz).cumx - (*((*smallestz).pre)).cumx;
                 lenz = (*((*smallestz).pre)).cumz - (*smallestz).cumz;
                 lpz = remainpz - (*smallestz).cumz;
-                // cout<<"In Packlayer"<<endl;
-                // cout<<lenx<<" "<<" "<<lenz<<" "<<lpz<<" "<<remainpy<<endl;
-                // cout<<"Out Packlayer"<<endl;
                 findbox(cluster, lenx, layerthickness, remainpy, lenz, lpz);
                 checkfound();
 
@@ -521,9 +537,6 @@ class Binpacker{
                 lenx = (*smallestz).cumx - (*((*smallestz).pre)).cumx;
                 lenz = (*((*smallestz).pre)).cumz - (*smallestz).cumz;
                 lpz = remainpz - (*smallestz).cumz;
-                // cout<<"In Packlayer"<<endl;
-                // cout<<lenx<<" "<<lenz<<" "<<lpz<<" "<<remainpy<<endl;
-                // cout<<"Out Packlayer"<<endl;
                 findbox(cluster, lenx, layerthickness, remainpy, lenz, lpz);
                 checkfound();
 
@@ -590,9 +603,6 @@ class Binpacker{
                 lenx = (*smallestz).cumx - (*((*smallestz).pre)).cumx;
                 lenz = (*((*smallestz).pre)).cumz - (*smallestz).cumz;
                 lpz = remainpz - (*smallestz).cumz;
-                // cout<<"In Packlayer"<<endl;
-                // cout<<lenx<<" "<<lpz<<endl;
-                // cout<<"Out Packlayer"<<endl;
                 findbox(cluster, lenx, layerthickness, remainpy, lenz, lpz);
                 checkfound();
 
@@ -637,6 +647,12 @@ class Binpacker{
     }
 
     int findlayer(vector<item>& cluster, short int thickness) {
+        /**
+         * @brief findlayer finds the layer with least difference in height between items in the cluster 
+         * @param cluster vector of items in a cluster 
+         * @param thickness the current height of the stack 
+         * @return int returns 0 if successful
+         */
         short int exdim, dimdif, dimen2, dimen3, y, z;
         long int layereval, eval;
         layerthickness = 0;
@@ -665,6 +681,20 @@ class Binpacker{
     }
 
     void findbox(vector<item>& cluster, short int hmx, short int hy, short int hmy, short int hz, short int hmz) {
+        /**
+         * @brief Finds the best and second best fit box for a given set of items and dimensions.
+         * 
+         * The function iterates through the items in `cluster` and calculates the best and second best fit box
+         * for the given dimensions (`hmx`, `hy`, `hmy`, `hz`, `hmz`) by calling `analyzebox` function twice 
+         * with different permutations of the item's dimensions (width, height, length). 
+         *
+         * @param cluster vector of items to be fit into a box
+         * @param hmx maximum width of the box
+         * @param hy height of the box
+         * @param hmy maximum height of the box
+         * @param hz length of the box
+         * @param hmz maximum length of the box
+         */
         short int y;
         bfx = 32767;
         bfy = 32767;
@@ -682,12 +712,21 @@ class Binpacker{
         }
     }
 
-    //**********************************************************************
-    // ANALYZES EACH UNPACKED BOX TO FIND THE BEST FITTING ONE TO
-    // THE EMPTY SPACE GIVEN
-    //**********************************************************************
-
     void analyzebox(short int hmx, short int hy, short int hmy, short int hz, short int hmz, short int dim1, short int dim2, short int dim3) {
+        /**
+         * @brief Analyzes a box based on its dimensions and various other factors
+         * 
+         * The function analyzes the dimensions (`dim1`, `dim2`, and `dim3`) of a box and updates the box and best fit variables (`boxx`, `boxy`, `boxz`, `bfx`, `bfy`, `bfz`, `boxi`, `bboxx`, `bboxy`, `bboxz`, `bbfx`, `bbfy`, `bbfz`, and `bboxi`) based on several conditions. If the dimensions of the box are less than or equal to the maximum dimensions (`hmx`, `hmy`, and `hmz`), it further checks the relationship between `dim2` and `hy` to determine which set of variables to update.
+         *
+         * @param hmx The maximum allowed dimension for the x-axis of the box
+         * @param hy The current y-axis height
+         * @param hmy The maximum allowed dimension for the y-axis of the box
+         * @param hz The current z-axis height
+         * @param hmz The maximum allowed dimension for the z-axis of the box
+         * @param dim1 The dimension of the box along the x-axis
+         * @param dim2 The dimension of the box along the y-axis
+         * @param dim3 The dimension of the box along the z-axis
+         */
         if (dim1 <= hmx && dim2 <= hmy && dim3 <= hmz) {
             if (dim2 <= hy) {
                 if (hy - dim2 < bfy) {
@@ -745,10 +784,15 @@ class Binpacker{
         }
     }
 
-    //********************************************************
-    // FINDS THE FIRST TO BE PACKED GAP IN THE LAYER EDGE
-    //********************************************************
     void findsmallestz(vector<item>&) {
+        /**
+         * @brief Find the item with the smallest cumulative z value in the linked list
+         * 
+         * @param items Reference to the vector of item structs
+         * 
+         * The function sets the smallestz pointer to point to the node in the linked
+         * list which has the smallest cumz value.
+         */
         scrapmemb = scrapfirst;
         smallestz = scrapmemb;
         while (!(scrapmemb->pos == NULL)) {
@@ -759,11 +803,6 @@ class Binpacker{
         }
         return;
     }
-
-    //************************************************************
-    // AFTER FINDING EACH BOX, THE CANDIDATE BOXES AND THE
-    // CONDITION OF THE LAYER ARE EXAMINED
-    //************************************************************
 
     void checkfound(void) {
         evened = 0;
@@ -826,9 +865,6 @@ class Binpacker{
         return;
     }
 
-    //********************************************************************
-    // AFTER PACKING OF EACH BOX, 100% PACKING CONDITION IS CHECKED
-    //********************************************************************
 
     void volumecheck(vector<item>& cluster) {
         boxStatus[int(cboxi)] = 1;
@@ -844,10 +880,6 @@ class Binpacker{
         return;
     }
 
-    //*******************************************************************
-    // USING THE PARAMETERS FOUND, PACKS THE BEST SOLUTION FOUND
-    // AND REPORS TO THE CONSOLE AND TO A TEXT FILE
-    //*******************************************************************
 
     void report(vector<item>& cluster) {
         int num = 0;
@@ -875,7 +907,14 @@ class Binpacker{
 };
 
 class EB_AFIT : public BinPackInterface {
-   public:
+    /**
+     * @class EB_AFIT
+     * @brief A class implementing the BinPackInterface
+     * 
+     * This class implements the BinPackInterface by using a Binpacker object and providing implementations for BinPack, CalculateCost, and getInversionCount.
+     */
+    
+    public:
     Binpacker binpacker;
     EB_AFIT();
     void BinPack(vector<item>& cluster, Bin b);

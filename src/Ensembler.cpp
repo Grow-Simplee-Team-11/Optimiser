@@ -14,7 +14,20 @@ namespace myNamespace{
 }
 
 
+
 Ensembler::Ensembler(vector<string>& RoutePlanningAlgorithms_, vector<string>& BinPackingAlgorithms_, vector<string>& ClusteringAlgorithms_, vector<item>& packages_, Coordinate& warehouse_, int numberRiders_, Bin& bin_){
+    /**
+     * @brief for the Ensembler class. Initializes the RoutePlanningAlgorithms, BinPackingAlgorithms, and ClusteringAlgorithms 
+     * based on the input vectors, packages, warehouse, numberRiders, and bin. 
+     * 
+     * @param RoutePlanningAlgorithms_ Vector of strings representing the route planning algorithms to be used. 
+     * @param BinPackingAlgorithms_ Vector of strings representing the bin packing algorithms to be used. 
+     * @param ClusteringAlgorithms_ Vector of strings representing the clustering algorithms to be used. 
+     * @param packages_ Vector of item objects representing the packages to be delivered. 
+     * @param warehouse_ Coordinate object representing the location of the warehouse. 
+     * @param numberRiders_ Integer representing the number of riders for delivery. 
+     * @param bin_ Bin object representing the bin for the packages. 
+     */
     RoutePlanningAlgorithms = RoutePlanningAlgorithms_;
     BinPackingAlgorithms = BinPackingAlgorithms_;
     ClusteringAlgorithms = ClusteringAlgorithms_;
@@ -24,9 +37,7 @@ Ensembler::Ensembler(vector<string>& RoutePlanningAlgorithms_, vector<string>& B
             pthread_mutex_t* lockAlgo = new pthread_mutex_t;
             pthread_mutex_init(lockAlgo, NULL);
             myNamespace::locksRouting.push_back(lockAlgo);
-
-            cout<<routeAlgo<<" "<<(lockAlgo)<<endl;
-
+            
             RoutePlanInterface* rp = NULL;
             if (routeAlgo == "TSP_OR") rp = new TSP_OR(EUCLIDEAN);
             else if (routeAlgo == "TSP_LK") rp = new TSP_LK(EUCLIDEAN);
@@ -71,6 +82,17 @@ Ensembler::Ensembler(vector<string>& RoutePlanningAlgorithms_, vector<string>& B
 }
 
 void Ensembler::EnsembleRun(){
+    /**
+    * @brief EnsembleRun function for performing the ensemble run for the delivery problem.
+    * The function performs a three-level nested loop to generate combinations of route planning, clustering, and bin packing algorithms.
+    * For each combination, a new instance of the Ensembler class is created and run in a separate thread.
+    * The threads are stored in a vector of pthread_t and joined at the end of the function.
+    * The costs of each run are then calculated as a sum of routing cost and packaging cost, with a weight of 0.5.
+    * The run with the minimum cost is chosen as the best run and its clusters, paths, and bin packing information is stored.
+    * The costs of all the runs are also stored in the Costs vector.
+    * 
+    * @return None.
+    */
     int numRoutePlanners = RoutePlanningAlgorithms.size();
     int numClusteringAlgos = ClusteringAlgorithms.size();
     int numBinpackingAlgos = BinPackingAlgorithms.size();
@@ -154,11 +176,28 @@ void Ensembler::EnsembleRun(){
     return;
 }
 
+
+
 vector<pair<vector<string>, double>> Ensembler::GetCosts(){
+    /**
+    * @brief Get the costs of all the combinations of algorithms used
+    *
+    * @return vector<pair<vector<string>, double>> - A vector of pairs containing the combination of algorithms and the corresponding cost
+    */
     return Costs;
 }
 
 void Ensembler::Report(){
+    /**
+    * 
+    * @brief Writes the costs of each combination of algorithms to a file
+    * This function takes in the costs of each combination of algorithms and writes it to a file. The file name is constructed
+    * using the names of the algorithms and the file is saved in the "tests" directory. The costs are written to the file in a single
+    * line, with the cost of the combination written in a double precision floating point format.
+    * @param Costs a vector of pairs, each pair representing the combination of algorithms and its cost
+    * @return void
+    * 
+    */
     for(auto x:Costs){
         string fileName = x.first[0] + x.first[1] + x.first[2];
         fileName += ".txt";
@@ -170,7 +209,18 @@ void Ensembler::Report(){
     return;
 }
 
+
 void * run(void * arg){
+    /**
+    * @brief run function that runs the combinations of algorithms to optimize delivery of packages
+    * 
+    * @param arg Pointer to the Ensembler class object
+    *
+    * @return void
+    *
+    * This function runs the combination of algorithms chosen by the Ensembler class to optimize delivery of packages. It creates a temporary Optimizer object and optimizes the delivery by calling its optimize() method.
+    * The costs of each optimization process are then calculated by adding the routing and packaging costs and stored as a pair of algorithm combination and total cost in the Costs vector of the Ensembler class object.
+    */
     Ensembler* ensembler = (Ensembler*) arg;
 
     cout<<"Running combination - "<<ensembler->RoutePlanningAlgorithms[ensembler->currentCombination[0]]<<" "<<ensembler->ClusteringAlgorithms[ensembler->currentCombination[1]]<<" "<<ensembler->BinPackingAlgorithms[ensembler->currentCombination[2]]<<endl;;
