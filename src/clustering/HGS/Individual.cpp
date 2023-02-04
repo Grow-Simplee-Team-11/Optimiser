@@ -62,7 +62,7 @@ void Individual::evaluateCompleteCost(const Params & params)
 	// std::cout << "Zero Count : " << zeroCount << ' ' << params.penaltyCapacity << ' ' << params.penaltyDuration << std::endl;
 
 	// Add to final cost.
-	eval.penalizedCost = eval.distance + eval.capacityExcess*params.penaltyCapacity + eval.durationExcess*params.penaltyDuration + more_than_25*params.penaltyMoreThan25;
+	eval.penalizedCost = eval.distance + eval.capacityExcess*params.penaltyCapacity + eval.durationExcess*params.penaltyDuration;
 	// Check for feasibility
 	eval.isFeasible = (eval.capacityExcess < MY_EPSILON && eval.durationExcess < MY_EPSILON) ;
 	
