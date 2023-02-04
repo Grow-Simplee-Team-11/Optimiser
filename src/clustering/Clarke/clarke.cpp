@@ -1,5 +1,6 @@
 #include "../../include/clustering/Clarke/clarke.hpp"
-
+double temporal_mean;
+double spacial_mean;
 void Clarke::merge_sort(vector<pair<int,int>> final_points, int l , int r){
     if(r<=l){
         return;
@@ -59,7 +60,14 @@ double Clarke::depotDist(Coordinate &c){
     return Dist(c,warehouse);
 }
 double Clarke::compute_savings(item& item1,item& item2){
-    return depotDist(item1.coordinate) + depotDist(item2.coordinate) - Dist(item1.coordinate,item2.coordinate) + abs(item1.time -item2.time);
+    double spacial_saving = depotDist(item1.coordinate) + depotDist(item2.coordinate) - Dist(item1.coordinate,item2.coordinate);
+    double temporal_saving = abs(item1.time-item2.time)*speed/60;
+    temporal_mean+=Temporal_Factor*temporal_saving;
+    spacial_mean+=Spatial_Factor*spacial_saving;
+    // cout<<"Spacial Savings ===> "<< (double)(Spatial_Factor*spacial_saving)<<endl;
+    // cout<<"Temporal Saving ===> "<< (double)(Temporal_Factor*temporal_saving)<<endl;
+    // cout<<"---------------------------------------------"<<endl;
+    return Spatial_Factor*(spacial_saving)- Temporal_Factor*(temporal_saving);
 }
 void Clarke::create_pq(){
     q = priority_queue<pair<double,pair<int,int>>> ();

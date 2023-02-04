@@ -93,6 +93,7 @@ class ClusteringInterface{
             //     return manhattan_dist(c1,c2);
         }
     protected:
+        int speed = 30;
         vector<vector<item>> clusters;
         float cost;
         Coordinate warehouse;
