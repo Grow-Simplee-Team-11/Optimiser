@@ -185,7 +185,6 @@ void EB_AFIT::BinPack(vector<item>& cluster, Bin b) {
     binpacker.report(cluster);
     this->packed_items = cluster;
     sortCluster(this->packed_items);
-
     return;
 }
 
