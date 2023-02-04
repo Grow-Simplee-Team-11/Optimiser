@@ -148,9 +148,10 @@ void HGS::ComputeClusters(vector<item> &packages, Coordinate warehouse, int numR
 		cout << "Solver Completed"<<endl;
 		// Exporting the best solution
 		
-		Individual indiv = *solver.population.getBestFound();
 		if (solver.population.getBestFound() != NULL)
-		{
+		{	
+			cout << "Solution Found !" << endl;
+			Individual indiv = *solver.population.getBestFound();
 			for (int k = 0; k < (int)indiv.chromR.size(); k++)
 			{
 				if (!indiv.chromR[k].empty())

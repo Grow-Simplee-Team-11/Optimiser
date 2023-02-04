@@ -40,7 +40,7 @@ void Optimizer::check_data(){
 void Optimizer::optimize(){
     check_data();
     clusteringInterface->ComputeClusters(packages, warehouse, numberRiders, bin);
-    if(clusters.size() == 0){
+    if(clusteringInterface->GetClusters().size() == 0){
         throw "Clustering Algorithm Could Not found a solution";
     }
     clusteringInterface->CalculateCost();

@@ -65,7 +65,7 @@ void TSP_OR::PlanRoute(vector<item> &cluster, Coordinate w){
       FirstSolutionStrategy::PATH_CHEAPEST_ARC);
     search_parameters.set_local_search_metaheuristic(
       LocalSearchMetaheuristic::GUIDED_LOCAL_SEARCH);
-    search_parameters.mutable_time_limit()->set_seconds(5);
+    search_parameters.mutable_time_limit()->set_seconds(20);
 
     const Assignment* solution = routing.SolveWithParameters(search_parameters);
     cout << "Route Planned Successfully" << endl;

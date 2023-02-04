@@ -108,6 +108,7 @@ class OptimizerServiceImpl final : public optimizer::optimizer::Service
         std::cout << "Received request" << std::endl;
         (*reply) = OptimizerResponse();
         // RoutePlanInterface* rp = new TSP_OR(EUCLIDEAN);
+        // RoutePlanInterface* rp = new TSP_OR(REAL);
         RoutePlanInterface* rp = new TSP_OR(REAL);
     	ClusteringInterface* cls = new HGS(HAVERSINE,3.66,2.06);
 	    BinPackInterface* bp =  new EB_AFIT;
@@ -121,6 +122,11 @@ class OptimizerServiceImpl final : public optimizer::optimizer::Service
              optim.optimize();
         }
         catch(const char* msg)
+        {
+            std::cerr << msg << std::endl;
+            return Status::CANCELLED;
+        }
+        catch(const string msg)
         {
             std::cerr << msg << std::endl;
             return Status::CANCELLED;
