@@ -185,9 +185,7 @@ int main(int argc, char** argv) {
 	// int numRiders = 5;
 	RoutePlanInterface* rp = new TSP_OR(REAL);
 	// ClusteringInterface* cls = new HGS(HAVERSINE);
-	#ifdef DO_GRID_SEARCH
-		ClusteringInterface* cls = new HGS(HAVERSINE,atof(argv[1]),atof(argv[2]));
-	#endif
+	ClusteringInterface* cls = new HGS(HAVERSINE,atof(argv[1]),atof(argv[2]));
 	BinPackInterface* bp =  new EB_AFIT;
 	Optimizer optim(rp, cls, bp, items, warehouse, numRiders, bin,"FESIF_TSP.txt", true, true);
 

@@ -16,11 +16,6 @@ void Population::generatePopulation()
 		Individual randomIndiv(params); // chromosome
 		split.generalSplit(randomIndiv, params.nbVehicles); // make clusters inside the chromosome
 		localSearch.run(randomIndiv, params.penaltyCapacity, params.penaltyDuration); /// 
-		if (randomIndiv.eval.isFeasible) {
-			cout << __FUNCTION__ << " " << __LINE__ << endl;
-			cout << "feasible" << endl;
-			cout << randomIndiv.eval.penalizedCost << endl;
-		}
 		addIndividual(randomIndiv, true);
 		if (!randomIndiv.eval.isFeasible && params.ran() % 2 == 0)  // Repair half of the solutions in case of infeasibility
 		{
@@ -71,10 +66,6 @@ bool Population::addIndividual(const Individual & indiv, bool updateFeasible)
 		while ((int)subpop.size() > params.ap.mu)
 			removeWorstBiasedFitness(subpop);
 
-	if (indiv.eval.isFeasible) {
-		cout << "Found a feasable individual" << endl;
-		exit(1);
-	}
 
 	// Track best solution
 	if (indiv.eval.isFeasible && indiv.eval.penalizedCost < bestSolutionRestart.eval.penalizedCost - MY_EPSILON)

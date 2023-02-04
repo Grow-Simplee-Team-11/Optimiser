@@ -23,10 +23,8 @@ class HGS : public ClusteringInterface
 		bool EDD;
 		
 		HGS(DistanceType method,bool EDD = false);
-		#ifdef DO_GRID_SEARCH
 		double penaltyDuration,penaltyCapacity;
 		HGS(DistanceType method,double penaltyDuration,double penaltyCapacity,bool EDD = false);
-		#endif
 		// double Dist(struct Coordinate c1,struct Coordinate c2){
         //     if(method == EUCLIDEAN)
         //         return euclidean(c1,c2);

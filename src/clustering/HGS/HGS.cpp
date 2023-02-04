@@ -11,10 +11,7 @@ HGS::HGS(DistanceType method,bool EDD): ClusteringInterface(method){
 			// pathSolution = solution_path_name;
 			this->EDD = EDD;
 			isRoundingInteger = false;
-			verbose = false;
-			#ifdef DO_GRID_SEARCH
 			verbose = true;
-			#endif
 			pathSolution = "../tests/HGS_sol.txt";
 			ap = default_algorithm_parameters();
 			// ap.timeLimit = 30.0;
@@ -29,9 +26,6 @@ HGS::HGS(DistanceType method,double penaltyDuration,double penaltyCapacity,bool 
 			this->penaltyCapacity = penaltyCapacity;
 			isRoundingInteger = false;
 			verbose = true;
-			#ifdef DO_GRID_SEARCH
-			verbose = true;
-			#endif
 			pathSolution = "../tests/HGS_sol.txt";
 			ap = default_algorithm_parameters();
 			// ap.timeLimit = 30.0;
@@ -53,11 +47,13 @@ void HGS::ComputeClusters(vector<item> &packages, Coordinate warehouse, int numR
 	// InstanceCVRPLIB cvrp(pathInstance, isRoundingInteger);
 	int n = packages.size();
 	// double time_to_deliver_in_km = 1.5; 
+	double avgspeed = 0.35; // 21 km/hr
+	double DurationLimit = 300 * avgspeed;//Duration Limit is given in kms
 	double time_to_deliver_in_km = 0; 
 	vector<double> x_coords(n+1);
 	vector<double> y_coords(n+1);
 	vector<double> demands(n+1,0.);
-	vector<double> service_time(n+1,3);
+	vector<double> service_time(n+1, 7.5 * avgspeed);
 	service_time[0] = 0;
 	x_coords[0] = warehouse.latitude;
 	y_coords[0] = warehouse.longitude;
@@ -105,8 +101,6 @@ void HGS::ComputeClusters(vector<item> &packages, Coordinate warehouse, int numR
 	std::vector<double> expectation(n,1e30); 
 	// TODO: add expectation in HGS
 	for(int i=0;i<n;i++) expectation[i] = packages[i].time;
-	double avgspeed = 0.35;
-	double DurationLimit = 300;//Duration Limit is given in kms
 	
 	if(this->EDD){
 		cout << "With EDD " << endl;
@@ -145,10 +139,8 @@ void HGS::ComputeClusters(vector<item> &packages, Coordinate warehouse, int numR
 		Params params(x_coords,y_coords,dist_mtx,service_time,demands,
 				b.capacity,DurationLimit,numRiders,true,verbose, expectation,ap);
 		params.averageSpeed = avgspeed;
-		#ifdef DO_GRID_SEARCH
 		params.penaltyCapacity = this->penaltyCapacity;
 		params.penaltyDuration = this->penaltyDuration;
-		#endif
 		// params.penaltyMoreThan25 = 2*avgspeed;
 		print_algorithm_parameters(ap);
 		Genetic solver(params);
@@ -156,18 +148,6 @@ void HGS::ComputeClusters(vector<item> &packages, Coordinate warehouse, int numR
 		cout << "Solver Completed"<<endl;
 		// Exporting the best solution
 		
-		
-	#ifdef DO_GRID_SEARCH
-		if(solver.population.getBestFound() != NULL){
-			Individual indiv = *solver.population.getBestFound();
-			indiv.evaluateCompleteCost(params);
-			cout << "Best Solution : " << indiv.eval.penalizedCost << endl;
-		}
-		else{
-			cout << "Best Solution : " << 1e30 << endl;
-		}
-		return;
-	#endif
 		Individual indiv = *solver.population.getBestFound();
 		if (solver.population.getBestFound() != NULL)
 		{

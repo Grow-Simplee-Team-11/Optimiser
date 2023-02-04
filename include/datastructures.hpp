@@ -5,7 +5,6 @@
 
 #include <fstream>
 #include <iostream>
-#define DO_GRID_SEARCH
 
 using namespace std;
 // #define int long long
@@ -87,12 +86,12 @@ class item {
             time = providedEdd;
         }
     void print() {
-        cout << coordinate.longitude << " " << coordinate.latitude << "\n";
+        cout << coordinate.latitude << " " << coordinate.longitude << "\n";
         // cout<<"( Latitude - "<<coordinate.latitude<<" Longitude - "<<coordinate.longitude<<" Size - ("<<size.width<<", "<<size.length<<", "<<size.height<<") )";
         return;
     }
     void printToFile(std::ofstream& out) {
-        out << coordinate.longitude << " " << coordinate.latitude << "\n";
+        out << coordinate.latitude << " " << coordinate.longitude << "\n";
         // out<<"( Latitude - "<<coordinate.latitude<<" Longitude - "<<coordinate.longitude<<" Size - ("<<size.width<<", "<<size.length<<", "<<size.height<<") )";
         return;
     }

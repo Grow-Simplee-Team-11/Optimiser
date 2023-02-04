@@ -34,8 +34,8 @@ void Individual::evaluateCompleteCost(const Params & params)
 			for (int i = 1; i < (int)chromR[r].size(); i++)
 			{	
 				distance += params.timeCost[chromR[r][i-1]][chromR[r][i]];
-				float timeReach = (distance)/params.averageSpeed + service ; //Add starting time in this
-				double diff = timeReach-params.timeExpectation[chromR[r][i]];
+				float timeReach = (distance) + service ; //Add starting time in this
+				double diff = timeReach / params.averageSpeed - params.timeExpectation[chromR[r][i]];
 				countOfIncrease += (diff>0?diff:0);
 				load += params.cli[chromR[r][i]].demand;
 				service += params.cli[chromR[r][i]].serviceDuration;
@@ -47,7 +47,7 @@ void Individual::evaluateCompleteCost(const Params & params)
 			eval.distance += distance + countOfIncrease*params.penaltyEDD;
 			eval.nbRoutes++;
 			if (load > params.vehicleCapacity) eval.capacityExcess += load - params.vehicleCapacity;
-			if (distance / params.averageSpeed + service > params.durationLimit) eval.durationExcess += distance / params.averageSpeed + service - params.durationLimit;
+			if (distance + service > params.durationLimit) eval.durationExcess += distance + service - params.durationLimit;
 			// if(eval.capacityExcess > MY_EPSILON){
 			// 	std::cout << "INFEASIABLE CAPACITY" << std::endl;
 			// }
