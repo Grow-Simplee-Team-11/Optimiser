@@ -60,7 +60,9 @@ void Optimizer::optimize(){
     bool first = true;
     ofstream output;
     
-    for(auto& cluster: clusters){
+    for(int i=0; i< clusters.size();i++){
+        auto& cluster = clusters[i];
+
         if(verbose){
             cout<<"Printing information for cluster - "<<i<<endl;
         }
@@ -86,7 +88,7 @@ void Optimizer::optimize(){
                 routePlannerInterface->PrintRoutesToFile(logFileName);
             }
             // Computing bin packaging
-            binPackInterface->BinPack(cluster, bin);
+            binPackInterface->BinPack(clusterPaths[], bin);
             clusterPackagings.push_back(binPackInterface->GetPackaging());
             binPackInterface->CalculateCost();
             packagingCost.push_back(binPackInterface->CalculateCost());

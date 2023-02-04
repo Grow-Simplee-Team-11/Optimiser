@@ -57,9 +57,7 @@ void EB_AFIT::BinPack(vector<item>& cluster, Bin b) {
     for (int i = 0; i < binpacker.n; i++) {
         binpacker.boxStatus[i] = 0;
     }
-    sort(cluster.begin(), cluster.end(), [](const item& a, const item& b) {
-        return a.orig_rank > b.orig_rank;
-    });
+    
 
     binpacker.bestvolume = 0;
     binpacker.packingbest = 0;
@@ -162,6 +160,8 @@ void EB_AFIT::BinPack(vector<item>& cluster, Bin b) {
     time(&finish);
     binpacker.report(cluster);
     this->packed_items = cluster;
+    sortCluster(this->packed_items);
+
     return;
 }
 
