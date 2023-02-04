@@ -66,7 +66,7 @@ void TSP_OR_EDD::ComputeEuclideanDistanceMatrix(std::vector<item>& cluster)
     for (int toNode = 0; toNode < mod_cluster.size(); toNode++) {
       if (fromNode != toNode)
         distances[fromNode][toNode] = static_cast<int64_t>(
-          Dist(mod_cluster[fromNode].coordinate, mod_cluster[toNode].coordinate)*60.0/speed);
+          (double)Dist(mod_cluster[fromNode].coordinate, mod_cluster[toNode].coordinate)*60.0/speed);
     }
   }
 }
@@ -87,23 +87,13 @@ void TSP_OR_EDD::PlanRoute(vector<item> &cluster, Coordinate w){
     RoutingIndexManager manager(cluster.size()+1, num_vehicles, depot);
     RoutingModel routing(manager);
     warehouse = w;
-    // ComputeEuclideanDistanceMatrix(cluster);
-    // const int transit_callback_index = routing.RegisterTransitCallback(
-    //   [this, &manager](int64_t from_index,
-    //                                int64_t to_index) -> int64_t {
-    //     // Convert from routing variable Index to distance matrix NodeIndex.
-    //     auto from_node = manager.IndexToNode(from_index).value();
-    //     auto to_node = manager.IndexToNode(to_index).value();
-    //     return this->distances[from_node][to_node];
-    //   });
     const int transit_callback_index = routing.RegisterTransitCallback(
       [this, &manager](int64_t from_index,
                                    int64_t to_index) -> int64_t {
         // Convert from routing variable Index to distance matrix NodeIndex.
         auto from_node = manager.IndexToNode(from_index).value();
         auto to_node = manager.IndexToNode(to_index).value();
-        return static_cast<int64_t>(this->DistMatrix[from_node][to_node]);
-        // return this->distances[from_node][to_node];
+        return static_cast<int64_t>(DistMatrix[from_node][to_node]*60.0/speed);
       });
 
     routing.SetArcCostEvaluatorOfAllVehicles(transit_callback_index);
@@ -117,16 +107,17 @@ void TSP_OR_EDD::PlanRoute(vector<item> &cluster, Coordinate w){
     {
         mod_cluster.push_back(x);
     }
-    for(int i =0;i<mod_cluster.size();i++){
-      cout<<mod_cluster[i].coordinate.latitude<<" "<<mod_cluster[i].coordinate.longitude<<" "<<mod_cluster[i].time<<endl;
-    }
-    for(int i =0 ;i< distances.size(); i++){
-      for(int j = 0; j< distances.size(); j++){
-        cout<<distances[i][j]<<" ";
+    // for(int i =0;i<mod_cluster.size();i++){
+    //   cout<<mod_cluster[i].coordinate.latitude<<" "<<mod_cluster[i].coordinate.longitude<<" "<<mod_cluster[i].time<<endl;
+    // }
+    for(int i =0 ;i< DistMatrix.size(); i++){
+      for(int j = 0; j< DistMatrix.size(); j++){
+        // cout<<DistMatrix[i][j]<<" ";
+        DistMatrix[i][j] = ceil(DistMatrix[i][j]);
       }
-      cout<<endl;
+      // cout<<endl;
     }
-    cout<<"------------------------------------------------------------------------------------------------------------"<<endl;
+    // cout<<"------------------------------------------------------------------------------------------------------------"<<endl;
     std::string time{"Time"};
     routing.AddDimension(transit_callback_index,  // transit callback index
                        int64_t{1440},             // allow waiting time
@@ -137,7 +128,7 @@ void TSP_OR_EDD::PlanRoute(vector<item> &cluster, Coordinate w){
     const RoutingDimension& time_dimension = routing.GetDimensionOrDie(time);
     for (int i = 1; i < mod_cluster.size(); ++i) {
     int64_t index = manager.NodeToIndex(RoutingIndexManager::NodeIndex(i));
-    cout<<mod_cluster[i].time<<endl;
+    // cout<<mod_cluster[i].time<<endl;
     time_dimension.CumulVar(index)->SetRange(0, mod_cluster[i].time*60);
   }
   for (int i = 0; i < num_vehicles; ++i) {

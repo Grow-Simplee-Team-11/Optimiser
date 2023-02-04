@@ -14,6 +14,7 @@ get_filename_component(dp_proto "./proto/main.proto" ABSOLUTE)
 get_filename_component(dp_proto_path "${dp_proto}" PATH)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin")
+set(CMAKE_CXX_STANDARD 17)
 
 # Generated sources
 set(dp_proto_srcs "${CMAKE_CURRENT_BINARY_DIR}/main.pb.cc")

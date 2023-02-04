@@ -44,15 +44,21 @@ void multithreading(Optimizer * opt, Optimizer * temp, int thread_number){
     
 }
 void Optimizer::optimize(){
+    cout<<"Checking Input Data ===> "<<endl;
+    for(int i = 0;i<packages.size();i++){
+        cout<<packages[i].size.height<<" "<<packages[i].size.length<<" "<<packages[i].size.width<<" "<<packages[i].weight<<" "<<packages[i].coordinate.latitude<<" "<<packages[i].coordinate.longitude<<" "<<packages[i].time<<endl;
+    }
+    cout<<"Checking Bag Info ===> "<<endl;
+    cout<<bin.capacity<<" "<<bin.size.height<<" "<<bin.size.length<<" "<<bin.size.width<<endl;
     ofstream output;
     if(this->clusteringInterface->clustering_method && this->clusteringInterface->multithreading){
        
-        for(int k = 0 ; k < 5; k ++){
+        for(int k = 0 ; k < 2; k ++){
             vector<thread> threads;
             vector<Optimizer*> optimizers;
-            for(int j = 0 ; j < 20 ; j ++ ){
-                RoutePlanInterface* rp = new TSP_OR_EDD(EUCLIDEAN);
-                ClusteringInterface* cls = new Clarke(EUCLIDEAN);
+            for(int j = 0 ; j < 5 ; j ++ ){
+                RoutePlanInterface* rp = new TSP_OR_EDD(HAVERSINE);
+                ClusteringInterface* cls = new Clarke(REAL);
                 BinPackInterface* bp =  new EB_AFIT;
 
                 assert(rp != NULL);
