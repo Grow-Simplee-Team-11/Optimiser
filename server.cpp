@@ -109,9 +109,8 @@ class OptimizerServiceImpl final : public optimizer::optimizer::Service
         (*reply) = OptimizerResponse();
         // RoutePlanInterface* rp = new TSP_OR(EUCLIDEAN);
         RoutePlanInterface* rp = new TSP_OR(REAL);
-    	ClusteringInterface* cls = new HGS(HAVERSINE);
+    	ClusteringInterface* cls = new HGS(HAVERSINE,3.66,2.06);
 	    BinPackInterface* bp =  new EB_AFIT;
-        cout << "I am here" << endl;
         DataModel dm = getData(request);
 
         bool verbose = true;

@@ -16,3 +16,4 @@ build/*
 createJson.py
 visual/*
 wandb*
+*clusters.html
