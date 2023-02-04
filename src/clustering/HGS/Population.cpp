@@ -5,14 +5,17 @@
  * rider). perform local search, evaluate penalty and check feasibility of solutions
  * 
  */
+
+using namespace std;
 void Population::generatePopulation()
 {
+    cout << __FUNCTION__ << " " << __LINE__ << endl;
 	if (params.verbose) std::cout << "----- BUILDING INITIAL POPULATION" << std::endl;
 	for (int i = 0; i < 4*params.ap.mu && (i == 0 || params.ap.timeLimit == 0 || (double)(clock() - params.startTime) / (double)CLOCKS_PER_SEC < params.ap.timeLimit) ; i++)
 	{
-		Individual randomIndiv(params);
-		split.generalSplit(randomIndiv, params.nbVehicles);
-		localSearch.run(randomIndiv, params.penaltyCapacity, params.penaltyDuration);
+		Individual randomIndiv(params); // chromosome
+		split.generalSplit(randomIndiv, params.nbVehicles); // make clusters inside the chromosome
+		localSearch.run(randomIndiv, params.penaltyCapacity, params.penaltyDuration); /// 
 		addIndividual(randomIndiv, true);
 		if (!randomIndiv.eval.isFeasible && params.ran() % 2 == 0)  // Repair half of the solutions in case of infeasibility
 		{
@@ -20,6 +23,7 @@ void Population::generatePopulation()
 			if (randomIndiv.eval.isFeasible) addIndividual(randomIndiv, false);
 		}
 	}
+    cout << __FUNCTION__ << " " << __LINE__ << endl;
 }
 /**
  * @brief add an individual (a complete assignment of routes to all riders) to the population
@@ -31,6 +35,7 @@ void Population::generatePopulation()
  */
 bool Population::addIndividual(const Individual & indiv, bool updateFeasible)
 {
+
 	if (updateFeasible)
 	{
 		listFeasibilityLoad.push_back(indiv.eval.capacityExcess < MY_EPSILON);
@@ -61,12 +66,15 @@ bool Population::addIndividual(const Individual & indiv, bool updateFeasible)
 		while ((int)subpop.size() > params.ap.mu)
 			removeWorstBiasedFitness(subpop);
 
+
 	// Track best solution
 	if (indiv.eval.isFeasible && indiv.eval.penalizedCost < bestSolutionRestart.eval.penalizedCost - MY_EPSILON)
-	{
+	{	
+		std::cout << "Reached Here" << std::endl;
 		bestSolutionRestart = indiv; // Copy
 		if (indiv.eval.penalizedCost < bestSolutionOverall.eval.penalizedCost - MY_EPSILON)
-		{
+		{	
+			std::cout << "Over Here"<< std::endl;
 			bestSolutionOverall = indiv;
 			searchProgress.push_back({ clock() - params.startTime , bestSolutionOverall.eval.penalizedCost });
 		}

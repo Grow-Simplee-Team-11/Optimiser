@@ -73,11 +73,15 @@ DataModel getData(const OptimizerRequest *request){
 }
 void setData(Optimizer &optim,OptimizerResponse *reply){
     int numClusters = optim.getNumClusters();
+    cout << "-----------------------------Returning Result--------------------"<<endl;
+    cout << "numClusters : " << numClusters << endl;
     for(int i = 0;i < numClusters;i++){
         reply->add_clusters();
         vector<item> cluster = optim.GetPackagingForCluster(i);
+        cout << "Size of Cluster : " << i << " : " << cluster.size();
         int numPackages = cluster.size();
         for(int j = 0;j < numPackages;j++){
+            cout << "\t package " << j << " position : " << cluster[j].position.x << ' ' << cluster[j].position.y << ' ' << cluster[j].position.z << " dimension : " << cluster[j].size.length << ' ' << cluster[j].size.width << ' ' << cluster[j].size.height << endl;
             ResponsePackage pkg;
             pkg.set_id(cluster[j].id);
             optimizer::Position pos;
@@ -93,6 +97,7 @@ void setData(Optimizer &optim,OptimizerResponse *reply){
             *(reply->mutable_clusters(i)->mutable_packages(j)) = pkg;
         }
     }
+    cout << "--------------------------setData successful --------------------" << endl;
 }
 
 class OptimizerServiceImpl final : public optimizer::optimizer::Service
@@ -103,8 +108,8 @@ class OptimizerServiceImpl final : public optimizer::optimizer::Service
         std::cout << "Received request" << std::endl;
         (*reply) = OptimizerResponse();
         // RoutePlanInterface* rp = new TSP_OR(EUCLIDEAN);
-        RoutePlanInterface* rp = new TSP_OR(HAVERSINE);
-    	ClusteringInterface* cls = new HGS(REAL);
+        RoutePlanInterface* rp = new TSP_OR(REAL);
+    	ClusteringInterface* cls = new HGS(HAVERSINE);
 	    BinPackInterface* bp =  new EB_AFIT;
         cout << "I am here" << endl;
         DataModel dm = getData(request);
@@ -119,9 +124,10 @@ class OptimizerServiceImpl final : public optimizer::optimizer::Service
         vector<float> rcosts = optim.GetRoutingCost();
         float total_cost = 0;
         for(auto &x : rcosts)
-        {
-            std::cout<<"\nTotal Cost for routing: "<<total_cost<<" km"<<std::endl;
-        }
+    	{
+            total_cost+=x;
+    	}
+        std::cout<<"\nTotal Cost for routing: "<<total_cost<<" km"<<std::endl;
         if(logToFile)
         {
             std::ofstream out(logFileName, std::ios_base::app);

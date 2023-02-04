@@ -16,7 +16,9 @@ def json_to_txt():
         f.write(str(json_content["riders"])+'\n')
         f.write(str(len(json_content["packages"]))+'\n')
         for package in json_content["packages"]:
-            f.write(str(package["coordinates"]["latitude"]/div) + ' ' + str(package["coordinates"]["longitude"]/div) + ' ' + str(package["size"]["length"]) + ' ' + str(package["size"]["width"]) + ' ' + str(package["size"]["height"])+ ' ' +str(package["weight"]) + ' ' + str(package["time"]) + '\n')
+            # f.write(str(package["coordinates"]["latitude"]/div) + ' ' + str(package["coordinates"]["longitude"]/div) + ' ' + str(package["size"]["length"]) + ' ' + str(package["size"]["width"]) + ' ' + str(package["size"]["height"])+ ' ' +str(package["weight"]) + ' ' + str(package["time"]) + '\n')
+            f.write(str(package["coordinates"]["latitude"]/div) + ' ' + str(package["coordinates"]["longitude"]/div) + ' ' + str(package["size"]["length"]) + ' ' + str(package["size"]["width"]) + ' ' + str(package["size"]["height"])+ ' ' +str(package["weight"]) + '\n')
+
     return
 def txt_to_json():
     return
