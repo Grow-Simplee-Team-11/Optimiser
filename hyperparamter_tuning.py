@@ -61,5 +61,5 @@ if __name__ == '__main__':
   sweep_id = wandb.sweep(sweep=sweep_configuration, project='tuneHGS')
   print(sweep_id)
     # 🐝 Step 4: Call to `wandb.agent` to start a sweep
-  wandb.agent(sweep_id, function=main, count=20)
+  wandb.agent(sweep_id, function=main, count=25)
   # main2()

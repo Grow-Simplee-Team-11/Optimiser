@@ -14,6 +14,9 @@ Optimizer::Optimizer(RoutePlanInterface* routePlannerInterface_, ClusteringInter
 
 void Optimizer::optimize(){
     clusteringInterface->ComputeClusters(packages, warehouse, numberRiders, bin);
+    #ifdef TRAIN_HGS
+        return;
+    #endif
     clusteringInterface->CalculateCost();
     clusteringCost = clusteringInterface->GetClusteringCost();
     clusters = clusteringInterface->GetClusters();

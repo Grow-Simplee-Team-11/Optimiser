@@ -5,7 +5,7 @@
 
 #include <fstream>
 #include <iostream>
-
+#define TRAIN_HGS
 using namespace std;
 // #define int long long
 
