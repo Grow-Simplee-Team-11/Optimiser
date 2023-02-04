@@ -108,8 +108,10 @@ class OptimizerServiceImpl final : public optimizer::optimizer::Service
         std::cout << "Received request" << std::endl;
         (*reply) = OptimizerResponse();
         // RoutePlanInterface* rp = new TSP_OR(EUCLIDEAN);
-        RoutePlanInterface* rp = new TSP_OR(REAL);
-    	ClusteringInterface* cls = new HGS(HAVERSINE);
+
+        RoutePlanInterface* rp = new TSP_OR_EDD(HAVERSINE);
+    	ClusteringInterface* cls = new Clarke(REAL);
+
 	    BinPackInterface* bp =  new EB_AFIT;
         cout << "I am here" << endl;
         DataModel dm = getData(request);
@@ -128,11 +130,13 @@ class OptimizerServiceImpl final : public optimizer::optimizer::Service
             total_cost+=x;
     	}
         std::cout<<"\nTotal Cost for routing: "<<total_cost<<" km"<<std::endl;
+
         if(logToFile)
         {
             std::ofstream out(logFileName, std::ios_base::app);
             out<<"\nTotal Cost for routing: "<<total_cost<<" km"<<std::endl;
         }
+        cout<<"Total cost of Routes = "<<total_cost<<endl;
         setData(optim,reply);
         return Status::OK;
     }
