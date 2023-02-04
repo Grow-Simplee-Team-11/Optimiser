@@ -165,9 +165,10 @@ int main(int argc, char** argv) {
  	// ifstream input;
  	// input.open("input.txt");
  	Coordinate warehouse;
- 	cin>>warehouse.longitude>>warehouse.latitude;
+ 	cin>>warehouse.latitude>>warehouse.longitude;
  	Bin bin; 
  	cin>>bin.size.length>>bin.size.width>>bin.size.height;
+	cin >> bin.capacity;
  	bin.capacity = bin.size.length * bin.size.width * bin.size.height;
 	int numRiders;
 	cin >> numRiders;
@@ -175,14 +176,16 @@ int main(int argc, char** argv) {
  	cin>>n;
  	vector<item> items(n);
  	for(int i=0;i<n;i++) {
- 		cin>>items[i].coordinate.longitude>>items[i].coordinate.latitude;
- 		cin>>items[i].size.length>>items[i].size.width>>items[i].size.height;
+ 		cin>>items[i].coordinate.latitude>>items[i].coordinate.longitude;
+ 		// cin>>items[i].size.length>>items[i].size.width>>items[i].size.height;
+ 		cin>>items[i].size.length>>items[i].size.width>>items[i].size.height >> items[i].weight;
 		items[i].volume = items[i].size.length * items[i].size.width * items[i].size.height;
- 		items[i].weight = 1;
+ 		// items[i].weight = 1;
  	}
 	// int numRiders = 5;
 	RoutePlanInterface* rp = new TSP_OR(REAL);
-	ClusteringInterface* cls = new HGS(HAVERSINE);
+	// ClusteringInterface* cls = new HGS(HAVERSINE);
+	ClusteringInterface* cls = new HGS(HAVERSINE,atof(argv[1]),atof(argv[2]));
 	BinPackInterface* bp =  new EB_AFIT;
 	Optimizer optim(rp, cls, bp, items, warehouse, numRiders, bin,"FESIF_TSP.txt", true, true);
 
@@ -191,9 +194,9 @@ int main(int argc, char** argv) {
 	float total_cost = 0;
 	for(int i = 0 ; i< costs.size();i++)
 		total_cost+=costs[i];
-	cout<<"Total Cost of All Routes is ===> "<< total_cost<<endl;
+	// cout<<"Total Cost of All Routes is ===> "<< total_cost<<endl;
 	return 0;
- }
+}
 
 // int main(int argc, char** argv){
 // 	DataModel dm;
@@ -231,7 +234,7 @@ int main(int argc, char** argv) {
 // 	for(int i = 0;i < dm.packages.size();i++){
 // 		cout << i << " : x : " << dm.packages[i].coordinate.latitude << " y : " << dm.packages[i].coordinate.longitude << " weight : "<< dm.packages[i].weight << endl;
 // 	}
-// 	RoutePlanInterface* rp = new TSP_OR_EDD(EUCLIDEAN);
+// 	RoutePlanInterface* rp = new TSP_OR(EUCLIDEAN);
 // 	// RoutePlanInterface* rp = new TSP_OR(EUCLIDEAN);
 // 	// ClusteringInterface* cls = new Clarke(EUCLIDEAN);
 // 	ClusteringInterface* cls = new HGS(EUCLIDEAN);

@@ -21,7 +21,10 @@ class HGS : public ClusteringInterface
 
 		const int SCALING_FACTOR=100; 
 		bool EDD;
+		
 		HGS(DistanceType method,bool EDD = false);
+		double penaltyDuration,penaltyCapacity;
+		HGS(DistanceType method,double penaltyDuration,double penaltyCapacity,bool EDD = false);
 		// double Dist(struct Coordinate c1,struct Coordinate c2){
         //     if(method == EUCLIDEAN)
         //         return euclidean(c1,c2);

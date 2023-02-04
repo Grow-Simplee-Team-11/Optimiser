@@ -15,3 +15,4 @@ FESIF_TSP_LK.txt
 build/*
 createJson.py
 visual/*
+wandb*

@@ -62,7 +62,7 @@ public:
 	/* ADAPTIVE PENALTY COEFFICIENTS */
 	double penaltyCapacity;				// Penalty for one unit of capacity excess (adapted through the search)
 	double penaltyDuration;				// Penalty for one unit of duration excess (adapted through the search)
-
+	double penaltyEDD ;
 	/* START TIME OF THE ALGORITHM */
 	clock_t startTime;                  // Start time of the optimization (set when Params is constructed)
 
@@ -78,7 +78,8 @@ public:
 	double totalDemand ;									// Total demand required by the clients
 	double maxDemand;										// Maximum demand of a client
 	double maxDist;		
-	double averageSpeed = 17.5;									// Maximum distance between two clients
+	double averageSpeed = 17.5;	
+	double penatlyMoreThan25 = averageSpeed/4;								// Maximum distance between two clients
 	std::vector< Client > cli ;								// Vector containing information on each client
 	const std::vector< std::vector< double > >& timeCost;	// Distance matrix
 	const std::vector<double> timeExpectation;
