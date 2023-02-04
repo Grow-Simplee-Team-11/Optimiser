@@ -48,6 +48,9 @@ class Ensembler{
         Ensembler(vector<string>&, vector<string>&, vector<string>&, vector<item>& packages, Coordinate& warehouse, int numberRiders, Bin& bin);
         void Report();
         void EnsembleRun();
+        int getNumClusters();
+        vector<item> GetPackagingForCluster(int);
+
         vector<pair<vector<string>,double>> GetCosts();    
         vector<string> RoutePlanningAlgorithms;
         vector<string> BinPackingAlgorithms;

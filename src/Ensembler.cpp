@@ -39,10 +39,10 @@ Ensembler::Ensembler(vector<string>& RoutePlanningAlgorithms_, vector<string>& B
             myNamespace::locksRouting.push_back(lockAlgo);
             
             RoutePlanInterface* rp = NULL;
-            if (routeAlgo == "TSP_OR") rp = new TSP_OR(EUCLIDEAN);
-            else if (routeAlgo == "TSP_LK") rp = new TSP_LK(EUCLIDEAN);
-            else if (routeAlgo == "TSP_CK") rp = new TSP(EUCLIDEAN);
-            else if (routeAlgo == "TSP_OR_EDD") rp = new TSP_OR_EDD(EUCLIDEAN);
+            if (routeAlgo == "TSP_OR") rp = new TSP_OR(HAVERSINE);
+            else if (routeAlgo == "TSP_LK") rp = new TSP_LK(HAVERSINE);
+            else if (routeAlgo == "TSP_CK") rp = new TSP(HAVERSINE);
+            else if (routeAlgo == "TSP_OR_EDD") rp = new TSP_OR_EDD(HAVERSINE);
             myNamespace::RoutePlanInterfaces.push_back(rp);
         }
     }
@@ -55,10 +55,10 @@ Ensembler::Ensembler(vector<string>& RoutePlanningAlgorithms_, vector<string>& B
             cout<<clusteringAlgo<<" "<<(lockAlgo)<<endl;
 
             ClusteringInterface* cls = NULL;
-            if (clusteringAlgo == "CLARKE") cls = new Clarke(EUCLIDEAN);
-            else if (clusteringAlgo == "FESIF") cls = new Clarke(EUCLIDEAN);
-            else if (clusteringAlgo == "SELF") cls = new SELFCLUSTERING(EUCLIDEAN);
-            else if (clusteringAlgo == "HGS") cls = new HGS(EUCLIDEAN);
+            if (clusteringAlgo == "CLARKE") cls = new Clarke(HAVERSINE);
+            else if (clusteringAlgo == "FESIF") cls = new Clarke(HAVERSINE);
+            else if (clusteringAlgo == "SELF") cls = new SELFCLUSTERING(HAVERSINE);
+            else if (clusteringAlgo == "HGS") cls = new HGS(HAVERSINE, 3.66,2.06);
             myNamespace::ClusteringInterfaces.push_back(cls);
         }
     }
@@ -169,11 +169,37 @@ void Ensembler::EnsembleRun(){
         binPacking.push_back(minIndex->GetPackagingForCluster(i));
     }
 
+    clusters.clear();
+    clusters.resize(minIndex->getNumClusters());
+
+    for(int i=0;i<minIndex->getNumClusters();i++){
+        clusters[i] = minIndex->GetPackagingForCluster(i);
+    }
+
     for(auto ensembler: ensemblersUsed){
         Costs.push_back(ensembler->GetCosts()[0]);
     }
 
     return;
+}
+
+vector<item> Ensembler::GetPackagingForCluster(int cluster){
+    /**
+    * @brief Get the packaging for a cluster
+    * 
+    * @param cluster - The cluster number
+    * @return vector<item> - The packaging for the cluster
+    */
+    return clusters[cluster];
+}
+
+int Ensembler::getNumClusters(){
+    /**
+    * @brief Get the number of clusters
+    * 
+    * @return int - The number of clusters
+    */
+    return clusters.size();
 }
 
 

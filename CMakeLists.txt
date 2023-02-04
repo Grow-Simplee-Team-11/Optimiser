@@ -93,7 +93,7 @@ link_libraries(
 )
 link_directories(
    ${CMAKE_SOURCE_DIR}/lib)
-add_executable(server main.cpp ${ALL_SRCS} )
+add_executable(server server.cpp ${ALL_SRCS} )
 target_link_libraries(server
     dp_grpc_proto
     grpc++
