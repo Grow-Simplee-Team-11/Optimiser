@@ -59,9 +59,9 @@ void Optimizer::optimize(){
     int maximum = -INT_MAX;
     bool first = true;
     ofstream output;
-    
+    clusterPaths.clear();
     for(int i=0; i< clusters.size();i++){
-        auto& cluster = clusters[i];
+        vector<item>& cluster = clusters[i];
 
         if(verbose){
             cout<<"Printing information for cluster - "<<i<<endl;
@@ -77,7 +77,8 @@ void Optimizer::optimize(){
         //     cout<<cluster[i].coordinate.latitude<<" "<<cluster[i].coordinate.longitude<<endl;
         // }
         routePlannerInterface->PlanRoute(cluster, warehouse);
-        clusterPaths.push_back(routePlannerInterface->GetPaths());
+        vector<item> rps = routePlannerInterface->GetPaths();
+        clusterPaths.push_back(rps);
         routePlannerInterface->CalculateCost();
         routePlanningCost.push_back(routePlannerInterface->GetPathPlanningCost());
 
@@ -88,7 +89,8 @@ void Optimizer::optimize(){
                 routePlannerInterface->PrintRoutesToFile(logFileName);
             }
             // Computing bin packaging
-            binPackInterface->BinPack(clusterPaths[], bin);
+            binPackInterface->BinPack(rps, bin);
+            
             clusterPackagings.push_back(binPackInterface->GetPackaging());
             binPackInterface->CalculateCost();
             packagingCost.push_back(binPackInterface->CalculateCost());
