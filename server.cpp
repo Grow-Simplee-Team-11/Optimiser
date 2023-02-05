@@ -121,7 +121,7 @@ class OptimizerServiceImpl final : public optimizer::optimizer::Service
 
         vector<string> routingAlgorithms = {"TSP_OR", "TSP_LK", "TSP_CK", "TSP_OR_EDD"};
         vector<string> binPackingAlgorithms = {"EB_AFIT"};
-        vector<string> clusteringAlgorithms = {"CLARKE", "SELF", "FESIF", "HGS"};
+        vector<string> clusteringAlgorithms = {"CLARKE", "SELF", "FESIF"};
 
         Ensembler* optim = new Ensembler(routingAlgorithms, binPackingAlgorithms, clusteringAlgorithms, dm.packages, dm.warehouse, dm.numRiders, dm.bin); 
 
