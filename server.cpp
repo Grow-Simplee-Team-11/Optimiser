@@ -108,21 +108,36 @@ class OptimizerServiceImpl final : public optimizer::optimizer::Service
         std::cout << "Received request" << std::endl;
         (*reply) = OptimizerResponse();
         // RoutePlanInterface* rp = new TSP_OR(EUCLIDEAN);
-
-        RoutePlanInterface* rp = new TSP_OR_EDD(HAVERSINE);
-    	ClusteringInterface* cls = new Clarke(REAL);
+        // RoutePlanInterface* rp = new TSP_OR(REAL);
+        RoutePlanInterface* rp = new TSP_OR(REAL);
+    	ClusteringInterface* cls = new HGS(HAVERSINE,3.66,2.06);
 
 	    BinPackInterface* bp =  new EB_AFIT;
-        cout << "I am here" << endl;
         DataModel dm = getData(request);
 
         bool verbose = true;
 	    bool logToFile = true;
 	    string logFileName = "FESIF_TSP_LK.txt";
         Optimizer optim(rp, cls, bp, dm.packages, dm.warehouse, dm.numRiders, dm.bin, logFileName, verbose, logToFile);
-        optim.optimize();
-
-        
+        try{
+             optim.optimize();
+        }
+        catch(const char* msg)
+        {
+            std::cerr << msg << std::endl;
+            return Status::CANCELLED;
+        }
+        catch(const string msg)
+        {
+            std::cerr << msg << std::endl;
+            return Status::CANCELLED;
+        }
+        catch(...)
+        {
+            std::cerr << "Unknown exception" << std::endl;
+            return Status::CANCELLED;
+        }
+    
         vector<float> rcosts = optim.GetRoutingCost();
         float total_cost = 0;
         for(auto &x : rcosts)

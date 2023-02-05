@@ -17,6 +17,7 @@ class Optimizer{
 
         // Function to perform optimization for set of packages
         void optimize();
+        void check_data();
         vector<vector<item>> GetClusters();
 
         vector<item> GetPathForCluster(int seqNumberOfCluster);

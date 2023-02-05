@@ -54,6 +54,12 @@ void Genetic::run()
 void Genetic::crossoverOX(Individual & result, const Individual & parent1, const Individual & parent2)
 {
 	// Frequency table to track the customers which have been already inserted
+	if(params.nbClients == 1){
+		result = parent1;
+		split.generalSplit(result,parent1.eval.nbRoutes);
+		return;
+	}
+		
 	std::vector <bool> freqClient = std::vector <bool> (params.nbClients + 1, false);
 
 	// Picking the beginning and end of the crossover zone
@@ -63,8 +69,7 @@ void Genetic::crossoverOX(Individual & result, const Individual & parent1, const
 
 	// Avoid that start and end coincide by accident
 	while (end == start) end = distr(params.ran);
-
-	// Copy from start to end
+	// Copy from start to end	
 	int j = start;
 	while (j % params.nbClients != (end + 1) % params.nbClients)
 	{

@@ -15,6 +15,32 @@ Optimizer::Optimizer(RoutePlanInterface* routePlannerInterface_, ClusteringInter
     verbose = verbose_;
     logToFile = logToFile_;
 }
+void Optimizer::check_data(){
+    if(warehouse.latitude <= 0 || warehouse.longitude <= 0){
+        throw "Warehouse coordinates are not valid";
+    }
+    if(numberRiders <= 0){
+        throw "Number of riders are not valid";
+    }
+    if(packages.size() == 0){
+        throw "No packages to optimize";
+    }
+    if(bin.size.length < 0 || bin.size.width < 0 || bin.size.height < 0 || bin.capacity < 0 || bin.getVolume() < 0){
+        throw "Bin dimensions are not valid";
+    }
+    for(auto& package: packages){
+        if(package.coordinate.latitude <= 0 || package.coordinate.longitude <= 0){
+            throw "Package coordinates are not valid";
+        }
+        if(package.size.length <= 0 || package.size.width <= 0 || package.size.height <= 0 || package.getVolume() <= 0){
+            throw "Package dimensions are not valid";
+        }
+        if(package.weight <= 0){
+            throw "Package weight is not valid";
+        }
+    }
+
+}
 void multithreading(Optimizer * opt, Optimizer * temp, int thread_number){
     if(opt->clusteringInterface->clustering_method){
         vector<item> main_packages = opt->packages;
@@ -44,10 +70,12 @@ void multithreading(Optimizer * opt, Optimizer * temp, int thread_number){
     
 }
 void Optimizer::optimize(){
+    check_data();
     srand(time(0));
     for(int i = 0; i< packages.size(); i++){
         packages[i].time = ((rand()%(241)) + 60);
     }
+    /**
     cout<<"Checking Input Data ===> "<<endl;
     for(int i = 0;i<packages.size();i++){
         cout<<packages[i].size.height<<" "<<packages[i].size.length<<" "<<packages[i].size.width<<" "<<packages[i].weight<<" "<<packages[i].coordinate.latitude<<" "<<packages[i].coordinate.longitude<<" "<<packages[i].time<<endl;
@@ -91,8 +119,12 @@ void Optimizer::optimize(){
 
         }
     output.close();
-    }
+    } **/
+    
     clusteringInterface->ComputeClusters(packages, warehouse, numberRiders, bin);
+    if(clusteringInterface->GetClusters().size() == 0){
+        throw "Clustering Algorithm Could Not found a solution";
+    }
     clusteringInterface->CalculateCost();
     clusteringCost = clusteringInterface->GetClusteringCost();
     clusters = clusteringInterface->GetClusters();
@@ -108,8 +140,11 @@ void Optimizer::optimize(){
     int avg = 0;
     int maximum = -INT_MAX;
     bool first = true;
-    
-    for(auto& cluster: clusters){
+    ofstream output;
+    clusterPaths.clear();
+    for(int i=0; i< clusters.size();i++){
+        vector<item>& cluster = clusters[i];
+
         if(verbose){
             cout<<"Printing information for cluster - "<<i<<endl;
         }
@@ -124,7 +159,8 @@ void Optimizer::optimize(){
         //     cout<<cluster[i].coordinate.latitude<<" "<<cluster[i].coordinate.longitude<<endl;
         // }
         routePlannerInterface->PlanRoute(cluster, warehouse);
-        clusterPaths.push_back(routePlannerInterface->GetPaths());
+        vector<item> rps = routePlannerInterface->GetPaths();
+        clusterPaths.push_back(rps);
         routePlannerInterface->CalculateCost();
         routePlanningCost.push_back(routePlannerInterface->GetPathPlanningCost());
 
@@ -135,7 +171,8 @@ void Optimizer::optimize(){
                 routePlannerInterface->PrintRoutesToFile(logFileName);
             }
             // Computing bin packaging
-            binPackInterface->BinPack(cluster, bin);
+            binPackInterface->BinPack(rps, bin);
+            
             clusterPackagings.push_back(binPackInterface->GetPackaging());
             binPackInterface->CalculateCost();
             packagingCost.push_back(binPackInterface->CalculateCost());

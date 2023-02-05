@@ -16,7 +16,7 @@ HGS::HGS(DistanceType method,bool EDD): ClusteringInterface(method){
 			ap = default_algorithm_parameters();
 			// ap.timeLimit = 30.0;
 			// ap.nbIter = 25000;
-			ap.nbIter = 5000;
+			ap.nbIter = 2000;
 }
 HGS::HGS(DistanceType method,double penaltyDuration,double penaltyCapacity,bool EDD): ClusteringInterface(method){
 			// pathInstance = instance_path_name;
@@ -30,7 +30,7 @@ HGS::HGS(DistanceType method,double penaltyDuration,double penaltyCapacity,bool 
 			ap = default_algorithm_parameters();
 			// ap.timeLimit = 30.0;
 			// ap.nbIter = 25000;
-			ap.nbIter = 5000;
+			ap.nbIter = 2000;
 }
 
 /**
@@ -148,9 +148,10 @@ void HGS::ComputeClusters(vector<item> &packages, Coordinate warehouse, int numR
 		cout << "Solver Completed"<<endl;
 		// Exporting the best solution
 		
-		Individual indiv = *solver.population.getBestFound();
 		if (solver.population.getBestFound() != NULL)
-		{
+		{	
+			cout << "Solution Found !" << endl;
+			Individual indiv = *solver.population.getBestFound();
 			for (int k = 0; k < (int)indiv.chromR.size(); k++)
 			{
 				if (!indiv.chromR[k].empty())
@@ -169,7 +170,9 @@ void HGS::ComputeClusters(vector<item> &packages, Coordinate warehouse, int numR
 		}
 		else {
 			cout << "best found NULL" << endl;
+			clusters.clear();
 		}
+		
 	}			
 }
 
