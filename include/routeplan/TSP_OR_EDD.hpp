@@ -12,7 +12,7 @@ using namespace operations_research;
 class TSP_OR_EDD : public RoutePlanInterface{
 
     public : 
-        TSP_OR_EDD(DistanceType method) : RoutePlanInterface(method){}
+        TSP_OR_EDD(DistanceType method) : RoutePlanInterface(method){ routing_method = 1; }
         void PlanRoute(vector<item>& cluster, Coordinate warehouse);
         void CalculateCost();
         // convert longitude to X
@@ -31,7 +31,7 @@ class TSP_OR_EDD : public RoutePlanInterface{
         
         std::vector<std::vector<int64_t>> distances;
         const int num_vehicles=1;
-        const int speed = 100;
+        const int speed = 30;
         // for scaling the distances from float to integer type
         const int scale = 1000;
         Coordinate warehouse;

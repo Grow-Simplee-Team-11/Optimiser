@@ -111,6 +111,7 @@ class OptimizerServiceImpl final : public optimizer::optimizer::Service
         // RoutePlanInterface* rp = new TSP_OR(REAL);
         RoutePlanInterface* rp = new TSP_OR(REAL);
     	ClusteringInterface* cls = new HGS(HAVERSINE,3.66,2.06);
+
 	    BinPackInterface* bp =  new EB_AFIT;
         DataModel dm = getData(request);
 
@@ -144,11 +145,13 @@ class OptimizerServiceImpl final : public optimizer::optimizer::Service
             total_cost+=x;
     	}
         std::cout<<"\nTotal Cost for routing: "<<total_cost<<" km"<<std::endl;
+
         if(logToFile)
         {
             std::ofstream out(logFileName, std::ios_base::app);
             out<<"\nTotal Cost for routing: "<<total_cost<<" km"<<std::endl;
         }
+        cout<<"Total cost of Routes = "<<total_cost<<endl;
         setData(optim,reply);
         return Status::OK;
     }
