@@ -6,6 +6,9 @@ int angularCutMetric = 3;
 
 void createCircle(vector<item>& items) {
     sort(items.begin(), items.end(), [&](item a, item b) {
+        if(a.polarCoordinate.angle==b.polarCoordinate.angle) {
+            return a.time<b.time;
+        }
         return a.polarCoordinate.angle < b.polarCoordinate.angle;
     });
 }
@@ -38,6 +41,9 @@ vector<vector<item> > createRadialCuts(vector<vector<item> >& angularCuts, Bin d
     for(int i=0;i<k;i++) 
     {
         sort(angularCuts[i].begin(), angularCuts[i].end(), [&](item a, item b) {
+            if(a.polarCoordinate.radius==b.polarCoordinate.radius){
+                return a.time<b.time;
+            }
             return a.polarCoordinate.radius < b.polarCoordinate.radius;
         });
         float totalWeight = 0, totalVolume = 0;
