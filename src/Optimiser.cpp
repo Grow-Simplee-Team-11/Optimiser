@@ -16,7 +16,7 @@ Optimizer::Optimizer(RoutePlanInterface* routePlannerInterface_, ClusteringInter
     logToFile = logToFile_;
 }
 void Optimizer::check_data(){
-    if(warehouse.latitude <= 0 || warehouse.longitude <= 0){
+    if(warehouse.latitude < -90 || warehouse.latitude > 90 || warehouse.longitude < -90 && warehouse.longitude > 90){
         throw "Warehouse coordinates are not valid";
     }
     if(numberRiders <= 0){
@@ -29,7 +29,7 @@ void Optimizer::check_data(){
         throw "Bin dimensions are not valid";
     }
     for(auto& package: packages){
-        if(package.coordinate.latitude <= 0 || package.coordinate.longitude <= 0){
+        if(package.coordinate.latitude < -90 || package.coordinate.latitude > 90 || package.coordinate.longitude < -90 && package.coordinate.longitude > 90){
             throw "Package coordinates are not valid";
         }
         if(package.size.length <= 0 || package.size.width <= 0 || package.size.height <= 0 || package.getVolume() <= 0){
