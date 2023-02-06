@@ -69,6 +69,7 @@ Params::Params(
 
 		cli[i].serviceDuration = service_time[i];
 		cli[i].demand = demands[i];
+		cli[i].edd = timeExpectation[i];
 		if (cli[i].demand > maxDemand) maxDemand = cli[i].demand;
 		totalDemand += cli[i].demand;
 	}
