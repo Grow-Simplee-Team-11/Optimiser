@@ -17,16 +17,20 @@ void Individual::evaluateCompleteCost(const Params & params)
 	{	
 		if (!chromR[r].empty())
 		{				
+		{				
 			double distance = params.timeCost[0][chromR[r][0]];
 			double load = params.cli[chromR[r][0]].demand;
 			double service = params.cli[chromR[r][0]].serviceDuration;
 			double edd_diff = 0.;
+			double edd_diff = 0.;
 			predecessors[chromR[r][0]] = 0;
+
 
 			for (int i = 1; i < (int)chromR[r].size(); i++)
 			{	
 				distance += params.timeCost[chromR[r][i-1]][chromR[r][i]];
 				load += params.cli[chromR[r][i]].demand;
+				edd_diff += std::max<double>(0.,distance + service - params.timeExpectation[chromR[r][i]]*params.averageSpeed);				
 				edd_diff += std::max<double>(0.,distance + service - params.timeExpectation[chromR[r][i]]*params.averageSpeed);				
 				service += params.cli[chromR[r][i]].serviceDuration;
 				predecessors[chromR[r][i]] = chromR[r][i-1];
@@ -34,6 +38,8 @@ void Individual::evaluateCompleteCost(const Params & params)
 			}
 			successors[chromR[r][chromR[r].size()-1]] = 0;
 			distance += params.timeCost[chromR[r][chromR[r].size()-1]][0];
+			eval.distance += distance;
+			eval.edd_diff += edd_diff;
 			eval.distance += distance;
 			eval.edd_diff += edd_diff;
 			eval.nbRoutes++;
@@ -46,6 +52,7 @@ void Individual::evaluateCompleteCost(const Params & params)
 	}
 
 	// Add to final cost.
+	eval.penalizedCost = eval.distance + eval.edd_diff*params.penaltyEDD + eval.capacityExcess*params.penaltyCapacity + eval.durationExcess*params.penaltyDuration;
 	eval.penalizedCost = eval.distance + eval.edd_diff*params.penaltyEDD + eval.capacityExcess*params.penaltyCapacity + eval.durationExcess*params.penaltyDuration;
 	// Check for feasibility
 	eval.isFeasible = (eval.capacityExcess < MY_EPSILON && eval.durationExcess < MY_EPSILON) ;
