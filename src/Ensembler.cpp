@@ -113,12 +113,14 @@ void Ensembler::EnsembleRun(){
 
                 pthread_t thread;
                 int threadStatus = pthread_create(&thread, NULL, run, (void *)temp);
+                cout<<"thread creating with "<<" "<<RoutePlanningAlgorithms[i]<<" "<<BinPackingAlgorithms[k]<<" "<<ClusteringAlgorithms[j]<<endl;
                 threadsRunning.push_back(thread);
                 ensemblersUsed.push_back(temp);
             }
         }
     }
     for(auto thread:threadsRunning){
+        cout<<"Thread joined"<<endl;
         pthread_join(thread, NULL);
     }
 
@@ -153,21 +155,31 @@ void Ensembler::EnsembleRun(){
     }
     vector<vector<item>> bestClusters = minIndex->GetClusters();
     int counter = 0;
+    cout<<"Best Cluster Count: "<<bestClusters.size()<<endl;
     for(auto cluster : bestClusters){
         cout<<"Logging information for cluster - "<<counter<<endl;
         counter++;
         minIndex->getPackingLog(cluster);
     }
 
-    cout<<minCost<<endl;
+    cout<<"Min Cost: "<<minCost<<endl;
 
     clusters = minIndex->GetClusters();
     paths.clear();
     binPacking.clear();
+    cout<<"Received Clusters"<<" "<<clusters.size()<<endl;
     for(int i=0;i<clusters.size();i++){
-        paths.push_back(minIndex->GetPathForCluster(i));
+        cout<<"Cluster"<<" "<<i<<" with size: "<<clusters[i].size()<<endl;
+        for(int j=0;j<clusters[i].size();j++) {
+            cout<<clusters[i][j].coordinate.latitude<<" "<<clusters[i][j].coordinate.longitude<<endl;
+        }
+        // for(int j=0;j<clusters[i].size();j++) 
+        // paths.push_back(minIndex->GetPathForCluster(i));
+        // cout<<"Paths calculated for index: "<<i<<endl;
         binPacking.push_back(minIndex->GetPackagingForCluster(i));
+        cout<<"Bin calculated for index: "<<i<<endl;
     }
+    cout<<"Path planning and bin packing done"<<endl;
 
     clusters.clear();
     clusters.resize(minIndex->getNumClusters());

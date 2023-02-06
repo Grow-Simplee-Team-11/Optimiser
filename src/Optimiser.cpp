@@ -155,7 +155,9 @@ void Optimizer::optimize(){
     bool first = true;
     ofstream output;
     clusterPaths.clear();
+    cout<<"-------------------------------------------------"<<clusters.size()<<endl;
     for(int i=0; i< clusters.size();i++){
+        cout<<"====================="<<i<<endl;
         vector<item>& cluster = clusters[i];
 
         if(verbose){
@@ -165,7 +167,7 @@ void Optimizer::optimize(){
             std::ofstream out(logFileName, std::ios_base::app);
             out<<"Printing information for cluster - "<<i<<endl;
         }
-        i++;
+        
 
         // Planning routes
         // for(int i =0;i<cluster.size();i++){
@@ -225,6 +227,7 @@ vector<vector<item>> Optimizer::GetClusters(){
 }
 
 vector<item> Optimizer::GetPathForCluster(int seqNumberOfCluster){
+    cout<<"Inside get path for clusters: "<<clusterPaths.size()<<" "<<seqNumberOfCluster<<endl;
     return clusterPaths[seqNumberOfCluster];
 }
 
@@ -263,6 +266,7 @@ void Optimizer::getPackingLog(vector<item>& cluster){
 }
 
 vector<item> Optimizer::GetPackagingForCluster(int seqNumberOfCluster){
+    cout<<"Inside getting packaging "<<seqNumberOfCluster<<" "<<clusterPackagings.size()<<endl;
     return clusterPackagings[seqNumberOfCluster];
 }
 
