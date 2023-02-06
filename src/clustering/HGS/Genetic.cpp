@@ -5,6 +5,9 @@
  *
  */
 
+using namespace std;
+#include <thread>
+
 void GeneticParallel::run() {
     /* INITIAL POPULATION */
     population.generatePopulation();
@@ -16,19 +19,18 @@ void GeneticParallel::run() {
         /* SELECTION AND CROSSOVER */
 
         //------------Select Parents ----------------------//////
-        vector<Individual&> parents;
+        vector<const Individual*> parents;
         for (int i = 0; i < this->nThreads; i++) {
-            parents.push_back(population.getBinaryTournament());
-            parents.push_back(population.getBinaryTournament());
+            parents.push_back(&population.getBinaryTournament());
+            parents.push_back(&population.getBinaryTournament());
         }
 
         //------------Crossover and Split ----------------------//
         vector<thread> threads;
         for (int i = 0; i < this->nThreads; i++) {
             threads.push_back(thread(&GeneticParallel::crossoverOX, this,
-                                     ref(offsprings[i]), ref(parents[2 * i]),
-                                     ref(parents[2 * i + 1],i),
-                                     params.penaltyCapacity, params.penaltyDuration));
+                                     ref(offsprings[i]), ref(*parents[2 * i]),
+                                     ref(*parents[2 * i + 1]),i));
         }
         for (int i = 0; i < this->nThreads; i++) {
             threads[i].join();
@@ -61,9 +63,10 @@ void GeneticParallel::run() {
             if (!offsprings[i].eval.isFeasible && params.ran() % 2 == 0) infeasible.push_back(i);
         }
         for (int i = 0; i < infeasible.size(); i++) {
-            threads.push_back(thread(&GeneticParallel::localSearch.run, this,
-                                     ref(offsprings[infeasible[i]]), params.penaltyCapacity * 10.,
-                                     params.penaltyDuration * 10.));
+            auto fn = [](LocalSearch& ls, Individual& ind, double penaltyCapacity, double penaltyDuration) {
+                ls.run(ind, penaltyCapacity, penaltyDuration);
+            };
+            threads.push_back(thread(fn,ref(localSearches[i]), ref(offsprings[i]),params.penaltyCapacity * 10., params.penaltyDuration * 10.));
         }
         for (int i = 0; i < infeasible.size(); i++) {
             threads[i].join();
@@ -228,13 +231,11 @@ void GeneticParallel::crossoverOX(Individual& result, const Individual& parent1,
     splits[idx].generalSplit(result, parent1.eval.nbRoutes);
 }
 
-GeneticParallel::GeneticParallel(Params& params, int nThreads) {
-    this->params = params;
-    this->splits = std::vector<Split>(nThreads, Split(params));
-    this->localSearch = LocalSearch(params);
-    this->population = Population(params, this->splits, this->localSearch);
-    this->offspring = Individual(params);
-    this->nThreads = nThreads;
+GeneticParallel::GeneticParallel(Params& params, int _nThreads) : nThreads(_nThreads), params(params), 
+                                                                 splits(std::vector<Split>(nThreads, Split(params))),
+                                                                 localSearches(std::vector<LocalSearch>(nThreads, LocalSearch(params))),
+                                                                 population(params,splits[0],localSearches[0]) {
+    this->offsprings = std::vector<Individual>(nThreads, Individual(params));
 }
 
 /**

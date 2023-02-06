@@ -108,7 +108,7 @@ void HGS::ComputeClusters(vector<item> &packages, Coordinate warehouse, int numR
 				b.capacity,DurationLimit,numRiders,true,verbose, expectation,ap);
 		params.averageSpeed = avgspeed;
 		print_algorithm_parameters(ap);
-		Genetic solver(params);
+		GeneticParallel solver(params,4);
 		solver.run();
 		cout << "Solver Completed"<<endl;
 		// Exporting the best solution
