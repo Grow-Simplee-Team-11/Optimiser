@@ -59,15 +59,14 @@ class GeneticParallel {
    public:
     int nThreads;                       // Number of threads
     Params& params;                     // Problem parameters
-    vector<Split> splits;               // Split algorithm
-    vector<LocalSearch> localSearches;  // Local Search structure
+    std::vector<Split> splits;               // Split algorithm
+    std::vector<LocalSearch> localSearches;  // Local Search structure
+    std::vector<Individual> offsprings;      // First individual to be used as input for the crossover
     Population population;              // Population (public for now to give access to the solutions, but should be be improved later on)
-    vector<Individual> offsprings;      // First individual to be used as input for the crossover
 
     void crossoverOX(Individual& result, const Individual& parent1, const Individual& parent2, int threadId);
     void run();
     GeneticParallel(Params& params, int nThreads);
-    void
-}
+};
 
 #endif
