@@ -48,6 +48,7 @@ struct Client
 	double coordY;			// Coordinate Y
 	double serviceDuration; // Service duration
 	double demand;			// Demand
+	double edd;
 	int polarAngle;			// Polar angle of the client around the depot, measured in degrees and truncated for convenience
 };
 
