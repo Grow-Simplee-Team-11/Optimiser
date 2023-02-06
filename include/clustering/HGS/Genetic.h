@@ -58,5 +58,4 @@ class GeneticParallel {
     GeneticParallel(Params& params, int nThreads);
 };
 
-
 #endif
