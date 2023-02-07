@@ -119,7 +119,7 @@ class OptimizerServiceImpl final : public optimizer::optimizer::Service
 	    bool logToFile = true;
 	    string logFileName = "FESIF_TSP_LK.txt";
 
-        vector<string> routingAlgorithms = {"TSP_OR", "TSP_LK", "TSP_CK", "TSP_OR_EDD"};
+        vector<string> routingAlgorithms = {"TSP_OR", "TSP_LK", "TSP_CK"};
         vector<string> binPackingAlgorithms = {"EB_AFIT"};
         vector<string> clusteringAlgorithms = {"CLARKE", "SELF", "FESIF", "HGS"};
 
