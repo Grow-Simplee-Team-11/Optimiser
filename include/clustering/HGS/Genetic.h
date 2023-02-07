@@ -23,27 +23,39 @@ SOFTWARE.*/
 #ifndef GENETIC_H
 #define GENETIC_H
 
-#include "Population.h"
 #include "Individual.h"
+#include "Population.h"
 
-class Genetic
-{
-public:
+class Genetic {
+   public:
+    Params& params;           // Problem parameters
+    Split split;              // Split algorithm
+    LocalSearch localSearch;  // Local Search structure
+    Population population;    // Population (public for now to give access to the solutions, but should be be improved later on)
+    Individual offspring;     // First individual to be used as input for the crossover
 
-	Params & params;				// Problem parameters
-	Split split;					// Split algorithm
-	LocalSearch localSearch;		// Local Search structure
-	Population population;			// Population (public for now to give access to the solutions, but should be be improved later on)
-	Individual offspring;			// First individual to be used as input for the crossover
-
-	// OX Crossover
-	void crossoverOX(Individual & result, const Individual & parent1, const Individual & parent2);
+    // OX Crossover
+    void crossoverOX(Individual& result, const Individual& parent1, const Individual& parent2);
 
     // Running the genetic algorithm until maxIterNonProd consecutive iterations or a time limit
-    void run() ;
+    void run();
 
-	// Constructor
-	Genetic(Params & params);
+    // Constructor
+    Genetic(Params& params);
+};
+
+class GeneticParallel {
+   public:
+    int nThreads;                       // Number of threads
+    Params& params;                     // Problem parameters
+    std::vector<Split*> splits;               // Split algorithm
+    std::vector<LocalSearch*> localSearches;  // Local Search structure
+    std::vector<Individual*> offsprings;      // First individual to be used as input for the crossover
+    Population* population;              // Population (public for now to give access to the solutions, but should be be improved later on)
+
+    void crossoverOX(Individual& result, const Individual& parent1, const Individual& parent2, int threadId);
+    void run();
+    GeneticParallel(Params& params, int nThreads);
 };
 
 #endif

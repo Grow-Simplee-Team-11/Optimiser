@@ -39,9 +39,9 @@ Ensembler::Ensembler(vector<string>& RoutePlanningAlgorithms_, vector<string>& B
             myNamespace::locksRouting.push_back(lockAlgo);
             
             RoutePlanInterface* rp = NULL;
-            if (routeAlgo == "TSP_OR") rp = new TSP_OR(HAVERSINE);
-            else if (routeAlgo == "TSP_LK") rp = new TSP_LK(HAVERSINE);
-            else if (routeAlgo == "TSP_CK") rp = new TSP(HAVERSINE);
+            if (routeAlgo == "TSP_OR") rp = new TSP_OR(REAL);
+            else if (routeAlgo == "TSP_LK") rp = new TSP_LK(REAL);
+            else if (routeAlgo == "TSP_CK") rp = new TSP(REAL);
             else if (routeAlgo == "TSP_OR_EDD") rp = new TSP_OR_EDD(HAVERSINE);
             myNamespace::RoutePlanInterfaces.push_back(rp);
         }

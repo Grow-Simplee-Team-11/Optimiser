@@ -19,6 +19,7 @@ void Split::generalSplit(Individual & indiv, int nbMaxVehicles)
 		cliSplit[i].serviceTime = params.cli[indiv.chromT[i - 1]].serviceDuration;
 		cliSplit[i].d0_x = params.timeCost[0][indiv.chromT[i - 1]];
 		cliSplit[i].dx_0 = params.timeCost[indiv.chromT[i - 1]][0];
+		cliSplit[i].edd = params.cli[indiv.chromT[i - 1]].edd;
 		if (i < params.nbClients) cliSplit[i].dnext = params.timeCost[indiv.chromT[i - 1]][indiv.chromT[i]];
 		else cliSplit[i].dnext = -1.e30;
 		sumLoad[i] = sumLoad[i - 1] + cliSplit[i].demand;
@@ -55,13 +56,16 @@ int Split::splitSimple(Individual & indiv)
 			double load = 0.;
 			double distance = 0.;
 			double serviceDuration = 0.;
+			double edd_diff = 0.;
 			for (int j = i + 1; j <= params.nbClients && load <= 1.5 * params.vehicleCapacity ; j++)
 			{
 				load += cliSplit[j].demand;
-				serviceDuration += cliSplit[j].serviceTime;
 				if (j == i + 1) distance += cliSplit[j].d0_x;
 				else distance += cliSplit[j - 1].dnext;
+				edd_diff += std::max<double>(distance + serviceDuration - (cliSplit[j].serviceTime)- cliSplit[j].edd*params.averageSpeed, 0.);
+				serviceDuration += cliSplit[j].serviceTime;
 				double cost = (distance + cliSplit[j].dx_0) +
+					+ params.penaltyEDD * edd_diff;
 					+ params.penaltyCapacity * std::max<double>(load - params.vehicleCapacity, 0.)
 					+ params.penaltyDuration * std::max<double>((distance + cliSplit[j].dx_0)  + serviceDuration - params.durationLimit, 0.);
 				if (potential[0][i] + cost < potential[0][j])
@@ -144,14 +148,16 @@ int Split::splitLF(Individual & indiv)
 				double load = 0.;
 				double serviceDuration = 0.;
 				double distance = 0.;
+				double edd_diff = 0.;
 				for (int j = i + 1; j <= params.nbClients && load <= 1.5 * params.vehicleCapacity ; j++) // Setting a maximum limit on load infeasibility to accelerate the algorithm
 				{
 					load += cliSplit[j].demand;
-					serviceDuration += cliSplit[j].serviceTime;
 					if (j == i + 1) distance += cliSplit[j].d0_x;
 					else distance += cliSplit[j - 1].dnext;
-					
-					double cost = (distance + cliSplit[j].dx_0) 
+					edd_diff += std::max<double>(distance + serviceDuration - cliSplit[j].edd*params.averageSpeed, 0.);
+					serviceDuration += cliSplit[j].serviceTime;
+					double cost = (distance + cliSplit[j].dx_0)
+								+ params.penaltyEDD * edd_diff 
 								+ params.penaltyCapacity * std::max<double>(load - params.vehicleCapacity, 0.)
 								+ params.penaltyDuration * std::max<double>((distance + cliSplit[j].dx_0) + serviceDuration - params.durationLimit, 0.);
 					if (potential[k][i] + cost < potential[k + 1][j])
