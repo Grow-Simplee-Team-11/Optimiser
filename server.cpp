@@ -126,8 +126,29 @@ class OptimizerServiceImpl final : public optimizer::optimizer::Service
         // vector<string> routingAlgorithms = {"TSP_OR"};
         // vector<string> binPackingAlgorithms = {"EB_AFIT"};
         // vector<string> clusteringAlgorithms = {"CLARKE"};
+        vector<item> items = dm.packages;
+        int l=0, r=items.size(), ans=items.size();
+        BinPackInterface* binpack = new EB_AFIT;
+        while(l<=r) {
+            int mid = (l+r)/2;
+            vector<item> current;
+            auto bb = dm.bin;
+            bb.size.height *= dm.numRiders;
+            bb.size.height *=0.85;
+            for(int i=0;i<mid;i++) current.push_back(items[i]);
+            binpack->BinPack(current, bb);
+            if(binpack->CalculateCost()==0) 
+            {
+                ans=mid;
+                l=mid+1;
+            }
+            else r=mid-1;
+        }
+        vector<item> final_item;
+        for(int i=0;i<ans;i++) final_item.push_back(items[i]);
+
         cout<<"Started ensembler"<<endl;
-        Ensembler* optim = new Ensembler(routingAlgorithms, binPackingAlgorithms, clusteringAlgorithms, dm.packages, dm.warehouse, dm.numRiders, dm.bin); 
+        Ensembler* optim = new Ensembler(routingAlgorithms, binPackingAlgorithms, clusteringAlgorithms, final_item, dm.warehouse, dm.numRiders, dm.bin); 
         cout<<"Completed ensembler formation."<<endl;
         try{
         cout<<"Running ensembler"<<endl;
