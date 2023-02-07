@@ -1,5 +1,10 @@
 // Hybrid Genetic Search-CVRP (HGS) Algorithm computes optimal clusters and routes simultaneously
 #include "../../../include/clustering/HGS/HGS.hpp"
+#include <map>
+
+namespace CachingHGS{
+	map<vector<item>, vector<vector<item>> > cacheMap;
+}
 
 /**
  * @brief Construct a new HGS::HGS object 
@@ -42,7 +47,10 @@ HGS::HGS(DistanceType method,double penaltyDuration,double penaltyCapacity,bool 
  * @param b details of bin/ rider bag
  */
 void HGS::ComputeClusters(vector<item> &packages, Coordinate warehouse, int numRiders, Bin b) {
-							
+	if((CachingHGS::cacheMap).find(packages) != (CachingHGS::cacheMap).end()){
+		clusters = (CachingHGS::cacheMap)[packages];
+		return;
+	}	
 	int nbVeh = numRiders;
 	// InstanceCVRPLIB cvrp(pathInstance, isRoundingInteger);
 	int n = packages.size();
@@ -173,7 +181,8 @@ void HGS::ComputeClusters(vector<item> &packages, Coordinate warehouse, int numR
 			clusters.clear();
 		}
 		
-	}			
+	}
+	(CachingHGS::cacheMap)[packages] = clusters;		
 }
 
 void HGS::CalculateCost() {}

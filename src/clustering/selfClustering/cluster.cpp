@@ -2,6 +2,10 @@
 #include "../../../include/clustering/selfClustering/selfClustering.hpp"
 using namespace std;
 
+namespace CachingSelfClustering{
+    map<vector<item>, vector<vector<item>> > cacheMap;
+}
+
 int angularCutMetric = 3;
 
 void createCircle(vector<item>& items) {
@@ -205,7 +209,10 @@ void assignPolarCoordinate(item& temp, Coordinate warehouse) {
 }
 
 vector<vector<item> > SELFCLUSTERING::calculateCluster(vector<item>& items, Coordinate warehouse, int numberOfRiders, Bin bin) {
-
+    if((CachingSelfClustering::cacheMap).find(items) != (CachingSelfClustering::cacheMap).end()){
+		clusters = (CachingSelfClustering::cacheMap)[items];
+		return clusters;
+	}	
     // vector<item> items;
     for(int i=0;i<items.size();i++) {
         assignPolarCoordinate(items[i], warehouse);
@@ -216,7 +223,7 @@ vector<vector<item> > SELFCLUSTERING::calculateCluster(vector<item>& items, Coor
     vector<vector<item> > angularClusters = createAngularCuts(items, bin);
     // return angularClusters;
     vector<vector<item> > clusters = createRadialCuts(angularClusters, bin);
-
+    (CachingSelfClustering::cacheMap)[items] = clusters;		
     return clusters;
 }
 

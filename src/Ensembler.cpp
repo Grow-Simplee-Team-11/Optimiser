@@ -65,9 +65,9 @@ Ensembler::Ensembler(vector<string>& RoutePlanningAlgorithms_, vector<string>& B
 
     if(myNamespace::BinPackingInterfaces.empty()){
         for(auto binpackingAlgo :  BinPackingAlgorithms){
-            pthread_mutex_t* lockAlgo = new pthread_mutex_t;
-            pthread_mutex_init(lockAlgo, NULL);
-            myNamespace::locksBinPacking.push_back(lockAlgo);
+            // pthread_mutex_t* lockAlgo = new pthread_mutex_t;
+            // pthread_mutex_init(lockAlgo, NULL);
+            myNamespace::locksBinPacking.push_back(NULL);
 
             BinPackInterface* bp = NULL;
             if (binpackingAlgo == "EB_AFIT") bp = new EB_AFIT;
