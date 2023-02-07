@@ -15,8 +15,7 @@ void Individual::evaluateCompleteCost(const Params & params)
 	int zeroCount = 0;
 	for (int r = 0; r < params.nbVehicles; r++)
 	{	
-		if (!chromR[r].empty())
-		{				
+		if (!chromR[r].empty())			
 		{				
 			double distance = params.timeCost[0][chromR[r][0]];
 			double load = params.cli[chromR[r][0]].demand;
