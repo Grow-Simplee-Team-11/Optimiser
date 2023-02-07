@@ -1,7 +1,3 @@
-//
-// Created by chkwon on 3/22/22.
-//
-
 #ifndef INSTANCECVRPLIB_H
 #define INSTANCECVRPLIB_H
 #include<string>

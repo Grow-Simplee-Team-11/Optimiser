@@ -1,7 +1,3 @@
-//
-// Created by chkwon on 3/23/22.
-//
-
 // This header file must be readable in C.
 
 #ifndef ALGORITHMPARAMETERS_H

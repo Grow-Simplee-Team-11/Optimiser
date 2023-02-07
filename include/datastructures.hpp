@@ -87,12 +87,10 @@ class item {
         }
     void print() {
         cout << coordinate.latitude << " " << coordinate.longitude << "\n";
-        // cout<<"( Latitude - "<<coordinate.latitude<<" Longitude - "<<coordinate.longitude<<" Size - ("<<size.width<<", "<<size.length<<", "<<size.height<<") )";
         return;
     }
     void printToFile(std::ofstream& out) {
         out << coordinate.latitude << " " << coordinate.longitude << "\n";
-        // out<<"( Latitude - "<<coordinate.latitude<<" Longitude - "<<coordinate.longitude<<" Size - ("<<size.width<<", "<<size.length<<", "<<size.height<<") )";
         return;
     }
     float getVolume() {

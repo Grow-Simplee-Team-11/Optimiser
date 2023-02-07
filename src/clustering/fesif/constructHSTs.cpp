@@ -1,7 +1,3 @@
-/**
-	\Author: Trasier
-	\Date:	2019/05/27
-**/
 #include <bits/stdc++.h>
 #include "../../../include/clustering/fesif/global.h"
 #include "../../../include/clustering/fesif/HST.h"
@@ -57,17 +53,3 @@ void trainHST(string src, string des) {
 		dumpInfo(desFileName);
 	}
 }
-
-// int main(int argc, char **argv) {
-// 	string srcFileName, desFileName;
-	
-// 	if (argc > 1)
-// 		srcFileName = string(argv[1]);
-// 	if (argc > 2)
-// 		desFileName = string(argv[2]);
-	
-// 	trainHST(srcFileName, desFileName);
-// 	freeMemory();
-	
-// 	return 0;
-// }

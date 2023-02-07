@@ -1,7 +1,3 @@
-/**
-	\author:	Trasier
-	\date:		2019.05.26
-*/
 #include <bits/stdc++.h>
 #include "../../../include/clustering/fesif/utils.h"
 #include "../../../include/clustering/fesif/global.h"

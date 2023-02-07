@@ -18,19 +18,11 @@ void Individual::evaluateCompleteCost(const Params & params)
 		
 		if (!chromR[r].empty())
 		{	
-			// if(chromR[r].size() > 50){
-			// 	std::cout << chromR[r].size() << std::endl;
-			// 	// more_than_50 = true;
-			// }
-			// else std::cout << "Less than 50 :  " << chromR[r].size() << std::endl;
-				
-			
 			double distance = params.timeCost[0][chromR[r][0]];
 			double load = params.cli[chromR[r][0]].demand;
 			double service = params.cli[chromR[r][0]].serviceDuration;
 			predecessors[chromR[r][0]] = 0;
 			int countOfIncrease = 0;
-			// std::cout << chromR[r].size() << ' ' << params.cli[chromR[r][0]].serviceDuration << std::endl; 
 			for (int i = 1; i < (int)chromR[r].size(); i++)
 			{	
 				distance += params.timeCost[chromR[r][i-1]][chromR[r][i]];
@@ -48,37 +40,16 @@ void Individual::evaluateCompleteCost(const Params & params)
 			eval.nbRoutes++;
 			if (load > params.vehicleCapacity) eval.capacityExcess += load - params.vehicleCapacity;
 			if (distance + service > params.durationLimit) eval.durationExcess += distance + service - params.durationLimit;
-			// if(eval.capacityExcess > MY_EPSILON){
-			// 	std::cout << "INFEASIABLE CAPACITY" << std::endl;
-			// }
-			// else if(eval.durationExcess > MY_EPSILON){
-			// 	std::cout << "INFEASIABLE DURATION" << " Duration Limit " << params.durationLimit <<  " Distance : " << distance << " Distance / avg Speed : " <<distance/params.averageSpeed <<  " service time : " << service << std::endl;
-			// }
 		}
 		else{
 			zeroCount++;
 		}
 	}
-	// std::cout << "Zero Count : " << zeroCount << ' ' << params.penaltyCapacity << ' ' << params.penaltyDuration << std::endl;
 
 	// Add to final cost.
 	eval.penalizedCost = eval.distance + eval.capacityExcess*params.penaltyCapacity + eval.durationExcess*params.penaltyDuration;
 	// Check for feasibility
 	eval.isFeasible = (eval.capacityExcess < MY_EPSILON && eval.durationExcess < MY_EPSILON) ;
-	
-	// if(eval.capacityExcess > MY_EPSILON){
-	// 	std::cout << "INFEASIABLE CAPACITY" << std::endl;
-	// }
-	// else if(eval.durationExcess > MY_EPSILON){
-	// 	std::cout << "INFEASIABLE DURATION" << std::endl;
-	// }
-	// else if(eval.isFeasible)
-	// 	std::cout << "***************************************************FOUND FEASIBLE***********************************" << std::endl;
-	// if(eval.isFeasible)
-	// 	std::cout << "***************************************************FOUND FEASIBLE***********************************" << std::endl;
-	// else if(pkg_more_than_25){
-	// 	std::cout << "INFEASIABLE PKG MORE THAN 25" << std::endl;
-	// }
 }
 
 /**
