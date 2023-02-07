@@ -19,23 +19,16 @@ void FESIF::localFree() {
 }
 
 void FESIF::budget(int wid, vector<int>& Rw, vector<int>& Sw, double delta) {
-	// cout<<delta<<endl;
 	worker_t& w = workers[wid];
 	Rw.clear();
 	Sw.clear();	
 	vector<int> sorted;
-	// for(int i=0;i<nP;i++) cout<<reqPool[i]<<" ";
-	// cout<<endl;
 	for (int i=0; i<nP; ++i) {
-		// cout<<i<<" "<<"Hey there"<<endl;
 		request_t& r = requests[reqPool[i]];
-		// cout<<localDist(w.oid, r.oid)<<" "<<localDist(r.oid, r.did)<<endl;
 		if (localDist(w.oid, r.oid)+localDist(r.oid, r.did) > delta)
 			continue;
 		sorted.push_back(reqPool[i]);
 	}
-	// for(int i=0;i<sorted.size();i++) cout<<sorted[i]<<" ";
-	// cout<<endl;
 	if (sorted.empty()) return ;
 	
  	genLabel(w, H);
@@ -65,14 +58,12 @@ void FESIF::budget(int wid, vector<int>& Rw, vector<int>& Sw, double delta) {
 void FESIF::updateRoute(int wid, vector<int>& Rw, vector<int>& Sw) {
 	worker_t& w = workers[wid];
 	w.S.insert(w.S.end(), Sw.begin()+1, Sw.end());
-	// cout<<Rw.size()<<" "<<Sw.size()<<" "<<nP<<endl;
 	for (int i=0; i<Rw.size(); ++i) {
 		int rid = Rw[i], pos = reqPos[rid];
 		swap(reqPool[pos], reqPool[nP-1]);
 		reqPos[reqPool[pos]] = pos;
 		--nP;
 	}
-	// cout<<"Route Updated"<<endl;
 }
 
 vector<int> FESIF::getRequest(int wid) {
@@ -102,7 +93,6 @@ void FESIF::FESI() {
 		vpi[i].second = i;
 	}
 	while (assigned < nR) {
-		// cout<<"Starting new loop."<<endl;
 		for (int i=0; i<nW; ++i) {
 			int j = vpi[i].second;
 			budget(j, Rw, Sw, delta);
@@ -188,33 +178,17 @@ vector<vector<item> > FESIF::wrapperLMD(vector<item>& items, Coordinate warehous
 		for(int j=0;j<cluster[i].size();j++) finalCluster[i].push_back(items[sorted_items[cluster[i][j]].second]);
 	}
 	return finalCluster;
-	// vector<int> clusterCount(nR);
-	// for(int i=0;i<cluster.size();i++) {
-	// 	for(int j=0;j<cluster[i].size();j++) clusterCount[sorted_items[cluster[i][j]].second]=i;
-	// }
-
-	// ofstream myfile;
-  	// myfile.open ("output.txt");
-
-	// for(int i=0;i<clusterCount.size();i++) {
-	// 	myfile<<clusterCount[i]<<" ";
-	// }
-	// myfile<<endl;
-	// myfile.close();
 }
 
 vector<vector<int> > FESIF::createResult() {
 	vector<vector<int> > clusterId;
 	for(int j=0; j<nW; j++){
-		// cout<<"Printing of Worker"<<j<<": "<<endl;
 		double sf = 0, mf = 0, st = 0, mt = 0, tmp;
 		vector<int> &S = workers[j].S;
 		int _pid = workers[j].oid, pid;
-		// cout<<V[workers[j].oid].longitude<<" "<<V[workers[j].oid].latitude<<" Start"<<endl;
 		vector<int> tempCluster;
 		for(int i=1; i<S.size(); ++i){
 			pid = (S[i]&1) ? requests[S[i]>>1].did : requests[S[i]>>1].oid;
-			// cout<<V[pid].longitude<<" "<<V[pid].latitude<<" "<<((S[i]&1)?"Delivery":"Packing")<<endl;
 			tmp = localDist(_pid, pid);
 			mt += tmp;
 			if (S[i] & 1) {	
@@ -237,28 +211,3 @@ vector<vector<int> > FESIF::createResult() {
 	}
 	return clusterId;
 }
-
-//
-// int main(int argc, char** argv) {
-// 	ifstream input;
-// 	input.open("input.txt");
-// 	Coordinate warehouse;
-// 	input>>warehouse.longitude>>warehouse.latitude;
-// 	Bin bin;
-// 	input>>bin.size.length>>bin.size.width>>bin.size.height;
-// 	bin.capacity = 25;
-// 	int n;
-// 	input>>n;
-// 	vector<item> items(n);
-// 	for(int i=0;i<n;i++) {
-// 		input>>items[i].coordinate.longitude>>items[i].coordinate.latitude;
-// 		input>>items[i].size.length>>items[i].size.width>>items[i].size.height;
-// 		items[i].weight = 1;
-// 	}
-//
-// 	wrapperLMD(items, warehouse, 100, bin);
-// 	freeGlobalMemory();
-// 	localFree();
-//
-// 	return 0;
-// }

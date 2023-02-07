@@ -3,7 +3,6 @@
 #include <bits/stdc++.h>
 #include "../../interface/ClusteringInterface.hpp"
 #include "../../datastructures.hpp"
-// #include "cluster.hpp"
 
 
 using namespace std;

@@ -56,7 +56,6 @@ void Clarke::ComputeClusters(vector<item> &packages, Coordinate warehouse, int n
     solve();
 }
 void Clarke::test(){
-    cout<<"Hello I exist";
 }
 double Clarke::depotDist(Coordinate &c){
     return Dist(c,warehouse);
@@ -66,9 +65,6 @@ double Clarke::compute_savings(item& item1,item& item2){
     double temporal_saving = abs(item1.time-item2.time)*speed/60;
     temporal_mean+=Temporal_Factor*temporal_saving;
     spacial_mean+=Spatial_Factor*spacial_saving;
-    // cout<<"Spacial Savings ===> "<< (double)(Spatial_Factor*spacial_saving)<<endl;
-    // cout<<"Temporal Saving ===> "<< (double)(Temporal_Factor*temporal_saving)<<endl;
-    // cout<<"---------------------------------------------"<<endl;
     return Spatial_Factor*(spacial_saving)- Temporal_Factor*(temporal_saving);
 }
 void Clarke::create_pq(){
@@ -171,7 +167,6 @@ void Clarke::consolodate_further(){
         return;
     merge_sort(final_points, 0, final_points.size()-1);
     int numCluster = final_Clusters.size();
-    // cout<<"numCluster ======>"<<numCluster<<" numRiders =======>"<<numRiders<<endl;
     while(numCluster > numRiders){
         numCluster -= union_sets(final_points[final_points.size()-1].first,final_points[final_points.size()-1].second,0);
         final_points.pop_back();
@@ -197,9 +192,6 @@ void Clarke::solve(){
             final_Clusters.push_back(Clusters[find_set(i)]);
         cluster_list[find_set(i)].push_back(packages[i]);
     }
-    // for(int i= 0 ;i < final_Clusters.size();i++){
-    //     cout<<final_Clusters[i].p1<<" "<<final_Clusters[i].p2<<endl;
-    // }
     consolodate_further();
     cluster_list.clear();
     set<int> s;
@@ -220,14 +212,6 @@ void Clarke::solve(){
     for(auto it = cluster_list.begin();it != cluster_list.end();it++){
         clusters.push_back(it->second);
     } 
-    // for(int i = 0 ;i < clusters.size();i++){
-    //     cout<< "Cluster: "<<i+1<<endl;
-    //     for(int j = 0 ;j < clusters[i].size();j++){
-    //         cout<<clusters[i][j].coordinate.latitude<<" "<<clusters[i][j].coordinate.longitude<<endl;
-    //     }
-    //     cout<<endl;
-    // }
-    
 }
 void Clarke::CalculateCost(){
     return;

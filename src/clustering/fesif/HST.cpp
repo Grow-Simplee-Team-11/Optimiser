@@ -1,8 +1,3 @@
-/**
-	\Author: Trasier
-	\Date:	2019/05/21
-**/
-
 #include "../../../include/clustering/fesif/HST.h"
 #include "../../../include/clustering/fesif/global.h"
 #include<bits/stdc++.h>  
@@ -47,12 +42,7 @@ void initMemory(int n) {
 }
 
 void freeMemory() {
-	// delete[] V;
-	// delete[] pi;
 	delete[] reverse_pi;
-	// for (int i=0; i<nV; ++i)
-	// 	delete[] far[i];
-	// delete[] far;
 	delete[] exp2s;
 	delete[] sum2s;
 }
@@ -263,10 +253,4 @@ void constructHST(bool load) {
 		preC = curC;
 		curC.clear();
 	}
-	// for(int i=0;i<nV;i++) {
-	// 	for(int j=0;j<=H;j++) {
-	// 		cout<<far[i][j]<<" ";
-	// 	}
-	// 	cout<<endl;
-	// }
 }

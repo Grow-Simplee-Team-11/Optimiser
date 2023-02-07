@@ -1,7 +1,4 @@
-/**
-	\Author: Trasier
-	\Date:	2019/05/21
-**/
+
 
 #ifndef HST_H
 #define HST_H

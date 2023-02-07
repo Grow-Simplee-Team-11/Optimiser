@@ -1,7 +1,4 @@
-/**
-	\author:	Trasier
-	\date:		2019/05/22
-*/
+
 #ifndef GLOBAL_H
 #define GLOBAL_H
 

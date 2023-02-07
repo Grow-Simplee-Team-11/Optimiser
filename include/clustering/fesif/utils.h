@@ -1,7 +1,4 @@
-/**
-	\author:	Trasier
-	\date:		2019.05.26
-*/
+
 #ifndef UTILS_H
 #define UTILS_H
 

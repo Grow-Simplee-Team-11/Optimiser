@@ -1,7 +1,3 @@
-//
-// Created by chkwon on 3/23/22.
-//
-
 #ifndef C_INTERFACE_H
 #define C_INTERFACE_H
 #include "AlgorithmParameters.h"

@@ -10,25 +10,6 @@ void createCircle(vector<item>& items) {
     });
 }
 
-// float getDistance(coordinate a, coordinate b) {
-//     return a.first*a.first + b.first*b.first -2*a.first*b.first*cos(a.second - b.second);
-// }
-
-// int findStartLine(vector<pair<int, int> >& circle) {
-
-//     float largest = 0;
-//     int index = -1;
-//     int n=circle.size();
-//     for(int i=0;i<circle.size();i++) {
-//         float temp = circle[(i+1)%n].second - circle[i].second;
-//         if(temp > largest) {
-//             largest = temp;
-//             index = i;
-//         }
-//     }
-//     return (index+1)%n;
-// }
-
 vector<vector<item> > createRadialCuts(vector<vector<item> >& angularCuts, Bin deliveryBag) {
     // TODO: Define this max volume and max weight
     float maxVolume = deliveryBag.getVolume(), maxWeight = deliveryBag.getCapacity(); 
@@ -85,7 +66,6 @@ vector<vector<item> > createAngularCuts(vector<item>& circle, Bin deliveryBag) {
     for(int i=0;i<angles.size();i++) {
         cout << angles[i].first << " " << angles[i].second << endl;
     }
-    // int numberOfAngularCuts  = (angles.size()+angularCutMetric-1)/angularCutMetric;
     float maxVolume = deliveryBag.getVolume()*SELFCLUSTERING::angularCutMetric, maxWeight = deliveryBag.getCapacity()*angularCutMetric;
     int starting = (angles.back().second+1)%n;
     angles.pop_back();
@@ -119,77 +99,6 @@ vector<vector<item> > createAngularCuts(vector<item>& circle, Bin deliveryBag) {
         }
     }
     cuts.push_back(current);
-
-    // vector<vector<item> > cuts;
-    
-    // for(int i=0;i<points.size();i++) {
-    //     vector<item> currentCut;
-    //     for(int j=points[i];j<points[(i+1)%points.size()];j++) {
-    //         currentCut.push_back(circle[j]);
-    //     }
-    //     if(points[i] > points[(i+1)%points.size()])
-    //     {
-    //         for(int j=0;j<n+points[(i+1)%points.size()]-points[i];j++) {
-    //             currentCut.push_back(circle[(j+points[i])%n]);
-    //         }
-    //     }
-    //     cuts.push_back(currentCut);
-    // }
-    // vector<vector<item> > finalClusters = createRadialCuts(cuts);
-
-    // int l=0, r=n, ans=n;
-    // while(l<=r){
-    //     int mid = (l+r)/2;
-    //     vector<vector<item> > cuts;
-    //     vector<int> points;
-    //     for(int i=n-1;i>n-1-mid;i--) 
-    //     {
-    //         points.push_back((angles[i].second+1)%n);
-    //     }
-    //     sort(points.begin(), points.end());
-    //     for(int i=0;i<points.size();i++) {
-    //         vector<item> currentCut;
-    //         for(int j=points[i];j<points[(i+1)%points.size()];j++) {
-    //             currentCut.push_back(circle[j]);
-    //         }
-    //         if(points[i] > points[(i+1)%points.size()])
-    //         {
-    //             for(int j=0;j<n+points[(i+1)%points.size()]-points[i];j++) {
-    //                 currentCut.push_back(circle[(j+points[i])%n]);
-    //             }
-    //         }
-    //         cuts.push_back(currentCut);
-    //     }
-    //     vector<vector<item> > finalClusters = createRadialCuts(cuts);
-        
-    //     if(checkClusterValidity(finalClusters)) {
-    //         ans=mid;
-    //         r=mid-1;
-    //     }
-    //     else l=mid+1;
-    // }
-
-    // vector<vector<item> > cuts;
-    // vector<int> points;
-    // for(int i=n-1;i>n-1-ans;i--) 
-    // {
-    //     points.push_back((angles[i].second+1)%n);
-    // }
-    // sort(points.begin(), points.end());
-    // for(int i=0;i<points.size();i++) {
-    //     vector<item> currentCut;
-    //     for(int j=points[i];j<points[(i+1)%points.size()];j++) {
-    //         currentCut.push_back(circle[j]);
-    //     }
-    //     if(points[i] > points[(i+1)%points.size()])
-    //     {
-    //         for(int j=0;j<n+points[(i+1)%points.size()]-points[i];j++) {
-    //             currentCut.push_back(circle[(j+points[i])%n]);
-    //         }
-    //     }
-    //     cuts.push_back(currentCut);
-    // }
-    cout<<cuts.size()<<endl;
     return cuts;
 }
 
@@ -198,15 +107,12 @@ void assignPolarCoordinate(item& temp, Coordinate warehouse) {
     double y = temp.coordinate.latitude - warehouse.latitude;
     temp.polarCoordinate.radius = sqrt((temp.coordinate.longitude-warehouse.longitude)*(temp.coordinate.longitude-warehouse.longitude) + (temp.coordinate.latitude-warehouse.latitude)*(temp.coordinate.latitude-warehouse.latitude));
     temp.polarCoordinate.angle = atan2(temp.coordinate.latitude-warehouse.latitude, temp.coordinate.longitude-warehouse.longitude);
-    // if(x<0) temp.polarCoordinate.angle+=M_PI;
     if(y<0) temp.polarCoordinate.angle+=2*M_PI;
     temp.polarCoordinate.angle*=180.0/M_PI;
-    cout<<temp.polarCoordinate.angle*180/M_PI<<" "<<x<<" "<<y<<endl;
 }
 
 vector<vector<item> > SELFCLUSTERING::calculateCluster(vector<item>& items, Coordinate warehouse, int numberOfRiders, Bin bin) {
 
-    // vector<item> items;
     for(int i=0;i<items.size();i++) {
         assignPolarCoordinate(items[i], warehouse);
     }
@@ -214,7 +120,6 @@ vector<vector<item> > SELFCLUSTERING::calculateCluster(vector<item>& items, Coor
 
 
     vector<vector<item> > angularClusters = createAngularCuts(items, bin);
-    // return angularClusters;
     vector<vector<item> > clusters = createRadialCuts(angularClusters, bin);
 
     return clusters;
@@ -226,47 +131,14 @@ void printClusters(vector<vector<item> >& clusters, vector<item>& items) {
     for(int i=0;i<clusters.size();i++) {
         for(int j=0;j<clusters[i].size();j++) {
             clusterIndex[clusters[i][j].id] = i;
-            // cout<<i<<" ";
         }
     }
-    // cout<<endl;
     ofstream myfile;
   	myfile.open ("output.txt");
 
 	for(int i=0;i<clusterIndex.size();i++) {
 		myfile<<clusterIndex[i]<<" ";
-        // cout<<clusterIndex[i]<<" ";
 	}
-    // cout<<endl;
 	myfile<<endl;
 	myfile.close();
 }
-
-// int main() {
-//     ifstream input;
-// 	input.open("input.txt");
-// 	Coordinate warehouse;
-// 	input>>warehouse.longitude>>warehouse.latitude;
-//     warehouse.longitude*=warehouse.scale;
-//     warehouse.latitude*=warehouse.scale;
-// 	Bin bin;
-// 	input>>bin.size.length>>bin.size.width>>bin.size.height;
-// 	bin.capacity = 25;
-// 	int n;
-// 	input>>n;
-// 	vector<item> items(n);
-// 	for(int i=0;i<n;i++) {
-// 		input>>items[i].coordinate.longitude>>items[i].coordinate.latitude;
-//         items[i].coordinate.longitude*=items[i].scale;
-//         items[i].coordinate.latitude*=items[i].scale;
-// 		input>>items[i].size.length>>items[i].size.width>>items[i].size.height;
-// 		items[i].weight = 1;
-//         items[i].id = i;
-// 	}
-
-//     vector<vector<item> > clusters = calculateCluster(items, warehouse, 1, bin);
-    
-//     printClusters(clusters, items);
-
-//     return 0;
-// }
