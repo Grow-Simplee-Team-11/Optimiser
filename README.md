@@ -6,7 +6,7 @@
   <img src="./First_Image.png" />
 </p>
 
-In this part of our solution we have tackled the problem of Route Planning and Bin Packing for the rider, in which we aim to improve the current system by applying state-of-the-art algorithms to reduce the complexity of work for the Delivery Hub as well as the Riders while making a delivery.
+This repository contains our solution for tackling the Optimisation Problem, which consists of Clustering the delivery points, generating optimal routes and calculating the bin packing. 
 
 We receive the data about the items to be delivered from our database which consist some basic information about the item and it's delivery location. From this we first try to cluster the items based on their location, through which each cluster will be assigned to a single driver for delivery. After clustering the delivery locations together, we try to find the most optimised path among the points taking into consideration the Estimated Delivery Times, Weather and Traffic so as to improve customer experience with on time deliveries. To make it easy for the delivery rider as well, we provide a efficient bag packing for the delivery bag so as to save time and effort for the driver to search for package at the time of delivery. 
 
