@@ -154,7 +154,7 @@ int Split::splitLF(Individual & indiv)
 					load += cliSplit[j].demand;
 					if (j == i + 1) distance += cliSplit[j].d0_x;
 					else distance += cliSplit[j - 1].dnext;
-					std::max<double>(distance + serviceDuration - cliSplit[j].edd*params.averageSpeed, 0.);
+					edd_diff += std::max<double>(distance + serviceDuration - cliSplit[j].edd*params.averageSpeed, 0.);
 					serviceDuration += cliSplit[j].serviceTime;
 					double cost = (distance + cliSplit[j].dx_0)
 								+ params.penaltyEDD * edd_diff 
