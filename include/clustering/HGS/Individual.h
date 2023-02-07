@@ -33,6 +33,7 @@ struct EvalIndiv
 	double capacityExcess = 0.;		// Sum of excess load in all routes
 	double durationExcess = 0.;		// Sum of excess duration in all routes
 	bool isFeasible = false;		// Feasibility status of the individual
+  double edd_diff = 0.;			// Sum of the difference between the EDD and the actual delivery time for all deliveries
 };
 
 class Individual
