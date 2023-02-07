@@ -16,6 +16,15 @@ void sortCluster(vector<item>& cluster) {
 }
 
 double EB_AFIT::getInversionCount(vector<item>& cluster) {
+    /**
+    * 
+    * @brief Calculates the inversion count of a given 3D cluster of items
+    * 
+    * @param cluster - vector of item objects to calculate inversion count for
+    * 
+    * @return double - inversion count of the cluster, as a fraction of maximum number of inversions possible for n items
+    * 
+    */
     sortCluster(cluster);
     int num_cnt = 0;
     for (int i = 0; i < cluster.size(); i++) {
@@ -40,9 +49,24 @@ double EB_AFIT::getInversionCount(vector<item>& cluster) {
 time_t start, finish;
 
 EB_AFIT::EB_AFIT() {
+  /**
+   * @brief Constructor of the class EB_AFIT
+   * 
+   * @param None
+   * 
+   * @return None
+  */
 }
 
 void EB_AFIT::BinPack(vector<item>& cluster, Bin b) {
+    /**
+     * @brief Binpacks the cluster into the bin using the EB-AFIT algorithm
+     *
+     * @param  cluster - The cluster which has to be packed into the bin
+     * @param  b - The bin into which the cluster has to be packed
+     * 
+     * @return None
+     */
     time(&start);
     Binpacker binpacker;
     binpacker.n = cluster.size();
@@ -161,64 +185,17 @@ void EB_AFIT::BinPack(vector<item>& cluster, Bin b) {
     binpacker.report(cluster);
     this->packed_items = cluster;
     sortCluster(this->packed_items);
-
     return;
 }
 
 float EB_AFIT::CalculateCost() {
+    /**
+     * @brief Calculates the cost of the binpacking
+     *
+     * @param  None
+     * 
+     * @return The cost of the binpacking
+     */
     cost = 100 - binpacker.percentagepackedbox;
     return cost;
 }
-// int main() {
-//     EB_AFIT eba;
-//     //     104, 96, 84
-//     // 1. 70, 104, 24, 4
-//     // 2. 14, 104, 48, 2
-//     // 3. 40, 52, 36, 3
-//     srand(time(NULL));
-
-//     int CLUSTER_SIZE = 20;
-//     vector<int> min_dimensions(3),max_dimensions(3),bin_dimensions(3);
-//     min_dimensions = {3,3,3};
-//     max_dimensions = {40,20,40};
-//     bin_dimensions = {80,100,80};
-
-//     vector<item> cluster(CLUSTER_SIZE);
-//     for(int i = 0;i < CLUSTER_SIZE;i++){
-//         cluster[i].size.length = get_rand(min_dimensions[0],max_dimensions[0]);
-//         cluster[i].size.width = get_rand(min_dimensions[1],max_dimensions[1]);
-//         cluster[i].size.height = get_rand(min_dimensions[2],max_dimensions[2]);
-//     }
-//     item i;
-//     i.size.length = 80;
-//     i.size.width = 80;
-//     i.size.height = 80;
-//     cluster.push_back(i);
-//     // cluster[0].size.width = 10;
-//     // cluster[0].size.length = 10;
-//     // cluster[0].size.height = 10;
-//     // cluster[1].size.width = 20;
-//     // cluster[1].size.length = 20;
-//     // cluster[1].size.height = 20;
-//     // cluster[2].size.width = 20;
-//     // cluster[2].size.length = 20;
-//     // cluster[2].size.height = 30;
-
-//     Bin b(bin_dimensions[0], bin_dimensions[1], bin_dimensions[2]);
-//     eba.BinPack(cluster, b);
-
-    
-//     auto res = eba.GetPackaging();
-//     eba.CalculateCost();
-//     cout << eba.GetPackagingCost() << endl;
-//     cout << eba.getInversionCount(cluster) << endl;
-
-//     for (auto x : cluster) {
-//         // x.print();
-//         cout << x.orig_rank << "\n";
-//         cout << "\n";
-//         cout << x.position.x << " " << x.position.y << " " << x.position.z << endl;
-//     }
-
-//     return 0;
-// }

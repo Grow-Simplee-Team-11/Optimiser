@@ -3,7 +3,7 @@
 #include "routeplan/TSP_OR_EDD.hpp"
 #include "binpack/EB_AFIT.hpp"
 
-Optimizer::Optimizer(RoutePlanInterface* routePlannerInterface_, ClusteringInterface* clusteringInterface_, BinPackInterface* binPackInterface_, vector<item>& packages_, Coordinate& warehouse_, int numberRiders_, Bin& bin_, string logFileName_, bool verbose_, bool logToFile_) {
+Optimizer::Optimizer(RoutePlanInterface* routePlannerInterface_, ClusteringInterface* clusteringInterface_, BinPackInterface* binPackInterface_, vector<item>& packages_, Coordinate& warehouse_, int numberRiders_, Bin& bin_, string logFileName_, bool verbose_, bool logToFile_, pthread_mutex_t* clusterLock_, pthread_mutex_t* binPackLock_, pthread_mutex_t* routePlanningLock_) {
     routePlannerInterface = routePlannerInterface_;
     clusteringInterface = clusteringInterface_;
     binPackInterface = binPackInterface_;
@@ -14,6 +14,10 @@ Optimizer::Optimizer(RoutePlanInterface* routePlannerInterface_, ClusteringInter
     logFileName = logFileName_;
     verbose = verbose_;
     logToFile = logToFile_;
+    clusterLock = clusterLock_;
+    binPackLock = binPackLock_;
+    routingLock = routePlanningLock_;
+    counter = 0;
 }
 void Optimizer::check_data(){
     if(warehouse.latitude <= 0 || warehouse.longitude <= 0){
@@ -121,6 +125,10 @@ void Optimizer::optimize(){
     output.close();
     } **/
     
+    if(clusterLock!=NULL){
+        cout<<"Locking - Cluster Lock"<<" "<<clusterLock<<endl;
+        pthread_mutex_lock(clusterLock);
+    }
     clusteringInterface->ComputeClusters(packages, warehouse, numberRiders, bin);
     if(clusteringInterface->GetClusters().size() == 0){
         throw "Clustering Algorithm Could Not found a solution";
@@ -136,13 +144,20 @@ void Optimizer::optimize(){
         clusteringInterface->PrintClustersToFile(logFileName);
     }
 
+    if(clusterLock!=NULL){
+        cout<<"Unlocked Cluster Lock - "<<clusterLock<<endl;
+        pthread_mutex_unlock(clusterLock);
+    }
+
     int i = 0;
     int avg = 0;
     int maximum = -INT_MAX;
     bool first = true;
     ofstream output;
     clusterPaths.clear();
+    cout<<"-------------------------------------------------"<<clusters.size()<<endl;
     for(int i=0; i< clusters.size();i++){
+        cout<<"====================="<<i<<endl;
         vector<item>& cluster = clusters[i];
 
         if(verbose){
@@ -152,85 +167,58 @@ void Optimizer::optimize(){
             std::ofstream out(logFileName, std::ios_base::app);
             out<<"Printing information for cluster - "<<i<<endl;
         }
-        i++;
+        
 
         // Planning routes
         // for(int i =0;i<cluster.size();i++){
         //     cout<<cluster[i].coordinate.latitude<<" "<<cluster[i].coordinate.longitude<<endl;
         // }
+        if(routingLock!=NULL)
+            pthread_mutex_lock(routingLock);
         routePlannerInterface->PlanRoute(cluster, warehouse);
         vector<item> rps = routePlannerInterface->GetPaths();
         clusterPaths.push_back(rps);
         routePlannerInterface->CalculateCost();
         routePlanningCost.push_back(routePlannerInterface->GetPathPlanningCost());
 
-            if(verbose){
-                routePlannerInterface->PrintRoutes();
-            }
-            if(logToFile){
-                routePlannerInterface->PrintRoutesToFile(logFileName);
-            }
-            // Computing bin packaging
-            binPackInterface->BinPack(rps, bin);
-            
-            clusterPackagings.push_back(binPackInterface->GetPackaging());
-            binPackInterface->CalculateCost();
-            packagingCost.push_back(binPackInterface->CalculateCost());
-            first = true;
-
-            output.open("./cuboids_to_render.xml");
-            output<<"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\" ?>"<<endl;
-            output<<"<!DOCTYPE boost_serialization>"<<endl;
-            output<<"<boost_serialization signature=\"serialization::archive\" version=\"10\">"<<endl;
-            for(int j = 0 ; j < cluster.size(); j++){
-                first == true ? output<<"<cuboid class_id=\"0\" tracking_level=\"0\" version=\"0\">"<<endl : output<<"<cuboid>"<<endl;
-                first = false;
-                output<<"<width>"<<cluster[j].size.width<<"</width>"<<endl;
-                output<<"<height>"<<cluster[j].size.height<<"</height>"<<endl;
-                output<<"<depth>"<<cluster[j].size.length<<"</depth>"<<endl;
-                output<<"<x>"<<cluster[j].position.x<<"</x>"<<endl;
-                output<<"<y>"<<cluster[j].position.y<<"</y>"<<endl;
-                output<<"<z>"<<cluster[j].position.z<<"</z>"<<endl;
-                output<<"</cuboid>"<<endl;
-            }
-            output<<"<base class_id=\"1\" tracking_level=\"0\" version=\"0\">"<<endl;
-            output<<"<width>"<<bin.size.width<<"</width>"<<endl;
-            output<<"<height>"<<bin.size.length<<"</height>"<<endl;
-            output<<"<x>0</x>"<<endl;
-            output<<"<y>0</y>"<<endl;
-            output<<"</base>"<<endl;
-            output<<"</boost_serialization>"<<endl;
-            output.close();
-            if(verbose){
-                binPackInterface->PrintPackedData();
-            }
-            if(logToFile){
-                binPackInterface->PrintPackedDataToFile(logFileName);
-            }
-            avg+= cluster.size();
-            maximum = max(maximum, (int)cluster.size());
-
-    }
-    output.open("./tests/cluster.txt");
-    output<<clusterPaths.size()<<"\n";
-    i=0;
-    for(auto& elt: clusterPaths)
-    {
-        output << i++ << "\n";
-        output << elt.size() +2<< "\n";
-        output << warehouse.latitude <<" "<< warehouse.longitude<<endl;
-        for(auto& it: elt)
-        {
-            output << it.coordinate.latitude << " " << it.coordinate.longitude << "\n";
+        if(verbose){
+            routePlannerInterface->PrintRoutes();
         }
-        output << warehouse.latitude <<" "<< warehouse.longitude<<endl;
+        if(logToFile){
+            routePlannerInterface->PrintRoutesToFile(logFileName);
+        }
+
+        if(routingLock!=NULL){
+            pthread_mutex_unlock(routingLock);
+        }
+
+        // Computing bin packaging
+
+        if(binPackLock!=NULL)
+            pthread_mutex_lock(binPackLock);
+
+        binPackInterface->BinPack(rps, bin);
+        clusterPackagings.push_back(binPackInterface->GetPackaging());
+        binPackInterface->CalculateCost();
+        packagingCost.push_back(binPackInterface->CalculateCost());
+        first = true;
+
+            
+        if(verbose){
+            binPackInterface->PrintPackedData();
+        }
+        if(logToFile){
+            binPackInterface->PrintPackedDataToFile(logFileName);
+        }
+
+        if(binPackLock!=NULL){
+            pthread_mutex_unlock(binPackLock);
+        }
+
+        avg+= cluster.size();
+        maximum = max(maximum, (int)cluster.size());
+
     }
-    output << warehouse.latitude <<" "<< warehouse.longitude<<endl;
-    
-    output.close();
-    cout<<"Avg ===> "<<avg/clusters.size()<<endl;
-    cout<<"Max ===> "<<maximum<<endl;
-    cout<<"Drop Offs => "<<routePlannerInterface->drop_offs<<endl;
     return;
 }
 
@@ -239,10 +227,46 @@ vector<vector<item>> Optimizer::GetClusters(){
 }
 
 vector<item> Optimizer::GetPathForCluster(int seqNumberOfCluster){
+    cout<<"Inside get path for clusters: "<<clusterPaths.size()<<" "<<seqNumberOfCluster<<endl;
     return clusterPaths[seqNumberOfCluster];
 }
 
+void Optimizer::getPackingLog(vector<item>& cluster){
+    counter++;
+    bool first;
+    ofstream output;
+    first = true;
+    output.open("cuboids_to_render" + to_string(counter) + ".xml");
+    if(!output.is_open()){
+        cout<<"File NOT OPEN"<<endl;
+        return;
+    }
+    output<<"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\" ?>"<<endl;
+    output<<"<!DOCTYPE boost_serialization>"<<endl;
+    output<<"<boost_serialization signature=\"serialization::archive\" version=\"10\">"<<endl;
+    for(int j = 0 ; j < cluster.size(); j++){
+        first == true ? output<<"<cuboid class_id=\"0\" tracking_level=\"0\" version=\"0\">"<<endl : output<<"<cuboid>"<<endl;
+        first = false;
+        output<<"<width>"<<cluster[j].size.length<<"</width>"<<endl;
+        output<<"<height>"<<cluster[j].size.height<<"</height>"<<endl;
+        output<<"<depth>"<<cluster[j].size.width<<"</depth>"<<endl;
+        output<<"<x>"<<cluster[j].position.x<<"</x>"<<endl;
+        output<<"<y>"<<cluster[j].position.y<<"</y>"<<endl;
+        output<<"<z>"<<cluster[j].position.z<<"</z>"<<endl;
+        output<<"</cuboid>"<<endl;
+    }
+    output<<"<base class_id=\"1\" tracking_level=\"0\" version=\"0\">"<<endl;
+    output<<"<width>"<<bin.size.width<<"</width>"<<endl;
+    output<<"<height>"<<bin.size.length<<"</height>"<<endl;
+    output<<"<x>0</x>"<<endl;
+    output<<"<y>0</y>"<<endl;
+    output<<"</base>"<<endl;
+    output<<"</boost_serialization>"<<endl;
+    output.close();
+}
+
 vector<item> Optimizer::GetPackagingForCluster(int seqNumberOfCluster){
+    cout<<"Inside getting packaging "<<seqNumberOfCluster<<" "<<clusterPackagings.size()<<endl;
     return clusterPackagings[seqNumberOfCluster];
 }
 

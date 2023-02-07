@@ -18,16 +18,31 @@ vector<vector<int> > tree;
 
 void initTree() {
 	int tid;
-	
+	cout<<"In init tree"<<endl;
+	cout<<tree.size()<<endl;
+	for(int i=0;i<tree.size();i++) {
+		int temp = tree[i].size();
+		for(int j=0;j<temp;j++) tree[i].pop_back();
+	}
+
+	cout<<"Testingsss"<<endl;
+
+	int temp1 = tree.size();
+	for(int j=0;j<temp1;j++) tree.pop_back();
+	// tree.clear();
+	cout<<tree.size()<<endl;
 	for (int i=0; i<nT; ++i) {
+		// cout<<"reached here"<<endl;
 		tree.push_back(vector<int>());
 	}
 	
 	for (int j=0; j<=H; ++j) {
 		for (int i=0; i<nV; ++i) {
+			cerr<<far[i][j]<<" ";
 			tid = far[i][j];
 			tree[tid].push_back(i);
 		}
+		cout<<endl;
 	}
 }
 

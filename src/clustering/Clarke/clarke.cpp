@@ -1,6 +1,13 @@
 #include "../../include/clustering/Clarke/clarke.hpp"
+#include<map>
 double temporal_mean;
 double spacial_mean;
+
+namespace CachingClarke{
+	map<vector<item>, vector<vector<item>> > cacheMap;
+}
+
+
 void Clarke::merge_sort(vector<pair<int,int>> final_points, int l , int r){
     if(r<=l){
         return;
@@ -42,6 +49,10 @@ Cluster::Cluster(){
         distance = 0;
 }
 void Clarke::ComputeClusters(vector<item> &packages, Coordinate warehouse, int numRiders, Bin b){
+    if((CachingClarke::cacheMap).find(packages) != (CachingClarke::cacheMap).end()){
+		clusters = (CachingClarke::cacheMap)[packages];
+		return;
+	}	
     temporal_mean =0;
     spacial_mean = 0;
     clusters.clear();
@@ -54,6 +65,7 @@ void Clarke::ComputeClusters(vector<item> &packages, Coordinate warehouse, int n
     this->parent.resize(this->numPackages);
     this->Clusters.resize(this->numPackages);
     solve();
+    (CachingClarke::cacheMap)[packages] = clusters;		
 }
 void Clarke::test(){
     cout<<"Hello I exist";

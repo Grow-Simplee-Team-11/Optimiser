@@ -5,7 +5,6 @@
 #include "../../datastructures.hpp"
 // #include "cluster.hpp"
 
-
 using namespace std;
 
 class SELFCLUSTERING : public ClusteringInterface {

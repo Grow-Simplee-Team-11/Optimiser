@@ -39,7 +39,7 @@ SOFTWARE.*/
 #include <unordered_set>
 #include <random>
 // #define MY_EPSILON 0.00001 // Precision parameter, used to avoid numerical instabilities
-#define MY_EPSILON 0.001 // Precision parameter, used to avoid numerical instabilities
+#define MY_EPSILON 0.0001 // Precision parameter, used to avoid numerical instabilities
 #define PI 3.14159265359
 
 struct Client
@@ -62,7 +62,8 @@ public:
 	/* ADAPTIVE PENALTY COEFFICIENTS */
 	double penaltyCapacity;				// Penalty for one unit of capacity excess (adapted through the search)
 	double penaltyDuration;				// Penalty for one unit of duration excess (adapted through the search)
-	double penaltyEDD ;
+	double penaltyEDD;
+
 	/* START TIME OF THE ALGORITHM */
 	clock_t startTime;                  // Start time of the optimization (set when Params is constructed)
 

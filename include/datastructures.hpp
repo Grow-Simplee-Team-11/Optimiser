@@ -99,6 +99,11 @@ class item {
             return size.width * size.length * size.height;
     }
 };
+
+inline bool operator<(const item& a, const item& b){
+    return a.coordinate.latitude < b.coordinate.latitude;
+}
+
 class Bin{
     public:
     Dimension_ size;

@@ -12,7 +12,7 @@
 #include "./include/routeplan/TSP_CK.hpp"
 
 #include "./include/binpack/EB_AFIT.hpp"
-#include "./include/Optimiser.hpp"
+#include "./include/Ensembler.hpp"
 
 #include <grpcpp/grpcpp.h>
 
@@ -71,13 +71,13 @@ DataModel getData(const OptimizerRequest *request){
     dm.bin.size.length = request->bin().size().length();
     return dm;
 }
-void setData(Optimizer &optim,OptimizerResponse *reply){
-    int numClusters = optim.getNumClusters();
+void setData(Ensembler *optim,OptimizerResponse *reply){
+    int numClusters = optim->getNumClusters();
     cout << "-----------------------------Returning Result--------------------"<<endl;
     cout << "numClusters : " << numClusters << endl;
     for(int i = 0;i < numClusters;i++){
         reply->add_clusters();
-        vector<item> cluster = optim.GetPackagingForCluster(i);
+        vector<item> cluster = optim->GetPackagingForCluster(i);
         cout << "Size of Cluster : " << i << " : " << cluster.size();
         int numPackages = cluster.size();
         for(int j = 0;j < numPackages;j++){
@@ -109,8 +109,8 @@ class OptimizerServiceImpl final : public optimizer::optimizer::Service
         (*reply) = OptimizerResponse();
         // RoutePlanInterface* rp = new TSP_OR(EUCLIDEAN);
         // RoutePlanInterface* rp = new TSP_OR(REAL);
-        RoutePlanInterface* rp = new TSP_OR(REAL);
-    	ClusteringInterface* cls = new HGS(HAVERSINE,3.66,2.06);
+        // RoutePlanInterface* rp = new TSP_OR(REAL);
+    	// ClusteringInterface* cls = new HGS(HAVERSINE,3.66,2.06);
 
 	    BinPackInterface* bp =  new EB_AFIT;
         DataModel dm = getData(request);
@@ -118,9 +118,21 @@ class OptimizerServiceImpl final : public optimizer::optimizer::Service
         bool verbose = true;
 	    bool logToFile = true;
 	    string logFileName = "FESIF_TSP_LK.txt";
-        Optimizer optim(rp, cls, bp, dm.packages, dm.warehouse, dm.numRiders, dm.bin, logFileName, verbose, logToFile);
+
+        vector<string> routingAlgorithms = {"TSP_OR", "TSP_LK", "TSP_CK", "TSP_OR_EDD"};
+        vector<string> binPackingAlgorithms = {"EB_AFIT"};
+        vector<string> clusteringAlgorithms = {"CLARKE", "SELF", "FESIF", "HGS"};
+
+        // vector<string> routingAlgorithms = {"TSP_OR"};
+        // vector<string> binPackingAlgorithms = {"EB_AFIT"};
+        // vector<string> clusteringAlgorithms = {"CLARKE"};
+        cout<<"Started ensembler"<<endl;
+        Ensembler* optim = new Ensembler(routingAlgorithms, binPackingAlgorithms, clusteringAlgorithms, dm.packages, dm.warehouse, dm.numRiders, dm.bin); 
+        cout<<"Completed ensembler formation."<<endl;
         try{
-             optim.optimize();
+        cout<<"Running ensembler"<<endl;
+        optim->EnsembleRun();
+        cout<<"Essembler running done."<<endl;
         }
         catch(const char* msg)
         {
@@ -137,21 +149,10 @@ class OptimizerServiceImpl final : public optimizer::optimizer::Service
             std::cerr << "Unknown exception" << std::endl;
             return Status::CANCELLED;
         }
-    
-        vector<float> rcosts = optim.GetRoutingCost();
-        float total_cost = 0;
-        for(auto &x : rcosts)
-    	{
-            total_cost+=x;
-    	}
-        std::cout<<"\nTotal Cost for routing: "<<total_cost<<" km"<<std::endl;
 
-        if(logToFile)
-        {
-            std::ofstream out(logFileName, std::ios_base::app);
-            out<<"\nTotal Cost for routing: "<<total_cost<<" km"<<std::endl;
-        }
-        cout<<"Total cost of Routes = "<<total_cost<<endl;
+        if(verbose)
+            optim->Report();
+        
         setData(optim,reply);
         return Status::OK;
     }

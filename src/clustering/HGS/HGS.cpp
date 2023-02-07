@@ -1,5 +1,10 @@
 // Hybrid Genetic Search-CVRP (HGS) Algorithm computes optimal clusters and routes simultaneously
 #include "../../../include/clustering/HGS/HGS.hpp"
+#include <map>
+
+namespace CachingHGS{
+	map<vector<item>, vector<vector<item>> > cacheMap;
+}
 
 /**
  * @brief Construct a new HGS::HGS object 
@@ -42,7 +47,10 @@ HGS::HGS(DistanceType method,double penaltyDuration,double penaltyCapacity,bool 
  * @param b details of bin/ rider bag
  */
 void HGS::ComputeClusters(vector<item> &packages, Coordinate warehouse, int numRiders, Bin b) {
-							
+	if((CachingHGS::cacheMap).find(packages) != (CachingHGS::cacheMap).end()){
+		clusters = (CachingHGS::cacheMap)[packages];
+		return;
+	}	
 	int nbVeh = numRiders;
 	// InstanceCVRPLIB cvrp(pathInstance, isRoundingInteger);
 	int n = packages.size();
@@ -79,7 +87,7 @@ void HGS::ComputeClusters(vector<item> &packages, Coordinate warehouse, int numR
 	}
 	cout << "X : ";
 	for(int i = 0;i < x_coords.size();i++){
-		cout << x_coords[i]<< ' ' << i << ' ';
+		cout << x_coords[i]<< ' ' <<i<<' ';
 	}
 	cout << "\nY : ";
 	for(int i = 0;i < y_coords.size();i++){
@@ -98,12 +106,12 @@ void HGS::ComputeClusters(vector<item> &packages, Coordinate warehouse, int numR
 	cout << "Number of Packages : " << n << endl;
 	cout << "Average Volume per cluster : " << total_demand / numRiders << endl << endl;
 	cout << endl;
-	std::vector<double> expectation(n,1e30); 
+	std::vector<double> expectation(n, 1e30); 
 	// TODO: add expectation in HGS
 	for(int i=0;i<n;i++) expectation[i] = packages[i].time;
 	
 	if(this->EDD){
-		cout << "With EDD " << endl;
+		cout<<"With EDD"<<endl;
 		Params params = Params(x_coords,y_coords,dist_mtx,service_time,demands,
 				b.capacity,DurationLimit,numRiders,true,verbose, expectation,ap);
 		params.averageSpeed = avgspeed;
@@ -173,7 +181,8 @@ void HGS::ComputeClusters(vector<item> &packages, Coordinate warehouse, int numR
 			clusters.clear();
 		}
 		
-	}			
+	}
+	(CachingHGS::cacheMap)[packages] = clusters;		
 }
 
 void HGS::CalculateCost() {}
