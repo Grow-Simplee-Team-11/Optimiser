@@ -167,7 +167,7 @@ void Optimizer::optimize(){
             std::ofstream out(logFileName, std::ios_base::app);
             out<<"Printing information for cluster - "<<i<<endl;
         }
-        
+        // i++;
 
         // Planning routes
         // for(int i =0;i<cluster.size();i++){
