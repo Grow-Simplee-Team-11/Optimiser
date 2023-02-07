@@ -133,8 +133,8 @@ class OptimizerServiceImpl final : public optimizer::optimizer::Service
             int mid = (l+r)/2;
             vector<item> current;
             auto bb = dm.bin;
-            bb.height *= dm.numberRiders;
-            bb.height *=0.85;
+            bb.size.height *= dm.numRiders;
+            bb.size.height *=0.85;
             for(int i=0;i<mid;i++) current.push_back(items[i]);
             binpack->BinPack(current, bb);
             if(binpack->CalculateCost()==0) 
