@@ -119,6 +119,37 @@ class OptimizerServiceImpl final : public optimizer::optimizer::Service
 	    bool logToFile = true;
 	    string logFileName = "FESIF_TSP_LK.txt";
 
+        vector<item> items = dm.packages;
+        cout << "Before";
+        int package_count = dm.packages.size();
+        int l=1;int r=std::min<int>(25*dm.numRiders,package_count);int ans=1;
+        BinPackInterface* binpack = new EB_AFIT;
+        while(l<=r) {
+            int mid = (l+r)/2;
+            vector<item> current;
+            auto bb = dm.bin;
+            bb.size.height *= dm.numRiders;
+            bb.size.height *=0.95;
+            cout << "Before current";
+            for(int i=0;i<mid;i++) current.push_back(items[i]);
+            cout << "After";
+            binpack->BinPack(current, bb);
+            cout << "After binpack" << endl;
+            cout<<l<<" "<<r<<" "<<binpack->CalculateCost()<<" " <<mid<<endl;
+            double costTemp =   binpack->CalculateCost();
+            cout << costTemp << endl;
+            if(costTemp<0.0001) 
+            {
+                ans=mid;
+                l=mid+1;
+            }
+            else r=mid-1;
+        }
+        cout << "After Binary";
+        vector<item> final_item;
+        for(int i=0;i<ans;i++) final_item.push_back(items[i]);
+        dm.packages = final_item;
+
         vector<string> routingAlgorithms = {"TSP_OR", "TSP_LK", "TSP_CK"};
         vector<string> binPackingAlgorithms = {"EB_AFIT"};
         vector<string> clusteringAlgorithms = {"CLARKE", "SELF", "FESIF", "HGS"};
