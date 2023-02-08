@@ -33,7 +33,8 @@ struct ClientSplit
 	double d0_x;
 	double dx_0;
 	double dnext;
-	ClientSplit() : demand(0.), serviceTime(0.), d0_x(0.), dx_0(0.), dnext(0.) {};
+	double edd;
+	ClientSplit() : demand(0.), serviceTime(0.), d0_x(0.), dx_0(0.), dnext(0.) ,edd(0.){};
 };
 
 // Simple Deque which is used for all Linear Split algorithms
