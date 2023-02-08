@@ -1,25 +1,18 @@
 # Route Optimisation and Planning for Last Mile Delivery
 
-## About The Project
-
 <p align="center">
   <img src="./optimiser.png" />
 </p>
 
 <div align="center">
-  <a href="https://github.com/Grow-Simplee-Team-11/Optimiser">
-    <img src="./assets/Main.png" alt="Logo" width="300">
-  </a>
+  
 
-  <h3 align="center">Dynamic Addition and Deletion</h3>
+  <h3 align="center">Route Optimisation Engine</h3>
 
   <p align="center">
-    A prototype for demonstrating addition and deletion of deliveries dynamically.
-    <br />
-    <a href="https://github.com/Grow-Simplee-Team-11/Optimiser/wiki"><strong>Explore the docs »</strong></a>
+    An Optimisation engine for clustering points and generating optimal routes
     <br />
     <br />
-    ·
     <a href="https://github.com/Grow-Simplee-Team-11/Optimiser/issues">Report Bug</a>
     ·
     <a href="https://github.com/Grow-Simplee-Team-11/Optimiser/issues">Request Feature</a>
@@ -30,24 +23,30 @@
   <summary>Table of Contents</summary>
   <ol>
     <li>
-      <a href="#about-the-project">About The Project</a>
+      <a href="#getting-started">Getting Started</a>
       <ul>
-        <li><a href="#Build-From-Scratch">Build From Scratch</a></li>
+        <li><a href="#quick-install">Quick Install</a></li>
       </ul>
     </li>
     <li>
-      <a href="#getting-started">Getting Started</a>
+      <a href="#build-from-scratch">Build From Scratch</a>
       <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
-        <li><a href="#setting-debug-level">Setting DEBUG level</a></li>
+        <li><a href="#pre-requisites">Pre Requisites</a></li>
+        <li><a href="#dependencies">Dependencies</a></li>
+        <li><a href="#or-tools">OR Tools</a></li>
+        <li><a href="#grpc">gRPC</a></li>
       </ul>
     </li>
+    <li><a href="#installation">Installation</a></li>
+    <li><a href="#usage">Usage</a>
+    <ul>
+        <li><a href="#interact-with-the-system-via-grpc-client">Interact with the system via GRPC Client</a></li>
+        <li><a href="#interact-with-the-system-via-terminal">Interact with the system via Terminal</a></li>
+     </ul>
+    </li>
     <li><a href="#project-details">Project Details</a></li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
+    <li><a href="#codeflow">Codeflow</a></li>
+    <li><a href="#acknowledgements">Acknowledgements</a></li>
   </ol>
 </details>
 
@@ -407,7 +406,7 @@ The Optimizer class creates interfaces for "ClusteringInterface," "BinPackInterf
 
 
 
-# Acknowledgements
+## Acknowledgements
 
 We list below any external resource we came across to help us build the entire codebase -
 ### Clustering Algorithms
