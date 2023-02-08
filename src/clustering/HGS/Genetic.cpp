@@ -89,7 +89,8 @@ void GeneticParallel::run() {
         //     localSearch.run(offspring, params.penaltyCapacity * 10., params.penaltyDuration * 10.);
         //     if (offspring.eval.isFeasible) isNewBest = (population.addIndividual(offspring, false) || isNewBest);
         // }
-
+        if(nbIter > 2000)
+            params.ap.nbIter = 500;
         /* TRACKING THE NUMBER OF ITERATIONS SINCE LAST SOLUTION IMPROVEMENT */
         if (isNewBest)
             nbIterNonProd = 1;
