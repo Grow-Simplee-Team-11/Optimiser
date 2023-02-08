@@ -388,7 +388,7 @@ All route plannning algorithms can thus use any of the above metric to compute o
 
 ## Codeflow
 
-![Class Diagram](/ClassDiagramOptimizer.drawio.png)
+![Class Diagram](/Asset6@3x.png)
 <p align = "center">
 Class Diagram
 </p>
