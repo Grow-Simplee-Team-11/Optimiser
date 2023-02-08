@@ -116,12 +116,12 @@ void HGS::ComputeClusters(vector<item> &packages, Coordinate warehouse, int numR
 				b.capacity,DurationLimit,numRiders,true,verbose, expectation,ap);
 		params.averageSpeed = avgspeed;
 		print_algorithm_parameters(ap);
-		Genetic solver(params);
+		GeneticParallel solver(params,4);
 		solver.run();
 		cout << "Solver Completed"<<endl;
 		// Exporting the best solution
-		const Individual indiv = *solver.population.getBestFound();
-		if (solver.population.getBestFound() != NULL)
+		const Individual indiv = *solver.population->getBestFound();
+		if (solver.population->getBestFound() != NULL)
 		{
 			for (int k = 0; k < (int)indiv.chromR.size(); k++)
 			{
@@ -136,8 +136,8 @@ void HGS::ComputeClusters(vector<item> &packages, Coordinate warehouse, int numR
 				}
 			}
 			if (params.verbose) std::cout << "----- WRITING BEST SOLUTION IN : " << pathSolution << std::endl;
-			solver.population.exportCVRPLibFormat(*solver.population.getBestFound(), pathSolution);
-			solver.population.exportSearchProgress(pathSolution + ".PG.csv", pathInstance);
+			solver.population->exportCVRPLibFormat(*solver.population->getBestFound(), pathSolution);
+			solver.population->exportSearchProgress(pathSolution + ".PG.csv", pathInstance);
 		}
 	}
 	else{
@@ -151,15 +151,15 @@ void HGS::ComputeClusters(vector<item> &packages, Coordinate warehouse, int numR
 		params.penaltyDuration = this->penaltyDuration;
 		// params.penaltyMoreThan25 = 2*avgspeed;
 		print_algorithm_parameters(ap);
-		Genetic solver(params);
+		GeneticParallel solver(params,4);
 		solver.run();
 		cout << "Solver Completed"<<endl;
 		// Exporting the best solution
 		
-		if (solver.population.getBestFound() != NULL)
+		if (solver.population->getBestFound() != NULL)
 		{	
 			cout << "Solution Found !" << endl;
-			Individual indiv = *solver.population.getBestFound();
+			Individual indiv = *solver.population->getBestFound();
 			for (int k = 0; k < (int)indiv.chromR.size(); k++)
 			{
 				if (!indiv.chromR[k].empty())
@@ -173,8 +173,8 @@ void HGS::ComputeClusters(vector<item> &packages, Coordinate warehouse, int numR
 				}
 			}
 			if (params.verbose) std::cout << "----- WRITING BEST SOLUTION IN : " << pathSolution << std::endl;
-			solver.population.exportCVRPLibFormat(*solver.population.getBestFound(), pathSolution);
-			solver.population.exportSearchProgress(pathSolution + ".PG.csv", pathInstance);
+			solver.population->exportCVRPLibFormat(*solver.population->getBestFound(), pathSolution);
+			solver.population->exportSearchProgress(pathSolution + ".PG.csv", pathInstance);
 		}
 		else {
 			cout << "best found NULL" << endl;
