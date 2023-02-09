@@ -91,6 +91,10 @@ void GeneticParallel::run() {
         // }
 
         /* TRACKING THE NUMBER OF ITERATIONS SINCE LAST SOLUTION IMPROVEMENT */
+		if(nbIter > 2000)
+			params.ap.nbIter = 500;
+		if(nbIter > 3000)
+			params.ap.nbIter = 250;
         if (isNewBest)
             nbIterNonProd = 1;
         else

@@ -44,7 +44,7 @@ EB_AFIT::EB_AFIT() {
 
 void EB_AFIT::BinPack(vector<item>& cluster, Bin b) {
     time(&start);
-    Binpacker binpacker;
+    // Binpacker binpacker;
     binpacker.n = cluster.size();
     binpacker.totalboxvol = 0;
     for (auto& it : cluster) {

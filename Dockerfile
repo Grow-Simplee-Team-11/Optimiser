@@ -33,7 +33,7 @@ RUN cd grpc && mkdir -p cmake/build && cd ./cmake/build && \
 
 WORKDIR /Optimizer
 COPY . .
-RUN mkdir -p ./build && cd ./build && cmake .. && make -j$(nproc)
+RUN mkdir -p ./build && cd ./build && cmake -DCMAKE_BUILD_TYPE=Release .. && make -j$(nproc)
 EXPOSE 50051
 CMD ["./bin/server"]
 

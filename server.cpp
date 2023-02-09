@@ -118,6 +118,34 @@ class OptimizerServiceImpl final : public optimizer::optimizer::Service
         bool verbose = true;
 	    bool logToFile = true;
 	    string logFileName = "FESIF_TSP_LK.txt";
+        int package_count = dm.packages.size();
+        int l=1;int r=std::min<int>(25*dm.numRiders,package_count);int ans=1;
+        BinPackInterface* binpack = new EB_AFIT;
+        while(l<=r) {
+            int mid = (l+r)/2;
+            vector<item> current;
+            auto bb = dm.bin;
+            bb.size.height *= dm.numRiders;
+            bb.size.height *=0.90;
+            cout << "Before current";
+            for(int i=0;i<mid;i++) current.push_back(dm.packages[i]);
+            cout << "After";
+            binpack->BinPack(current, bb);
+            cout << "After binpack" << endl;
+            cout<<l<<" "<<r<<" "<<binpack->CalculateCost()<<" " <<mid<<endl;
+            double costTemp =   binpack->CalculateCost();
+            cout << costTemp << endl;
+            if(costTemp<0.0001) 
+            {
+                ans=mid;
+                l=mid+1;
+            }
+            else r=mid-1;
+        }
+        cout << "After Binary";
+        vector<item> final_item;
+        for(int i=0;i<ans;i++) final_item.push_back(dm.packages[i]);
+        dm.packages = final_item;
         Optimizer optim(rp, cls, bp, dm.packages, dm.warehouse, dm.numRiders, dm.bin, logFileName, verbose, logToFile);
         try{
              optim.optimize();
