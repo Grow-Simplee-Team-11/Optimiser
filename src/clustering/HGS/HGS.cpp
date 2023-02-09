@@ -16,7 +16,7 @@ HGS::HGS(DistanceType method,bool EDD): ClusteringInterface(method){
 			ap = default_algorithm_parameters();
 			// ap.timeLimit = 30.0;
 			// ap.nbIter = 25000;
-			ap.nbIter = 1000;
+			ap.nbIter = 2000;
 }
 HGS::HGS(DistanceType method,double penaltyDuration,double penaltyCapacity,bool EDD): ClusteringInterface(method){
 			// pathInstance = instance_path_name;
