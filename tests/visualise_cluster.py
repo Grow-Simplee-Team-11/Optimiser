@@ -22,7 +22,7 @@ def randomColor():
 if __name__=="__main__":
     random.seed(10)
 
-    pts = open("input.txt", "r")
+    pts = open("cluster.txt", "r")
 
     numclusters = int(pts.readline())
 
