@@ -157,13 +157,18 @@ class OptimizerServiceImpl final : public optimizer::optimizer::Service
         // vector<string> routingAlgorithms = {"TSP_OR"};
         // vector<string> binPackingAlgorithms = {"EB_AFIT"};
         // vector<string> clusteringAlgorithms = {"CLARKE"};
-        cout<<"Started ensembler"<<endl;
-        Ensembler* optim = new Ensembler(routingAlgorithms, binPackingAlgorithms, clusteringAlgorithms, dm.packages, dm.warehouse, dm.numRiders, dm.bin); 
-        cout<<"Completed ensembler formation."<<endl;
+        // cout<<"Started ensembler"<<endl;
+        // Ensembler* optim = new Ensembler(routingAlgorithms, binPackingAlgorithms, clusteringAlgorithms, dm.packages, dm.warehouse, dm.numRiders, dm.bin); 
+        // cout<<"Completed ensembler formation."<<endl;
+        // try{
+        // cout<<"Running ensembler"<<endl;
+        // optim->EnsembleRun();
+        // cout<<"Essembler running done."<<endl;
+        RoutePlanInterface* rp = new TSP_OR(REAL);
+    	ClusteringInterface* cls = new HGS(HAVERSINE,3.66,2.06);
+        Optimizer optim(rp, cls, bp, dm.packages, dm.warehouse, dm.numRiders, dm.bin, logFileName, verbose, logToFile);
         try{
-        cout<<"Running ensembler"<<endl;
-        optim->EnsembleRun();
-        cout<<"Essembler running done."<<endl;
+             optim.optimize();
         }
         catch(const char* msg)
         {
