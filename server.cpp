@@ -60,9 +60,9 @@ DataModel getData(const OptimizerRequest *request){
         i.coordinate.latitude = package.coordinates().latitude()/1e6;
         i.coordinate.longitude = package.coordinates().longitude()/1e6;
         i.weight = package.weight();
-        i.size.height = package.size().height();
-        i.size.width = package.size().width();
-        i.size.length = package.size().length();
+        i.size.height = 10;
+        i.size.width = 10;
+        i.size.length = 20;
         i.volume = i.getVolume();
         dm.packages.push_back(i);
     }

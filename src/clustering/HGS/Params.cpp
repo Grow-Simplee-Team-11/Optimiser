@@ -137,7 +137,7 @@ Params::Params(
 	
 	if (verbose)
 		std::cout << "----- INSTANCE SUCCESSFULLY LOADED WITH " << nbClients << " CLIENTS AND " << nbVehicles << " VEHICLES" << std::endl;
-	durationLimit = 300;
+	durationLimit = 3000;
 }
 
 
