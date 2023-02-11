@@ -12,7 +12,8 @@
 #include "./include/routeplan/TSP_CK.hpp"
 
 #include "./include/binpack/EB_AFIT.hpp"
-#include "./include/Ensembler.hpp"
+#include "./include/Optimiser.hpp"
+// #include "./include/Ensembler.hpp"
 
 #include <grpcpp/grpcpp.h>
 
@@ -71,7 +72,7 @@ DataModel getData(const OptimizerRequest *request){
     dm.bin.size.length = request->bin().size().length();
     return dm;
 }
-void setData(Ensembler *optim,OptimizerResponse *reply){
+void setData(Optimizer *optim,OptimizerResponse *reply){
     int numClusters = optim->getNumClusters();
     cout << "-----------------------------Returning Result--------------------"<<endl;
     cout << "numClusters : " << numClusters << endl;
@@ -120,49 +121,48 @@ class OptimizerServiceImpl final : public optimizer::optimizer::Service
 	    string logFileName = "FESIF_TSP_LK.txt";
 
         vector<item> items = dm.packages;
-        cout << "Before";
         int package_count = dm.packages.size();
-        int l=1;int r=std::min<int>(25*dm.numRiders,package_count);int ans=1;
-        BinPackInterface* binpack = new EB_AFIT;
-        while(l<=r) {
-            int mid = (l+r)/2;
-            vector<item> current;
-            auto bb = dm.bin;
-            bb.size.height *= dm.numRiders;
-            bb.size.height *=0.95;
-            cout << "Before current";
-            for(int i=0;i<mid;i++) current.push_back(items[i]);
-            cout << "After";
-            binpack->BinPack(current, bb);
-            cout << "After binpack" << endl;
-            cout<<l<<" "<<r<<" "<<binpack->CalculateCost()<<" " <<mid<<endl;
-            double costTemp =   binpack->CalculateCost();
-            cout << costTemp << endl;
-            if(costTemp<0.0001) 
-            {
-                ans=mid;
-                l=mid+1;
-            }
-            else r=mid-1;
-        }
-        cout << "After Binary";
-        vector<item> final_item;
-        for(int i=0;i<ans;i++) final_item.push_back(items[i]);
-        dm.packages = final_item;
+        // BinPackInterface* binpack = new EB_AFIT;
+        // while(l<=r) {
+        //     int mid = (l+r)/2;
+        //     vector<item> current;
+        //     auto bb = dm.bin;
+        //     bb.size.height *= dm.numRiders;
+        //     bb.size.height *=0.95;
+        //     cout << "Before current";
+        //     for(int i=0;i<mid;i++) current.push_back(items[i]);
+        //     cout << "After";
+        //     binpack->BinPack(current, bb);
+        //     cout << "After binpack" << endl;
+        //     cout<<l<<" "<<r<<" "<<binpack->CalculateCost()<<" " <<mid<<endl;
+        //     double costTemp =   binpack->CalculateCost();
+        //     cout << costTemp << endl;
+        //     if(costTemp<0.0001) 
+        //     {
+        //         ans=mid;
+        //         l=mid+1;
+        //     }
+        //     else r=mid-1;
+        // }
+        // cout << "After Binary";
+        // vector<item> final_item;
+        // for(int i=0;i<ans;i++) final_item.push_back(items[i]);
+        // dm.packages = final_item;
 
-        vector<string> routingAlgorithms = {"TSP_OR", "TSP_LK", "TSP_CK"};
+        vector<string> routingAlgorithms = {"TSP_OR"};
         vector<string> binPackingAlgorithms = {"EB_AFIT"};
-        vector<string> clusteringAlgorithms = {"CLARKE", "SELF", "FESIF", "HGS"};
+        vector<string> clusteringAlgorithms = {"HGS"};
 
         // vector<string> routingAlgorithms = {"TSP_OR"};
         // vector<string> binPackingAlgorithms = {"EB_AFIT"};
         // vector<string> clusteringAlgorithms = {"CLARKE"};
         cout<<"Started ensembler"<<endl;
-        Ensembler* optim = new Ensembler(routingAlgorithms, binPackingAlgorithms, clusteringAlgorithms, dm.packages, dm.warehouse, dm.numRiders, dm.bin); 
+        Optimizer* optim = new Optimizer(new TSP_OR(REAL), new HGS(HAVERSINE, 3.66,2.06), new EB_AFIT(),dm.packages, dm.warehouse, dm.numRiders, dm.bin, "", 0, 0);
+        // Ensembler* optim = new Ensembler(routingAlgorithms, binPackingAlgorithms, clusteringAlgorithms, dm.packages, dm.warehouse, dm.numRiders, dm.bin, "", 0, 0); 
         cout<<"Completed ensembler formation."<<endl;
         try{
         cout<<"Running ensembler"<<endl;
-        optim->EnsembleRun();
+        optim->optimize();
         cout<<"Essembler running done."<<endl;
         }
         catch(const char* msg)
@@ -181,9 +181,8 @@ class OptimizerServiceImpl final : public optimizer::optimizer::Service
             return Status::CANCELLED;
         }
 
-        if(verbose)
-            optim->Report();
-        
+        // if(verbose)
+        //     optim->Report();
         setData(optim,reply);
         return Status::OK;
     }

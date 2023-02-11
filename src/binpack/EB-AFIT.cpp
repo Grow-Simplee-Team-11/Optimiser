@@ -59,6 +59,7 @@ EB_AFIT::EB_AFIT() {
 }
 
 void EB_AFIT::BinPack(vector<item>& cluster, Bin b) {
+    cout << cluster.size() << endl;
     /**
      * @brief Binpacks the cluster into the bin using the EB-AFIT algorithm
      *
@@ -179,11 +180,12 @@ void EB_AFIT::BinPack(vector<item>& cluster, Bin b) {
         binpacker.pz = ansVar.pz;
       }
     }
-    
+    cout << "I am here" << endl;
     time(&finish);
     binpacker.report(cluster);
     this->packed_items = cluster;
     sortCluster(this->packed_items);
+    cout << "I am again here" << endl;
     return;
 }
 

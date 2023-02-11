@@ -15,7 +15,7 @@ using namespace std;
 class Optimizer{
     public:
         Optimizer(){}
-        Optimizer(RoutePlanInterface* routePlannerInterface_, ClusteringInterface* clusteringInterface_, BinPackInterface* binPackInterface_, vector<item>& packages_, Coordinate& warehouse_, int numberRiders_, Bin& bin_, string logFileName_, bool verbose_, bool logToFile_, pthread_mutex_t* clusterLock = NULL, pthread_mutex_t* binPackLock = NULL, pthread_mutex_t* routePlanningLock = NULL);
+        Optimizer(RoutePlanInterface* routePlannerInterface_, ClusteringInterface* clusteringInterface_, BinPackInterface* binPackInterface_, vector<item>& packages_, Coordinate& warehouse_, int numberRiders_, Bin& bin_, string logFileName_, bool verbose_, bool logToFile_);
 
         // Function to perform optimization for set of packages
         void optimize();
@@ -49,10 +49,6 @@ class Optimizer{
         vector<vector<item>> clusters;
         vector<vector<item>> clusterPaths;
         vector<vector<item>> clusterPackagings;
-
-        pthread_mutex_t* clusterLock;
-        pthread_mutex_t* routingLock;
-        pthread_mutex_t* binPackLock;
 
         // Cost of each segment
         float clusteringCost;

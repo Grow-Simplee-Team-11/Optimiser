@@ -3,7 +3,7 @@
 #include "routeplan/TSP_OR_EDD.hpp"
 #include "binpack/EB_AFIT.hpp"
 
-Optimizer::Optimizer(RoutePlanInterface* routePlannerInterface_, ClusteringInterface* clusteringInterface_, BinPackInterface* binPackInterface_, vector<item>& packages_, Coordinate& warehouse_, int numberRiders_, Bin& bin_, string logFileName_, bool verbose_, bool logToFile_, pthread_mutex_t* clusterLock_, pthread_mutex_t* binPackLock_, pthread_mutex_t* routePlanningLock_) {
+Optimizer::Optimizer(RoutePlanInterface* routePlannerInterface_, ClusteringInterface* clusteringInterface_, BinPackInterface* binPackInterface_, vector<item>& packages_, Coordinate& warehouse_, int numberRiders_, Bin& bin_, string logFileName_, bool verbose_, bool logToFile_) {
     routePlannerInterface = routePlannerInterface_;
     clusteringInterface = clusteringInterface_;
     binPackInterface = binPackInterface_;
@@ -14,9 +14,9 @@ Optimizer::Optimizer(RoutePlanInterface* routePlannerInterface_, ClusteringInter
     logFileName = logFileName_;
     verbose = verbose_;
     logToFile = logToFile_;
-    clusterLock = clusterLock_;
-    binPackLock = binPackLock_;
-    routingLock = routePlanningLock_;
+    // clusterLock = clusterLock_;
+    // binPackLock = binPackLock_;
+    // routingLock = routePlanningLock_;
     counter = 0;
 }
 void Optimizer::check_data(){
@@ -125,10 +125,10 @@ void Optimizer::optimize(){
     output.close();
     } **/
     
-    if(clusterLock!=NULL){
-        cout<<"Locking - Cluster Lock"<<" "<<clusterLock<<endl;
-        pthread_mutex_lock(clusterLock);
-    }
+    // if(clusterLock!=NULL){
+    //     cout<<"Locking - Cluster Lock"<<" "<<clusterLock<<endl;
+    //     pthread_mutex_lock(clusterLock);
+    // }
     clusteringInterface->ComputeClusters(packages, warehouse, numberRiders, bin);
     if(clusteringInterface->GetClusters().size() == 0){
         throw "Clustering Algorithm Could Not found a solution";
@@ -144,10 +144,10 @@ void Optimizer::optimize(){
         clusteringInterface->PrintClustersToFile(logFileName);
     }
 
-    if(clusterLock!=NULL){
-        cout<<"Unlocked Cluster Lock - "<<clusterLock<<endl;
-        pthread_mutex_unlock(clusterLock);
-    }
+    // if(clusterLock!=NULL){
+    //     cout<<"Unlocked Cluster Lock - "<<clusterLock<<endl;
+    //     pthread_mutex_unlock(clusterLock);
+    // }
 
     int i = 0;
     int avg = 0;
@@ -173,9 +173,10 @@ void Optimizer::optimize(){
         // for(int i =0;i<cluster.size();i++){
         //     cout<<cluster[i].coordinate.latitude<<" "<<cluster[i].coordinate.longitude<<endl;
         // }
-        if(routingLock!=NULL)
-            pthread_mutex_lock(routingLock);
+        // if(routingLock!=NULL)
+        //     pthread_mutex_lock(routingLock);
         routePlannerInterface->PlanRoute(cluster, warehouse);
+        cout << "I am here" << endl;
         vector<item> rps = routePlannerInterface->GetPaths();
         clusterPaths.push_back(rps);
         routePlannerInterface->CalculateCost();
@@ -188,19 +189,23 @@ void Optimizer::optimize(){
             routePlannerInterface->PrintRoutesToFile(logFileName);
         }
 
-        if(routingLock!=NULL){
-            pthread_mutex_unlock(routingLock);
-        }
+        // if(routingLock!=NULL){
+        //     pthread_mutex_unlock(routingLock);
+        // }
 
         // Computing bin packaging
 
-        if(binPackLock!=NULL)
-            pthread_mutex_lock(binPackLock);
-
+        // if(binPackLock!=NULL)
+        //     pthread_mutex_lock(binPackLock);
+        cout << "LINE200" << endl;
         binPackInterface->BinPack(rps, bin);
         clusterPackagings.push_back(binPackInterface->GetPackaging());
+        cout << 203 << endl;
         binPackInterface->CalculateCost();
+        cout << 205 << endl;
         packagingCost.push_back(binPackInterface->CalculateCost());
+        cout << 207 << endl;
+
         first = true;
 
             
@@ -211,14 +216,17 @@ void Optimizer::optimize(){
             binPackInterface->PrintPackedDataToFile(logFileName);
         }
 
-        if(binPackLock!=NULL){
-            pthread_mutex_unlock(binPackLock);
-        }
+        // if(binPackLock!=NULL){
+        //     pthread_mutex_unlock(binPackLock);
+        // }
+        cout << 222 << endl;
 
         avg+= cluster.size();
         maximum = max(maximum, (int)cluster.size());
-
+        
+        cout << 226 << endl;
     }
+    cout << 228 << endl;
     return;
 }
 
