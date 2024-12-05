@@ -1,0 +1,18 @@
+NAME : <>
+COMMENT : <>
+TYPE : CVRP
+DIMENSION : <number of clients + 1>
+EDGE_WEIGHT_TYPE : EUC_2D
+CAPACITY : <rider bag capacity>
+DISTANCE : <maximum allowed distance for a rider>
+NODE_COORD_SECTION
+1 0.00000 0.00000
+2 <x_coord> <y_coord>
+3 <x_coord> <y_coord>     {input all coordinates similarly}
+DEMAND_SECTION
+1 0
+2 <demand at node corresponding to index 2 in prev section>      {input all demands similarly}
+DEPOT_SECTION
+1
+-1
+EOF
